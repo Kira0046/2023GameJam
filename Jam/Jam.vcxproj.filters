@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\フィールド">
+      <UniqueIdentifier>{af7d4ff5-5911-4bfc-adae-e15ebbed8960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\フィールド">
+      <UniqueIdentifier>{bd929389-d73a-4d7d-b9a6-e36e97321794}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
