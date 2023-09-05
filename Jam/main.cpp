@@ -1,5 +1,7 @@
 #include "DxLib.h"
 #include "GameScene.h"
+#pragma warning(disable:4819)
+
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "";
@@ -82,6 +84,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			break;
 		}
 	}
+
+	delete(gameScene);
 	// Dxライブラリ終了処理
 	DxLib_End();
 

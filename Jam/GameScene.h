@@ -1,4 +1,8 @@
 #pragma once
+#include "DxLib.h"
+#include "RedBlock.h"
+#include "GreenBlock.h"
+#include "BlueBlock.h"
 
 class GameScene {
 public:
@@ -17,5 +21,6 @@ public:
 	/// </summary>
 	void Draw();
 private:
+	RedBlock* redBlock = nullptr;
 
 };

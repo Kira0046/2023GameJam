@@ -1,4 +1,5 @@
 #pragma once
+#include "DxLib.h"
 
 class RedBlock
 {
@@ -19,6 +20,12 @@ public:
 	void Draw();
 
 private:
-
+	//–Í—l
+	int pattern = 0;
+	//’†‰›À•W
+	int x = 0;
+	int y = 0;
+	//‘å‚«‚³
+	int size = 0;
 };
 
