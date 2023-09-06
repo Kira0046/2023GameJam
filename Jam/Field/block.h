@@ -17,6 +17,8 @@ public:
 	//描画
 	void Draw();
 private:
-	//フィールド
+	//フィールドハンドル
 	int fieldHandle;
+	//フィールド座標
+	//int posX = 
 };

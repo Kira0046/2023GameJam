@@ -2,7 +2,7 @@
 
 void Block::Initialize() {
 	//‰æ‘œ“Ç‚İ‚İ
-	fieldHandle = LoadGraph("field/field_kari.png");
+	fieldHandle = LoadGraph("Resource/field/field_kari.png");
 }
 
 void Block::Draw() {
