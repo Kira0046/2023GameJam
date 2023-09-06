@@ -28,7 +28,7 @@ public:
 	void Draw();
 
 private:
-	//–Í—l
+	//–Í—l  1: 2:
 	int pattern = 0;
 	//’†‰›À•W
 	int x = 0;
