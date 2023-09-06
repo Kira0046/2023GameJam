@@ -25,8 +25,6 @@ private:
 	//接続状態チェック
 	void CheckConnect();
 	void IsConnect(int num);
-	//テスト用関数
-	bool ConnectView(int num);
 
 private:
 	//フィールドハンドル
