@@ -8,8 +8,7 @@ struct BlockData {
 	bool connectionStatus[8];	//接続状態
 	bool isFall;	//落下状態
 	bool appearingNow;	//出現中か
-	int color;	//色
-	int patten;	//柄
+	int colorPattern;	//色と柄
 };
 
 class Block {
@@ -21,7 +20,8 @@ public:
 	//描画
 	void Draw();
 private:
-
+	//接続状態チェック
+	void CheckConnect();
 
 private:
 	//フィールドハンドル
@@ -32,8 +32,18 @@ private:
 	//Fieldサイズ
 	int fieldSizeX;
 	int fieldSizeY;
+	//枠分サイズ
+	const int fieldFlameSizeX = 6;
+	const int fieldFlameSizeY = 6;
 
 	//ブロックデータ
 	const int blockNum = 180;
 	BlockData block[180];
+	//ブロックの画像ハンドル
+	int blockHandle[6];
+	//ブロックのサイズ
+	const int blockSizeX = 48;
+	const int blockSizeY = 48;
+	//接続状態数
+	const int connectNum = 8;
 };
