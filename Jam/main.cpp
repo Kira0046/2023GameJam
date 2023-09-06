@@ -43,20 +43,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 	// ゲームループで使う変数の宣言
-	GameScene* gameScene = new GameScene;
+	GameScene* gameScene = new GameScene();
 	gameScene->Initialize();
-	// 最新のキーボード情報用
-	char keys[256] = { 0 };
 
-	// 1ループ(フレーム)前のキーボード情報
-	char oldkeys[256] = { 0 };
 
 	// ゲームループ
 	while (true) {
-		// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存
-		// 最新のキーボード情報を取得
-		GetHitKeyStateAll(keys);
-
 		// 画面クリア
 		ClearDrawScreen();
 		//---------  ここからプログラムを記述  ----------//
@@ -85,7 +77,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		}
 	}
 
-	delete(gameScene);
+	//delete(gameScene);
 	// Dxライブラリ終了処理
 	DxLib_End();
 
