@@ -3,6 +3,8 @@
 #include "RedBlock.h"
 #include "GreenBlock.h"
 #include "BlueBlock.h"
+#include <list>
+
 
 class GameScene {
 public:
@@ -10,7 +12,7 @@ public:
 	/// ‰Šú‰»
 	/// </summary>
 	void Initialize();
-	
+
 	/// <summary>
 	/// XV
 	/// </summary>
@@ -21,6 +23,10 @@ public:
 	/// </summary>
 	void Draw();
 private:
-	RedBlock* redBlock = nullptr;
+	int spawnpointX = 800;
+	int spawnpointY = -48;
 
+	std::list <RedBlock*> redBlockList;
+	std::list <BlueBlock*> blueBlockList;
+	std::list <GreenBlock*> greenBlockList;
 };

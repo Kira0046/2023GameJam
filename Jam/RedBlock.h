@@ -4,10 +4,12 @@
 class RedBlock
 {
 public:
+	RedBlock(int x, int y, int pattern);
+
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
-	void Initialize(int x, int y, int pattern);
+	void Initialize();
 
 	/// <summary>
 	/// XV
