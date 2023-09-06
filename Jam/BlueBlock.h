@@ -7,7 +7,7 @@ public:
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
-	void Initialize();
+	void Initialize(int x, int y, int pattern);
 
 	/// <summary>
 	/// XV
@@ -26,6 +26,6 @@ private:
 	int x = 0;
 	int y = 0;
 	//‘å‚«‚³
-	int size = 0;
+	int size = 24;
 };
 
