@@ -8,6 +8,8 @@ struct BlockData {
 	bool connectionStatus[8];	//接続状態
 	bool isFall;	//落下状態
 	bool appearingNow;	//出現中か
+	int color;	//色
+	int patten;	//柄
 };
 
 class Block {
@@ -18,6 +20,9 @@ public:
 	void Update();
 	//描画
 	void Draw();
+private:
+
+
 private:
 	//フィールドハンドル
 	int fieldHandle;
