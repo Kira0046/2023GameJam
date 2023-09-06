@@ -15,6 +15,7 @@ void Block::Initialize(int windowWidth, int windowHeight) {
 	LoadDivGraph("Resource/field/color_block_800.png", 6, 6, 1, blockSizeX, blockSizeY, blockHandle);
 	LoadDivGraph("Resource/field/color_block_connect.png", 6, 6, 1, blockSizeX, blockSizeY, connectHandle);
 	LoadDivGraph("Resource/field/color_block_double.png", 6, 6, 1, blockSizeX, blockSizeY, doubleHandle);
+	LoadDivGraph("Resource/field/color_block_Involvement.png", 6, 6, 1, blockSizeX, blockSizeY, involvementHnadle);
 	//ブロック初期化
 	for (int i = 0; i < blockNum; i++) {
 		block[i].posX = 0.0f;
@@ -25,10 +26,15 @@ void Block::Initialize(int windowWidth, int windowHeight) {
 		block[i].appearingNow = false;
 		block[i].isDelete = false;
 		block[i].doubleMutch = false;
+		block[i].involvement = false;
 		for (int j = 0; j < connectNum; j++) {
 			block[i].connectionStatus[j] = false;
 		}
 	}
+
+	//タイマー初期化
+	deleteTimer = maxTimer;
+	countStart = false;
 
 	//テスト設置
 	int numX = 0;
@@ -47,8 +53,11 @@ void Block::Initialize(int windowWidth, int windowHeight) {
 }
 
 void Block::Update() {
+	//接続確認
 	CheckConnect();
-	//IsConnect(0);
+
+	//ブロック消去
+	DeleteBlock();
 }
 
 void Block::Draw() {
@@ -57,11 +66,14 @@ void Block::Draw() {
 	//ブロック描画
 	for (int i = 0; i < blockNum; i++) {
 		if (block[i].appearingNow) {
-			if (block[i].isDelete && !block[i].doubleMutch) {
+			if (block[i].isDelete && !block[i].doubleMutch && !block[i].involvement) {
 				DrawGraph(block[i].posX, block[i].posY, connectHandle[block[i].colorPattern], true);
 			}
-			else if (block[i].isDelete && block[i].doubleMutch) {
+			else if (block[i].isDelete && block[i].doubleMutch && !block[i].involvement) {
 				DrawGraph(block[i].posX, block[i].posY, doubleHandle[block[i].colorPattern], true);
+			}
+			else if (block[i].involvement) {
+				DrawGraph(block[i].posX, block[i].posY, involvementHnadle[block[i].colorPattern], true);
 			}
 			else {
 				DrawGraph(block[i].posX, block[i].posY, blockHandle[block[i].colorPattern], true);
@@ -80,16 +92,19 @@ void Block::CheckConnect() {
 			if (!block[i].isFall) {
 				//接続確認
 				IsConnect(i);
+				if (block[i].isDelete) {
+					countStart = true;
+				}
 			}
 		}
-
+	}
+	for (int i = 0; i < blockNum; i++) {
+		//巻き込み確認
+		CheckInvolvement(i);
 	}
 }
 
 void Block::IsConnect(int num) {
-	//ブロックの中央座標取得
-	//float centerPosX = block[num].posX + blockSizeX / 2;
-	//float centerPosY = block[num].posY + blockSizeY / 2;
 	//隣接したブロックの座標取得
 	float connectPos[8];
 	//上
@@ -105,7 +120,7 @@ void Block::IsConnect(int num) {
 	connectPos[6] = block[num].posX + blockSizeX;
 	connectPos[7] = block[num].posY;
 	//一致した場合のみカウント、2以上で消える
-	int matchCount[2][2] = { { 0,0 },{0,0} };	//色一致数,柄一致数
+	int matchCount[2][2] = { { 0,0 },{0,0} };	//{{縦色,横色},{縦柄,横柄}}
 	//一致したブロックの番号
 	int upNum = 0;
 	int downNum = 0;
@@ -113,7 +128,7 @@ void Block::IsConnect(int num) {
 	int rightNum = 0;
 
 	//座標と一致してるブロックがあるか精査
-	for (int i = 0; i < 180; i++) {
+	for (int i = 0; i < blockNum; i++) {
 		for (int j = 0; j < 8; j) {
 			//上下左右の順で接続チェック
 			if (connectPos[j] == block[i].posX && connectPos[j + 1] == block[i].posY) {
@@ -185,7 +200,48 @@ void Block::IsConnect(int num) {
 		}
 	}
 	//両一致チェック
-	if (matchCount[0][0] > 1 && matchCount[1][0] > 1 || matchCount[0][1] > 1 && matchCount[1][1] > 1) {
+	//上下
+	if (matchCount[0][0] > 1 && matchCount[1][0] > 1) {
 		block[num].doubleMutch = true;
+		block[upNum].doubleMutch = true;
+		block[downNum].doubleMutch = true;
+	}
+	//左右
+	if (matchCount[0][1] > 1 && matchCount[1][1] > 1) {
+		block[num].doubleMutch = true;
+		block[leftNum].doubleMutch = true;
+		block[rightNum].doubleMutch = true;
+	}
+}
+
+void Block::CheckInvolvement(int num) {
+	//同じ種類のブロックに巻き込み付与
+	if (block[num].doubleMutch) {
+		for (int i = 0; i < blockNum; i++) {
+			if (block[i].colorPattern == block[num].colorPattern) {
+				if (!block[i].isDelete) {
+					block[i].involvement = true;
+				}
+			}
+		}
+	}
+}
+
+void Block::DeleteBlock() {
+	if (countStart = true) {
+		deleteTimer--;
+		if (deleteTimer < 0) {
+			countStart = false;
+			deleteTimer = maxTimer;
+			for (int i = 0; i < blockNum; i++) {
+				if (block[i].isDelete || block[i].involvement) {
+					block[i].appearingNow = false;
+					block[i].posX = 0.0f;
+					block[i].posY = 0.0f;
+					block[i].doubleMutch = false;
+					block[i].isDelete = false;
+				}
+			}
+		}
 	}
 }

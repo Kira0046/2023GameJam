@@ -12,6 +12,7 @@ struct BlockData {
 	int colorPattern;	//色と柄
 	bool isDelete;	//消える？
 	bool doubleMutch;	//両一致判定
+	bool involvement;	//巻き込み判定
 };
 
 class Block {
@@ -26,6 +27,11 @@ private:
 	//接続状態チェック
 	void CheckConnect();
 	void IsConnect(int num);
+	//巻き込みチェック※優先順位は通常消し > 巻き込み
+	void CheckInvolvement(int num);
+
+	//ブロック消去
+	void DeleteBlock();
 
 private:
 	//フィールドハンドル
@@ -53,4 +59,10 @@ private:
 	//接続確認用画像ハンドル
 	int connectHandle[6];
 	int doubleHandle[6];
+	int involvementHnadle[6];
+
+	//接続->消えるまでの待機時間
+	const int maxTimer = 60;
+	int deleteTimer;
+	bool countStart;	//カウント開始変数
 };
