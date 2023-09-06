@@ -11,7 +11,7 @@ struct BlockData {
 class Block {
 public:
 	//初期化
-	void Initialize();
+	void Initialize(int windowWidth,int windowHeight);
 	//更新
 	void Update();
 	//描画
@@ -20,5 +20,9 @@ private:
 	//フィールドハンドル
 	int fieldHandle;
 	//フィールド座標
-	//int posX = 
+	int fieldPosX[2];
+	int fieldPosY[2];
+	//Fieldサイズ
+	int fieldSizeX;
+	int fieldSizeY;
 };
