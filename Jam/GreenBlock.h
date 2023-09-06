@@ -5,9 +5,17 @@ class GreenBlock
 {
 public:
 	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="x">初期位置X</param>
+	/// <param name="y">初期位置Y</param>
+	/// <param name="pattern">模様</param>
+	GreenBlock(int x, int y, int pattern);
+
+	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(int x, int y, int pattern);
+	void Initialize();
 
 	/// <summary>
 	/// 更新

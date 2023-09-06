@@ -1,9 +1,13 @@
 #include "BlueBlock.h"
 
-void BlueBlock::Initialize(int x, int y, int pattern) {
+BlueBlock::BlueBlock(int x, int y, int pattern){
 	this->x = x;
 	this->y = y;
 	this->pattern = pattern;
+}
+
+void BlueBlock::Initialize() {
+	
 }
 
 void BlueBlock::Update() {

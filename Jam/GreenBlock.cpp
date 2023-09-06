@@ -1,11 +1,16 @@
 #include "GreenBlock.h"
 
-void GreenBlock::Initialize(int x, int y, int pattern) {
+GreenBlock::GreenBlock(int x, int y, int pattern){
 	this->x = x;
 	this->y = y;
 	this->pattern = pattern;
+}
+
+void GreenBlock::Initialize() {
+	
 
 }
+
 
 void GreenBlock::Update() {
 }

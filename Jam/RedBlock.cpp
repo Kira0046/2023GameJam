@@ -1,7 +1,6 @@
 #include "RedBlock.h"
 
-RedBlock::RedBlock(int x, int y, int pattern)
-{
+RedBlock::RedBlock(int x, int y, int pattern){
 	this->x = x;
 	this->y = y;
 	this->pattern = pattern;

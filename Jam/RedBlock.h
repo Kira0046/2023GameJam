@@ -4,6 +4,12 @@
 class RedBlock
 {
 public:
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="x">初期位置X</param>
+	/// <param name="y">初期位置Y</param>
+	/// <param name="pattern">模様</param>
 	RedBlock(int x, int y, int pattern);
 
 	/// <summary>

@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\Block">
+      <UniqueIdentifier>{27548c86-8fc8-4635-aa62-994d78744105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Block">
+      <UniqueIdentifier>{dbdfe043-7b17-43d7-84df-9692f53e1c92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -22,27 +28,27 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="BlueBlock.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Block</Filter>
     </ClCompile>
     <ClCompile Include="GreenBlock.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Block</Filter>
     </ClCompile>
     <ClCompile Include="RedBlock.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Block</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="RedBlock.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="BlueBlock.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Block</Filter>
     </ClInclude>
     <ClInclude Include="GreenBlock.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Block</Filter>
+    </ClInclude>
+    <ClInclude Include="RedBlock.h">
+      <Filter>ヘッダー ファイル\Block</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
