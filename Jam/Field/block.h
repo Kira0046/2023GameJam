@@ -6,9 +6,11 @@ struct BlockData {
 	float posX;
 	float posY;
 	bool connectionStatus[8];	//接続状態
+	bool isControl;	//操作状態
 	bool isFall;	//落下状態
 	bool appearingNow;	//出現中か
 	int colorPattern;	//色と柄
+	bool isDelete;	//消える？
 };
 
 class Block {
@@ -22,6 +24,9 @@ public:
 private:
 	//接続状態チェック
 	void CheckConnect();
+	void IsConnect(int num);
+	//テスト用関数
+	bool ConnectView(int num);
 
 private:
 	//フィールドハンドル
@@ -46,4 +51,6 @@ private:
 	const int blockSizeY = 48;
 	//接続状態数
 	const int connectNum = 8;
+	//接続確認用画像ハンドル
+	int connectHandle[6];
 };
