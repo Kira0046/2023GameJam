@@ -11,6 +11,7 @@ struct BlockData {
 	bool appearingNow;	//出現中か
 	int colorPattern;	//色と柄
 	bool isDelete;	//消える？
+	bool doubleMutch;	//両一致判定
 };
 
 class Block {
@@ -51,4 +52,5 @@ private:
 	const int connectNum = 8;
 	//接続確認用画像ハンドル
 	int connectHandle[6];
+	int doubleHandle[6];
 };

@@ -14,6 +14,7 @@ void Block::Initialize(int windowWidth, int windowHeight) {
 	//画像読み込み
 	LoadDivGraph("Resource/field/color_block_800.png", 6, 6, 1, blockSizeX, blockSizeY, blockHandle);
 	LoadDivGraph("Resource/field/color_block_connect.png", 6, 6, 1, blockSizeX, blockSizeY, connectHandle);
+	LoadDivGraph("Resource/field/color_block_double.png", 6, 6, 1, blockSizeX, blockSizeY, doubleHandle);
 	//ブロック初期化
 	for (int i = 0; i < blockNum; i++) {
 		block[i].posX = 0.0f;
@@ -23,6 +24,7 @@ void Block::Initialize(int windowWidth, int windowHeight) {
 		block[i].isControl = false;
 		block[i].appearingNow = false;
 		block[i].isDelete = false;
+		block[i].doubleMutch = false;
 		for (int j = 0; j < connectNum; j++) {
 			block[i].connectionStatus[j] = false;
 		}
@@ -31,7 +33,7 @@ void Block::Initialize(int windowWidth, int windowHeight) {
 	//テスト設置
 	int numX = 0;
 	int numY = 1;
-	for (int i = 0; i < 81; i++) {
+	for (int i = 0; i < 162; i++) {
 		block[i].posX = float(fieldPosX[0]) + float(fieldFlameSizeX) + blockSizeX * numX;
 		block[i].posY = float(fieldPosY[0]) + fieldSizeY - float(fieldFlameSizeX) - blockSizeY * numY;
 		block[i].appearingNow = true;
@@ -55,8 +57,11 @@ void Block::Draw() {
 	//ブロック描画
 	for (int i = 0; i < blockNum; i++) {
 		if (block[i].appearingNow) {
-			if (block[i].isDelete) {
+			if (block[i].isDelete && !block[i].doubleMutch) {
 				DrawGraph(block[i].posX, block[i].posY, connectHandle[block[i].colorPattern], true);
+			}
+			else if (block[i].isDelete && block[i].doubleMutch) {
+				DrawGraph(block[i].posX, block[i].posY, doubleHandle[block[i].colorPattern], true);
 			}
 			else {
 				DrawGraph(block[i].posX, block[i].posY, blockHandle[block[i].colorPattern], true);
@@ -178,5 +183,9 @@ void Block::IsConnect(int num) {
 			block[leftNum].isDelete = true;
 			block[rightNum].isDelete = true;
 		}
+	}
+	//両一致チェック
+	if (matchCount[0][0] > 1 && matchCount[1][0] > 1 || matchCount[0][1] > 1 && matchCount[1][1] > 1) {
+		block[num].doubleMutch = true;
 	}
 }
