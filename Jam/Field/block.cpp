@@ -36,6 +36,14 @@ void Block::Initialize(int windowWidth, int windowHeight) {
 	deleteTimer = maxTimer;
 	countStart = false;
 
+	//スコア初期化
+	hiScore = 0;
+	score = 0;
+	chain = 0;
+	canChain = false;
+	deleteBlockNum = 0;
+	involvementBlockNum = 0;
+
 	//テスト設置
 	int numX = 0;
 	int numY = 1;
@@ -58,6 +66,9 @@ void Block::Update() {
 
 	//ブロック消去
 	DeleteBlock();
+
+	//スコア加算
+	AddScore();
 }
 
 void Block::Draw() {
@@ -80,6 +91,11 @@ void Block::Draw() {
 			}
 		}
 	}
+
+	//デバッグテキスト
+	DrawFormatString(10, 10, GetColor(255, 255, 255), "Score : %d", score);
+	DrawFormatString(10, 25, GetColor(255, 255, 255), "HIScore : %d", hiScore);
+	DrawFormatString(10, 40, GetColor(255, 255, 255), "DeleteTimer : %d", deleteTimer);
 }
 
 //接続チェック
@@ -132,7 +148,7 @@ void Block::IsConnect(int num) {
 		for (int j = 0; j < 8; j) {
 			//上下左右の順で接続チェック
 			if (connectPos[j] == block[i].posX && connectPos[j + 1] == block[i].posY) {
-				
+
 				//色一致確認
 				if (block[i].colorPattern / 2 == block[num].colorPattern / 2) {
 					block[num].connectionStatus[j] = true;	//色一致
@@ -228,20 +244,44 @@ void Block::CheckInvolvement(int num) {
 }
 
 void Block::DeleteBlock() {
-	if (countStart = true) {
+	//カウントスタートフラグがオンだったらタイマーを動かして一定時間後に消滅
+	if (countStart == true) {
 		deleteTimer--;
 		if (deleteTimer < 0) {
 			countStart = false;
 			deleteTimer = maxTimer;
 			for (int i = 0; i < blockNum; i++) {
+				//通常と巻き込みで加算分け
+				if (block[i].isDelete) {
+					deleteBlockNum++;
+				}
+				else if (block[i].involvement) {
+					involvementBlockNum++;
+				}
 				if (block[i].isDelete || block[i].involvement) {
 					block[i].appearingNow = false;
 					block[i].posX = 0.0f;
 					block[i].posY = 0.0f;
 					block[i].doubleMutch = false;
 					block[i].isDelete = false;
+					block[i].involvement = false;
 				}
 			}
+			//連鎖カウント加算
+			chain++;
 		}
 	}
+}
+
+void Block::AddScore() {
+	//スコア計算
+	//(基礎スコア × 通常消ししたブロック数 + ボーナススコア × 一致消しで巻き込んだブロック数) × 連鎖数
+	score += (add * deleteBlockNum + bonus * involvementBlockNum) * chain;
+	//ハイスコア更新してたら更新
+	if (hiScore < score) {
+		hiScore = score;
+	}
+	//リセット
+	deleteBlockNum = 0;
+	involvementBlockNum = 0;
 }

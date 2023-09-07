@@ -29,9 +29,10 @@ private:
 	void IsConnect(int num);
 	//巻き込みチェック※優先順位は通常消し > 巻き込み
 	void CheckInvolvement(int num);
-
 	//ブロック消去
 	void DeleteBlock();
+	//スコア加算
+	void AddScore();
 
 private:
 	//フィールドハンドル
@@ -65,4 +66,19 @@ private:
 	const int maxTimer = 60;
 	int deleteTimer;
 	bool countStart;	//カウント開始変数
+
+	//スコア
+	int score;
+	//最大スコア
+	int hiScore;
+	//加算スコア
+	const int add = 20;
+	const int bonus = 30;
+	//連鎖数
+	int chain;
+	//連鎖可能フラグ
+	bool canChain;
+	//削除ブロックカウント
+	int deleteBlockNum;
+	int involvementBlockNum;
 };
