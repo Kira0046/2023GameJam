@@ -66,20 +66,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		//---------  ここからプログラムを記述  ----------//
 
 		// 更新処理	メニューの番号に応じて表示、更新するものを変更する
-		if(menu.GetSceneNum() == 0){
-		
-		}
-		else if (menu.GetSceneNum() == 1) {
+		if (menu.GetSceneNum() < 2) {
 			menu.Update(keys,oldkeys);
 		}
 		else if (menu.GetSceneNum() == 2) {
 			block.Update();
 		}
 		// 描画処理
-		if (menu.GetSceneNum() == 0) {
-
-		}
-		else if (menu.GetSceneNum() == 1) {
+		if (menu.GetSceneNum() < 2) {
 			menu.Draw();
 		}
 		else if (menu.GetSceneNum() == 2) {

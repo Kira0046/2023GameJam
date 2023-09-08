@@ -41,10 +41,20 @@ private:
 
 	//画面サイズ、他でも使うので格納
 	int winWidth;
+	int winHeight;
 
 	//背景
 	int backHandle01[5];
 	int backHandle02[5];
 	int backPosX[2];
 	const int backSizeX = 1600;
+
+	//タイトル
+	int logoHandle;
+	int logoPosX;
+	int logoPosY;
+	int logoSizeX;
+	int logoSizeY;
+	bool logoMoveStart;
+	int logoCoolTimer;
 };
