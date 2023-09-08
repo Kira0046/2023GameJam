@@ -47,7 +47,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	Menu menu;		//メニュー処理
 	//初期化
 	block.Initialize(WIN_WIDTH,WIN_HEIGHT);
-	menu.Initialize();
+	menu.Initialize(WIN_WIDTH,WIN_HEIGHT);
 
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
@@ -70,7 +70,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		
 		}
 		else if (menu.GetSceneNum() == 1) {
-			menu.Update(keys);
+			menu.Update(keys,oldkeys);
 		}
 		else if (menu.GetSceneNum() == 2) {
 			block.Update();
@@ -80,10 +80,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		}
 		else if (menu.GetSceneNum() == 1) {
-			//menu.Draw();
+			menu.Draw();
 		}
 		else if (menu.GetSceneNum() == 2) {
 			block.Draw();
+		}
+
+		for (int i = 0; i < 256; i++) {
+			oldkeys[i] = keys[i];
 		}
 
 		//---------  ここまでにプログラムを記述  ---------//

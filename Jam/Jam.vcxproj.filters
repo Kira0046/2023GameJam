@@ -44,5 +44,8 @@
     <ClInclude Include="select\menu.h">
       <Filter>ヘッダー ファイル\セレクト</Filter>
     </ClInclude>
+    <ClInclude Include="select\easing.h">
+      <Filter>ヘッダー ファイル\セレクト</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
