@@ -1,5 +1,6 @@
 #include "DxLib.h"
 #include "block.h"
+#include "menu.h"
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "";
@@ -41,9 +42,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 
 	// ゲームループで使う変数の宣言
-	Block block;
+	//クラス
+	Block block;	//ゲーム内のブロック処理
+	Menu menu;		//メニュー処理
 	//初期化
 	block.Initialize(WIN_WIDTH,WIN_HEIGHT);
+	menu.Initialize();
 
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
@@ -61,11 +65,26 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		ClearDrawScreen();
 		//---------  ここからプログラムを記述  ----------//
 
-		// 更新処理
-		block.Update();
-
+		// 更新処理	メニューの番号に応じて表示、更新するものを変更する
+		if(menu.GetSceneNum() == 0){
+		
+		}
+		else if (menu.GetSceneNum() == 1) {
+			menu.Update(keys);
+		}
+		else if (menu.GetSceneNum() == 2) {
+			block.Update();
+		}
 		// 描画処理
-		block.Draw();
+		if (menu.GetSceneNum() == 0) {
+
+		}
+		else if (menu.GetSceneNum() == 1) {
+			//menu.Draw();
+		}
+		else if (menu.GetSceneNum() == 2) {
+			block.Draw();
+		}
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
