@@ -31,7 +31,7 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	backPosX[1] = backSizeX;
 }
 
-void Menu::Update(char *keys, char* oldkeys) {
+void Menu::Update(char* keys, char* oldkeys) {
 	//登場処理
 	if (!canControl) {
 		moveStartTimer--;
@@ -60,10 +60,10 @@ void Menu::Update(char *keys, char* oldkeys) {
 	}
 
 	//シーンチェンジのテスト
-	if (keys[KEY_INPUT_SPACE]) {
-		scene = 2;
-	}
 	if (canControl) {
+		if (keys[KEY_INPUT_SPACE]) {
+			scene = 2;
+		}
 		if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP]) {
 			barNum--;
 			if (barNum < 0) {
@@ -91,7 +91,7 @@ void Menu::Draw() {
 	DrawGraph(backPosX[0], 0, backHandle01[barNum], true);
 	DrawGraph(backPosX[1], 0, backHandle02[barNum], true);
 	for (int i = 0; i < menuNum; i++) {
-		if(barNum == i && canControl){
+		if (barNum == i && canControl) {
 
 			DrawExtendGraph(barPosX[i] - 20, barPosY[i] - 20, barPosX[i] + barSizeX + 19, barPosY[i] + barSizeY, menuHandle[i * 2 + 1], true);
 		}
@@ -99,6 +99,6 @@ void Menu::Draw() {
 			DrawGraph(barPosX[i], barPosY[i], menuHandle[i * 2], true);
 		}
 	}
-	DrawFormatString(10, 10, GetColor(0,0,0), "CoolTimer[4] : %d", coolTimer[4]);
-	DrawFormatString(10, 25, GetColor(0,0,0), "canControl : %d", canControl);
+	DrawFormatString(10, 10, GetColor(0, 0, 0), "CoolTimer[4] : %d", coolTimer[4]);
+	DrawFormatString(10, 25, GetColor(0, 0, 0), "canControl : %d", canControl);
 }
