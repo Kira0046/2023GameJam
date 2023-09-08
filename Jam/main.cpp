@@ -3,7 +3,7 @@
 #include "menu.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "";
+const char TITLE[] = "カラガラ";
 
 // ウィンドウ横幅
 const int WIN_WIDTH = 1600;
