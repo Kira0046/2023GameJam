@@ -41,4 +41,10 @@ private:
 
 	//âÊñ ÉTÉCÉYÅAëºÇ≈Ç‡égÇ§ÇÃÇ≈äiî[
 	int winWidth;
+
+	//îwåi
+	int backHandle01[5];
+	int backHandle02[5];
+	int backPosX[2];
+	const int backSizeX = 1600;
 };

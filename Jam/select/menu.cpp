@@ -13,6 +13,8 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	//ƒƒjƒ…[‰Šú‰»
 	barNum = 0;
 	LoadDivGraph("Resource/menu/menu_flame.png", 10, 10, 1, 612, 87, menuHandle);
+	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle01);
+	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle02);
 	GetGraphSize(menuHandle[0], &barSizeX, &barSizeY);
 	for (int i = 0; i < menuNum; i++) {
 		//barPosX[i] = windowWidth / 4 - barSizeX / 2;
@@ -22,8 +24,11 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 		coolTimer[i] = 0;
 	}
 	canControl = false;
-	moveStartTimer = 15;
+	moveStartTimer = 5;
 	startCounter = 0;
+	//”wŒiÀ•W‚È‚Ç
+	backPosX[0] = 0;
+	backPosX[1] = backSizeX;
 }
 
 void Menu::Update(char *keys, char* oldkeys) {
@@ -31,7 +36,7 @@ void Menu::Update(char *keys, char* oldkeys) {
 	if (!canControl) {
 		moveStartTimer--;
 		if (moveStartTimer < 0) {
-			moveStartTimer = 15;
+			moveStartTimer = 5;
 			moveStart[startCounter] = true;
 			startCounter++;
 		}
@@ -50,7 +55,7 @@ void Menu::Update(char *keys, char* oldkeys) {
 			coolTimer[i] = 0;
 			moveStart[i] = false;
 			startCounter = 0;
-			moveStartTimer = 15;
+			moveStartTimer = 5;
 		}
 	}
 
@@ -58,22 +63,33 @@ void Menu::Update(char *keys, char* oldkeys) {
 	if (keys[KEY_INPUT_SPACE]) {
 		scene = 2;
 	}
-	if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP]) {
-		barNum--;
-		if (barNum < 0) {
-			barNum = 4;
+	if (canControl) {
+		if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP]) {
+			barNum--;
+			if (barNum < 0) {
+				barNum = 4;
+			}
 		}
-	}
-	else if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN]) {
-		barNum++;
-		if (barNum > 4) {
-			barNum = 0;
+		else if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN]) {
+			barNum++;
+			if (barNum > 4) {
+				barNum = 0;
+			}
 		}
 	}
 
+	//”wŒiˆ—
+	for (int i = 0; i < 2; i++) {
+		backPosX[i]--;
+		if (backPosX[i] < -backSizeX) {
+			backPosX[i] = backSizeX;
+		}
+	}
 }
 
 void Menu::Draw() {
+	DrawGraph(backPosX[0], 0, backHandle01[barNum], true);
+	DrawGraph(backPosX[1], 0, backHandle02[barNum], true);
 	for (int i = 0; i < menuNum; i++) {
 		if(barNum == i && canControl){
 
@@ -83,6 +99,6 @@ void Menu::Draw() {
 			DrawGraph(barPosX[i], barPosY[i], menuHandle[i * 2], true);
 		}
 	}
-	DrawFormatString(10, 10, GetColor(255, 255, 255), "CoolTimer[4] : %d", coolTimer[4]);
-	DrawFormatString(10, 25, GetColor(255, 255, 255), "canControl : %d", canControl);
+	DrawFormatString(10, 10, GetColor(0,0,0), "CoolTimer[4] : %d", coolTimer[4]);
+	DrawFormatString(10, 25, GetColor(0,0,0), "canControl : %d", canControl);
 }
