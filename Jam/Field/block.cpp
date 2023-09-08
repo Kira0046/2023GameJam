@@ -285,3 +285,33 @@ void Block::AddScore() {
 	deleteBlockNum = 0;
 	involvementBlockNum = 0;
 }
+
+void Block::AllReset() {
+	//ブロック初期化
+	for (int i = 0; i < blockNum; i++) {
+		block[i].posX = 0.0f;
+		block[i].posY = 0.0f;
+		block[i].colorPattern = 0;
+		block[i].isFall = false;
+		block[i].isControl = false;
+		block[i].appearingNow = false;
+		block[i].isDelete = false;
+		block[i].doubleMutch = false;
+		block[i].involvement = false;
+		for (int j = 0; j < connectNum; j++) {
+			block[i].connectionStatus[j] = false;
+		}
+	}
+
+	//タイマー初期化
+	deleteTimer = maxTimer;
+	countStart = false;
+
+	//スコア初期化
+	hiScore = 0;
+	score = 0;
+	chain = 0;
+	canChain = false;
+	deleteBlockNum = 0;
+	involvementBlockNum = 0;
+}

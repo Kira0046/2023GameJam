@@ -23,6 +23,8 @@ public:
 	void Update();
 	//描画
 	void Draw();
+	//リセット
+	void AllReset();
 private:
 	//接続状態チェック
 	void CheckConnect();

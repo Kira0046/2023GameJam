@@ -19,6 +19,12 @@
     <Filter Include="ヘッダー ファイル\フィールド">
       <UniqueIdentifier>{bd929389-d73a-4d7d-b9a6-e36e97321794}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\セレクト">
+      <UniqueIdentifier>{e4b0bb6f-d503-4f06-8675-4987e5b14937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\セレクト">
+      <UniqueIdentifier>{20f7bfa8-2f90-4f32-a400-f17772ecc37c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,10 +33,16 @@
     <ClCompile Include="Field\block.cpp">
       <Filter>ソース ファイル\フィールド</Filter>
     </ClCompile>
+    <ClCompile Include="select\menu.cpp">
+      <Filter>ソース ファイル\セレクト</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Field\block.h">
       <Filter>ヘッダー ファイル\フィールド</Filter>
+    </ClInclude>
+    <ClInclude Include="select\menu.h">
+      <Filter>ヘッダー ファイル\セレクト</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
