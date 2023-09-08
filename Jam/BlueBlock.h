@@ -27,6 +27,15 @@ public:
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// セッター
+	/// </summary>
+	/// <param name="x">x座標</param>
+	/// <param name="y">y座標</param>
+	void SetPosition(int x, int y) {
+		this->x += x;
+		this->y += y;
+	}
 private:
 	//模様  1: 2:
 	int pattern = 0;

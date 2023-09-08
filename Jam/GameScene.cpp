@@ -26,8 +26,14 @@ void GameScene::Update() {
 
 	//ブロック配置待機(リセット)
 	if (fallphase == 0) {
+		//出現位置リセット
 		centerX = spawnpointX;
 		centerY = spawnpointY;
+		//作成ブロック個数リセット
+		createredblock = 0;
+		creategreenblock = 0;
+		createblueblock = 0;
+
 		fallphase = 1;
 	}
 	//ブロック配置
@@ -61,11 +67,14 @@ void GameScene::Draw() {
 	}
 	DrawBox(centerX - blockspawnsize, centerY - blockspawnsize, centerX + blockspawnsize, centerY + blockspawnsize, GetColor(255, 255, 0), true);
 
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "LH:%d\n%d\nRH:%d\n%d\nRL:%d\n%d\nLL:%d\n%d",
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "LH:%d\n%d\nRH:%d\n%d\nRL:%d\n%d\nLL:%d\n%d\nred:%d\ngreen:%d\nblue:%d",
 		blocklayoutposition[0].blocklayoutcolor, blocklayoutposition[0].blocklayoutpattern,
 		blocklayoutposition[1].blocklayoutcolor, blocklayoutposition[1].blocklayoutpattern,
 		blocklayoutposition[2].blocklayoutcolor, blocklayoutposition[2].blocklayoutpattern,
-		blocklayoutposition[3].blocklayoutcolor, blocklayoutposition[3].blocklayoutpattern);
+		blocklayoutposition[3].blocklayoutcolor, blocklayoutposition[3].blocklayoutpattern,
+		createredblock,
+		creategreenblock,
+		createblueblock);
 }
 
 void GameScene::BlockLayoutSetting() {
@@ -86,18 +95,22 @@ void GameScene::BlockLayoutSetting() {
 				//左上
 				if (i == 0) {
 					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY - blockspawnsize, 1));
+					createredblock++;
 				}
 				//右上
 				if (i == 1) {
 					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY - blockspawnsize, 1));
+					createredblock++;
 				}
 				//右下
 				if (i == 2) {
 					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY + blockspawnsize, 1));
+					createredblock++;
 				}
 				//左下
 				if (i == 3) {
 					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY + blockspawnsize, 1));
+					createredblock++;
 				}
 			}
 			//模様2
@@ -105,17 +118,21 @@ void GameScene::BlockLayoutSetting() {
 				//左上
 				if (i == 0) {
 					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY - blockspawnsize, 2));
+					createredblock++;
 				}
 				//右上
 				if (i == 1) {
 					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY - blockspawnsize, 2));
+					createredblock++;
 				}
 
 				if (i == 2) {
 					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY + blockspawnsize, 2));
+					createredblock++;
 				}
 				if (i == 3) {
 					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY + blockspawnsize, 2));
+					createredblock++;
 				}
 			}
 		}
@@ -126,18 +143,22 @@ void GameScene::BlockLayoutSetting() {
 				//左上
 				if (i == 0) {
 					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY - blockspawnsize, 1));
+					creategreenblock++;
 				}
 				//右上
 				if (i == 1) {
 					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY - blockspawnsize, 1));
+					creategreenblock++;
 				}
 				//右下
 				if (i == 2) {
 					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY + blockspawnsize, 1));
+					creategreenblock++;
 				}
 				//左下
 				if (i == 3) {
 					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY + blockspawnsize, 1));
+					creategreenblock++;
 				}
 			}
 			//模様2
@@ -145,18 +166,22 @@ void GameScene::BlockLayoutSetting() {
 				//左上
 				if (i == 0) {
 					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY - blockspawnsize, 2));
+					creategreenblock++;
 				}
 				//右上
 				if (i == 1) {
 					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY - blockspawnsize, 2));
+					creategreenblock++;
 				}
 				//右下
 				if (i == 2) {
 					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY + blockspawnsize, 2));
+					creategreenblock++;
 				}
 				//左下
 				if (i == 3) {
 					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY + blockspawnsize, 2));
+					creategreenblock++;
 				}
 			}
 		}
@@ -167,18 +192,22 @@ void GameScene::BlockLayoutSetting() {
 				//左上
 				if (i == 0) {
 					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY - blockspawnsize, 1));
+					createblueblock++;
 				}
 				//右上
 				if (i == 1) {
 					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY - blockspawnsize, 1));
+					createblueblock++;
 				}
 				//右下
 				if (i == 2) {
 					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY + blockspawnsize, 1));
+					createblueblock++;
 				}
 				//左下
 				if (i == 3) {
 					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY + blockspawnsize, 1));
+					createblueblock++;
 				}
 			}
 			//模様2
@@ -186,18 +215,22 @@ void GameScene::BlockLayoutSetting() {
 				//左上
 				if (i == 0) {
 					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY - blockspawnsize, 2));
+					createblueblock++;
 				}
 				//右上
 				if (i == 1) {
 					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY - blockspawnsize, 2));
+					createblueblock++;
 				}
 				//右下
 				if (i == 2) {
 					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY + blockspawnsize, 2));
+					createblueblock++;
 				}
 				//左下
 				if (i == 3) {
 					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY + blockspawnsize, 2));
+					createblueblock++;
 				}
 			}
 		}
@@ -220,5 +253,242 @@ void GameScene::FallingCalc() {
 	if (fallupdatetime == 0) {
 		centerY += amountmovement;
 		fallupdatetime = 60;
+		FallBlockCalc();
+	}
+}
+
+void GameScene::FallBlockCalc() {
+	///赤
+	if (createredblock > 0) {
+		//4つ
+		if (createredblock == 4) {
+			if (redBlockList.size() >= 4) {
+				auto itr = redBlockList.end();
+				--itr;
+				--itr;
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (redBlockList.size() >= 3) {
+				auto itr = redBlockList.end();
+				--itr;
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (redBlockList.size() >= 2) {
+				auto itr = redBlockList.end();
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (!redBlockList.empty()) {
+
+				redBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+
+		//3つ
+		if (createredblock == 3) {
+			if (redBlockList.size() >= 3) {
+				auto itr = redBlockList.end();
+				--itr;
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (redBlockList.size() >= 2) {
+				auto itr = redBlockList.end();
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (!redBlockList.empty()) {
+
+				redBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+
+		//２つ
+		if (createredblock == 2) {
+			if (redBlockList.size() >= 2) {
+				auto itr = redBlockList.end();
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (!redBlockList.empty()) {
+
+				redBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+
+		//１つ
+		if (createredblock == 1) {
+			if (!redBlockList.empty()) {
+
+				redBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+
+	}
+
+	///緑
+	if (creategreenblock > 0) {
+		//4つ
+		if (creategreenblock == 4) {
+
+			if (greenBlockList.size() >= 4) {
+				auto itr = greenBlockList.end();
+				--itr;
+				--itr;
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (greenBlockList.size() >= 3) {
+				auto itr = greenBlockList.end();
+				--itr;
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (greenBlockList.size() >= 2) {
+				auto itr = greenBlockList.end();
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (!greenBlockList.empty()) {
+
+				greenBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+
+		//3つ
+		if (creategreenblock == 3) {
+
+			if (greenBlockList.size() >= 3) {
+				auto itr = greenBlockList.end();
+				--itr;
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (greenBlockList.size() >= 2) {
+				auto itr = greenBlockList.end();
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (!greenBlockList.empty()) {
+
+				greenBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+
+		//2つ
+		if (creategreenblock == 2) {
+
+			if (greenBlockList.size() >= 2) {
+				auto itr = greenBlockList.end();
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (!greenBlockList.empty()) {
+
+				greenBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+
+		//1つ
+		if (creategreenblock == 1) {
+
+			if (!greenBlockList.empty()) {
+
+				greenBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+	}
+
+	///青
+	if (createblueblock > 0) {
+		//4つ
+		if (createblueblock == 4) {
+
+			if (blueBlockList.size() >= 4) {
+				auto itr = blueBlockList.end();
+				--itr;
+				--itr;
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (blueBlockList.size() >= 3) {
+
+				auto itr = blueBlockList.end();
+				--itr;
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (blueBlockList.size() >= 2) {
+
+				auto itr = blueBlockList.end();
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (!blueBlockList.empty()) {
+
+				blueBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+
+		//3つ
+		if (createblueblock == 3) {
+
+			if (blueBlockList.size() >= 3) {
+				auto itr = blueBlockList.end();
+				--itr;
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (blueBlockList.size() >= 2) {
+				auto itr = blueBlockList.end();
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (!blueBlockList.empty()) {
+
+				blueBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+
+		//2つ
+		if (createblueblock == 2) {
+			if (blueBlockList.size() >= 2) {
+				auto itr = blueBlockList.end();
+				--itr;
+				--itr;
+				(*itr)->SetPosition(0, amountmovement);
+			}
+			if (!blueBlockList.empty()) {
+
+				blueBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
+
+		//1つ
+		if (createblueblock == 1) {
+			if (!blueBlockList.empty()) {
+
+				blueBlockList.back()->SetPosition(0, amountmovement);
+			}
+		}
 	}
 }

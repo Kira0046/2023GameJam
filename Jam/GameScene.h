@@ -35,6 +35,11 @@ public:
 	/// 落下中計算
 	/// </summary>
 	void FallingCalc();
+
+	/// <summary>
+	/// ブロック落下計算
+	/// </summary>
+	void FallBlockCalc();
 private: //構造体
 	//中央からのブロック配置位置　 0:左上 1:右上 2:右下 3:左下
 	struct BlockLayoutPosition {
@@ -69,6 +74,11 @@ private:
 	std::list <GreenBlock*> greenBlockList;
 	//構造体の配列宣言
 	BlockLayoutPosition blocklayoutposition[4];
+
+	//作成されたブロックの個数
+	int createredblock = 0;
+	int creategreenblock = 0;
+	int createblueblock = 0;
 
 	// 最新のキーボード情報用
 	char keys[256];
