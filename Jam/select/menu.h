@@ -31,4 +31,14 @@ private:
 	//メニューサイズ
 	int barSizeX;
 	int barSizeY;
+	//操作可能までのタイマー
+	int coolTimer[5];
+	int moveStartTimer;	//一気に来させるのではなく一個ずつ来させるためのタイマー
+	bool moveStart[5];
+	int startCounter;
+	//操作可能権
+	bool canControl;
+
+	//画面サイズ、他でも使うので格納
+	int winWidth;
 };

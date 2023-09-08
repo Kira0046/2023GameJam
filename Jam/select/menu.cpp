@@ -7,17 +7,53 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	//本番リリース時は0にしておく
 	scene = 1;
 
+	//画面サイズ格納
+	winWidth = windowWidth;
+
 	//メニュー初期化
 	barNum = 0;
 	LoadDivGraph("Resource/menu/menu_flame.png", 10, 10, 1, 612, 87, menuHandle);
 	GetGraphSize(menuHandle[0], &barSizeX, &barSizeY);
 	for (int i = 0; i < menuNum; i++) {
-		barPosX[i] = windowWidth / 4 - barSizeX / 2;
+		//barPosX[i] = windowWidth / 4 - barSizeX / 2;
+		barPosX[i] = -barSizeX;
 		barPosY[i] = 150 + barSizeY * 1.5 * i;
+		moveStart[i] = false;
+		coolTimer[i] = 0;
 	}
+	canControl = false;
+	moveStartTimer = 15;
+	startCounter = 0;
 }
 
 void Menu::Update(char *keys, char* oldkeys) {
+	//登場処理
+	if (!canControl) {
+		moveStartTimer--;
+		if (moveStartTimer < 0) {
+			moveStartTimer = 15;
+			moveStart[startCounter] = true;
+			startCounter++;
+		}
+	}
+	for (int i = 0; i < menuNum; i++) {
+		if (moveStart[i]) {
+			if (coolTimer[i] < 60) {
+				coolTimer[i]++;
+			}
+			barPosX[i] = EASE::OutQuad(winWidth / 4 + barSizeX / 2, -barSizeX, 60, coolTimer[i]);
+		}
+	}
+	if (coolTimer[4] >= 60) {
+		canControl = true;
+		for (int i = 0; i < menuNum; i++) {
+			coolTimer[i] = 0;
+			moveStart[i] = false;
+			startCounter = 0;
+			moveStartTimer = 15;
+		}
+	}
+
 	//シーンチェンジのテスト
 	if (keys[KEY_INPUT_SPACE]) {
 		scene = 2;
@@ -39,7 +75,7 @@ void Menu::Update(char *keys, char* oldkeys) {
 
 void Menu::Draw() {
 	for (int i = 0; i < menuNum; i++) {
-		if(barNum == i){
+		if(barNum == i && canControl){
 
 			DrawExtendGraph(barPosX[i] - 20, barPosY[i] - 20, barPosX[i] + barSizeX + 19, barPosY[i] + barSizeY, menuHandle[i * 2 + 1], true);
 		}
@@ -47,4 +83,6 @@ void Menu::Draw() {
 			DrawGraph(barPosX[i], barPosY[i], menuHandle[i * 2], true);
 		}
 	}
+	DrawFormatString(10, 10, GetColor(255, 255, 255), "CoolTimer[4] : %d", coolTimer[4]);
+	DrawFormatString(10, 25, GetColor(255, 255, 255), "canControl : %d", canControl);
 }
