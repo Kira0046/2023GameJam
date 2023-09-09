@@ -132,16 +132,16 @@ void Menu::Update(char* keys, char* oldkeys) {
 
 		//シーンチェンジのテスト
 		if (canControl) {
-			if (keys[KEY_INPUT_SPACE]) {
+			if (keys[KEY_INPUT_SPACE] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_2)) {
 				scene = 2;
 			}
-			if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP]) {
+			if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP) && !oldInput[0]) {
 				barNum--;
 				if (barNum < 0) {
 					barNum = 4;
 				}
 			}
-			else if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN]) {
+			else if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN) && !oldInput[1]) {
 				barNum++;
 				if (barNum > 4) {
 					barNum = 0;
@@ -154,9 +154,13 @@ void Menu::Update(char* keys, char* oldkeys) {
 	for (int i = 0; i < 2; i++) {
 		backPosX[i]--;
 		if (backPosX[i] < -backSizeX) {
-			backPosX[i] = backSizeX;
+			backPosX[i] = backSizeX - 1;
 		}
 	}
+
+	//直前の入力状態読み込み
+	oldInput[0] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP);
+	oldInput[1] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN);
 }
 
 void Menu::Draw() {

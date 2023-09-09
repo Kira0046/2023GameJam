@@ -66,4 +66,7 @@ private:
 	int naviTitleSize[2];
 	int blinkingTimer;
 	int blinkingCount;
+
+	//ジョイパッド
+	int oldInput[2];	//とりあえず上下
 };
