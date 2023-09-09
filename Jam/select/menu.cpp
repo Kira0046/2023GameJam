@@ -42,6 +42,7 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 }
 
 void Menu::Update(char* keys, char* oldkeys) {
+
 	if (scene == 0) {
 		if (!canControl && !logoEndMove) {
 			moveStartTimer--;
@@ -72,7 +73,7 @@ void Menu::Update(char* keys, char* oldkeys) {
 			}
 		}
 		if (canControl) {
-			if (keys[KEY_INPUT_SPACE]) {
+			if (keys[KEY_INPUT_SPACE] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_2)) {
 				logoEndMove = true;
 				canControl = false;
 			}
