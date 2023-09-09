@@ -58,4 +58,12 @@ private:
 	bool logoMoveStart;	//登場フラグ
 	int logoCoolTimer;	//経過時間
 	bool logoEndMove;	//退場フラグ
+
+	//ナビ
+	int naviTitleHandle[2];
+	int naviTitlePosX;
+	int naviTitlePosY;
+	int naviTitleSize[2];
+	int blinkingTimer;
+	int blinkingCount;
 };

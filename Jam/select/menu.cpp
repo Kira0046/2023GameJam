@@ -39,6 +39,14 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	logoMoveStart = false;
 	logoCoolTimer = 0;
 	logoEndMove = false;
+
+	//ƒiƒr
+	LoadDivGraph("Resource/menu/press.png", 2, 2, 1, 920, 300, naviTitleHandle);
+	GetGraphSize(naviTitleHandle[0], &naviTitleSize[0], &naviTitleSize[1]);
+	naviTitlePosX = windowWidth / 2 - naviTitleSize[0] / 2;
+	naviTitlePosY = windowHeight - naviTitleSize[1] * 1.2;
+	blinkingTimer = 0;
+	blinkingCount = 0;
 }
 
 void Menu::Update(char* keys, char* oldkeys) {
@@ -59,6 +67,13 @@ void Menu::Update(char* keys, char* oldkeys) {
 			}
 			else if (logoEndMove) {
 				logoPosY = EASE::InQuad(-logoSizeY - logoSizeY / 2, winHeight / 4 - logoSizeY / 2, 90, logoCoolTimer);
+				if (blinkingCount < 10) {
+					blinkingTimer++;
+				}
+				if (blinkingTimer > 32) {
+					blinkingTimer = 28;
+					blinkingCount++;
+				}
 			}
 		}
 		if (logoCoolTimer >= 90) {
@@ -70,17 +85,24 @@ void Menu::Update(char* keys, char* oldkeys) {
 				logoEndMove = false;
 				canControl = false;
 				scene = 1;
+				blinkingTimer = 0;
+				blinkingCount = 0;
 			}
 		}
 		if (canControl) {
+			blinkingTimer++;
+			if (blinkingTimer > 90) {
+				blinkingTimer = 0;
+			}
 			if (keys[KEY_INPUT_SPACE] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_2)) {
 				logoEndMove = true;
 				canControl = false;
+				blinkingTimer = 28;
 			}
 		}
 
 	}
-	else if (scene == 1) {
+	else if (scene == 1) {	
 		//“oêˆ—
 		if (!canControl) {
 			moveStartTimer--;
@@ -142,11 +164,18 @@ void Menu::Draw() {
 	DrawGraph(backPosX[1], 0, backHandle02[barNum], true);
 	if (scene == 0) {
 		DrawGraph(logoPosX, logoPosY, logoHandle, true);
+		if (blinkingTimer > 30) {
+			if (GetJoypadNum() > 0) {
+				DrawGraph(naviTitlePosX, naviTitlePosY, naviTitleHandle[1], true);
+			}
+			else {
+				DrawGraph(naviTitlePosX, naviTitlePosY, naviTitleHandle[0], true);
+			}
+		}
 	}
 	else if (scene == 1) {
 		for (int i = 0; i < menuNum; i++) {
 			if (barNum == i && canControl) {
-
 				DrawExtendGraph(barPosX[i] - 20, barPosY[i] - 20, barPosX[i] + barSizeX + 19, barPosY[i] + barSizeY, menuHandle[i * 2 + 1], true);
 			}
 			else {
@@ -154,7 +183,7 @@ void Menu::Draw() {
 			}
 		}
 	}
-	DrawFormatString(10, 10, GetColor(0, 0, 0), "CoolTimer[4] : %d", coolTimer[4]);
+	DrawFormatString(10, 10, GetColor(0, 0, 0), "blinkingTimer : %d", blinkingTimer);
 	DrawFormatString(10, 25, GetColor(0, 0, 0), "canControl : %d", canControl);
 	DrawFormatString(10, 40, GetColor(0, 0, 0), "logoPosY : %d", logoPosY);
 }
