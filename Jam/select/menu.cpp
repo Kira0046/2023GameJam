@@ -38,28 +38,46 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	logoPosY = -logoSizeY;
 	logoMoveStart = false;
 	logoCoolTimer = 0;
+	logoEndMove = false;
 }
 
 void Menu::Update(char* keys, char* oldkeys) {
 	if (scene == 0) {
-		if (!canControl) {
+		if (!canControl && !logoEndMove) {
 			moveStartTimer--;
 			if (moveStartTimer < 0) {
 				logoMoveStart = true;
 			}
 		}
-		if (logoMoveStart) {
+		if (logoMoveStart || logoEndMove) {
 			if (logoCoolTimer < 90) {
 				logoCoolTimer++;
 			}
-			logoPosY = EASE::OutQuad(winHeight / 4 + logoSizeY / 2, -logoSizeY, 90, logoCoolTimer);
+			if (logoMoveStart) {
+				logoPosY = EASE::OutQuad(winHeight / 4 + logoSizeY / 2, -logoSizeY, 90, logoCoolTimer);
+			}
+			else if (logoEndMove) {
+				logoPosY = EASE::InQuad(-logoSizeY - logoSizeY / 2, winHeight / 4 - logoSizeY / 2, 90, logoCoolTimer);
+			}
 		}
 		if (logoCoolTimer >= 90) {
 			logoMoveStart = false;
 			logoCoolTimer = 0;
 			canControl = true;
 			moveStartTimer = 15;
+			if (logoEndMove) {
+				logoEndMove = false;
+				canControl = false;
+				scene = 1;
+			}
 		}
+		if (canControl) {
+			if (keys[KEY_INPUT_SPACE]) {
+				logoEndMove = true;
+				canControl = false;
+			}
+		}
+
 	}
 	else if (scene == 1) {
 		//ìoèÍèàóù

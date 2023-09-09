@@ -50,11 +50,12 @@ private:
 	const int backSizeX = 1600;
 
 	//タイトル
-	int logoHandle;
-	int logoPosX;
-	int logoPosY;
-	int logoSizeX;
-	int logoSizeY;
-	bool logoMoveStart;
-	int logoCoolTimer;
+	int logoHandle;	//画像データ格納ハンドル
+	int logoPosX;	//X座標
+	int logoPosY;	//Y座標
+	int logoSizeX;	//Xサイズ
+	int logoSizeY;	//Yサイズ
+	bool logoMoveStart;	//登場フラグ
+	int logoCoolTimer;	//経過時間
+	bool logoEndMove;	//退場フラグ
 };
