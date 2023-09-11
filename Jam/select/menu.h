@@ -17,6 +17,11 @@ public:
 		return scene;
 	}
 private:
+	//登場処理・退場処理
+	void InOutTitle();
+	void InOutMenu();
+
+private:
 	//シーン番号
 	int scene;
 	//メニューバーハンドル
@@ -34,10 +39,19 @@ private:
 	//操作可能までのタイマー
 	int coolTimer[5];
 	int moveStartTimer;	//一気に来させるのではなく一個ずつ来させるためのタイマー
-	bool moveStart[5];
+	bool moveStart[5];	//登場フラグ
+	bool endMove[5];	//退場フラグ
+	bool startorEnd;	//登場退場どっちなのか判別用
 	int startCounter;
 	//操作可能権
 	bool canControl;
+
+	//キャンセル
+	int cancelHandle[2];
+	//座標
+	int cancelPos[2];
+	//サイズ
+	int cancelSize[2];
 
 	//画面サイズ、他でも使うので格納
 	int winWidth;

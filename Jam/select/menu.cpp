@@ -16,6 +16,7 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	LoadDivGraph("Resource/menu/menu_flame.png", 10, 10, 1, 612, 87, menuHandle);
 	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle01);
 	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle02);
+	LoadDivGraph("Resource/menu/menu_back.png", 2, 2, 1, 400, 100, cancelHandle);
 	GetGraphSize(menuHandle[0], &barSizeX, &barSizeY);
 	for (int i = 0; i < menuNum; i++) {
 		//barPosX[i] = windowWidth / 4 - barSizeX / 2;
@@ -23,10 +24,18 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 		barPosY[i] = 150 + barSizeY * 1.5 * i;
 		moveStart[i] = false;
 		coolTimer[i] = 0;
+		endMove[i] = false;
 	}
 	canControl = false;
 	moveStartTimer = 5;
 	startCounter = 0;
+	startorEnd = false;	 //èâä˙èÛë‘ÇÕìoèÍ
+
+	//BACK
+	GetGraphSize(cancelHandle[0], &cancelSize[0], &cancelSize[1]);
+	cancelPos[0] = 0;
+	cancelPos[1] = windowHeight;
+
 	//îwåiç¿ïWÇ»Ç«
 	backPosX[0] = 0;
 	backPosX[1] = backSizeX;
@@ -52,43 +61,9 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 void Menu::Update(char* keys, char* oldkeys) {
 
 	if (scene == 0) {
-		if (!canControl && !logoEndMove) {
-			moveStartTimer--;
-			if (moveStartTimer < 0) {
-				logoMoveStart = true;
-			}
-		}
-		if (logoMoveStart || logoEndMove) {
-			if (logoCoolTimer < 90) {
-				logoCoolTimer++;
-			}
-			if (logoMoveStart) {
-				logoPosY = EASE::OutQuad(winHeight / 4 + logoSizeY / 2, -logoSizeY, 90, logoCoolTimer);
-			}
-			else if (logoEndMove) {
-				logoPosY = EASE::InQuad(-logoSizeY - logoSizeY / 2, winHeight / 4 - logoSizeY / 2, 90, logoCoolTimer);
-				if (blinkingCount < 10) {
-					blinkingTimer++;
-				}
-				if (blinkingTimer > 32) {
-					blinkingTimer = 28;
-					blinkingCount++;
-				}
-			}
-		}
-		if (logoCoolTimer >= 90) {
-			logoMoveStart = false;
-			logoCoolTimer = 0;
-			canControl = true;
-			moveStartTimer = 15;
-			if (logoEndMove) {
-				logoEndMove = false;
-				canControl = false;
-				scene = 1;
-				blinkingTimer = 0;
-				blinkingCount = 0;
-			}
-		}
+		//ìoèÍëﬁèÍèàóù
+		InOutTitle();
+
 		if (canControl) {
 			blinkingTimer++;
 			if (blinkingTimer > 90) {
@@ -103,32 +78,8 @@ void Menu::Update(char* keys, char* oldkeys) {
 
 	}
 	else if (scene == 1) {	
-		//ìoèÍèàóù
-		if (!canControl) {
-			moveStartTimer--;
-			if (moveStartTimer < 0) {
-				moveStartTimer = 5;
-				moveStart[startCounter] = true;
-				startCounter++;
-			}
-		}
-		for (int i = 0; i < menuNum; i++) {
-			if (moveStart[i]) {
-				if (coolTimer[i] < 60) {
-					coolTimer[i]++;
-				}
-				barPosX[i] = EASE::OutQuad(winWidth / 4 + barSizeX / 2, -barSizeX, 60, coolTimer[i]);
-			}
-		}
-		if (coolTimer[4] >= 60) {
-			canControl = true;
-			for (int i = 0; i < menuNum; i++) {
-				coolTimer[i] = 0;
-				moveStart[i] = false;
-				startCounter = 0;
-				moveStartTimer = 5;
-			}
-		}
+		//ìoèÍëﬁèÍèàóù
+		InOutMenu();
 
 		//ÉVÅ[ÉìÉ`ÉFÉìÉWÇÃÉeÉXÉg
 		if (canControl) {
@@ -146,6 +97,10 @@ void Menu::Update(char* keys, char* oldkeys) {
 				if (barNum > 4) {
 					barNum = 0;
 				}
+			}
+			else if (keys[KEY_INPUT_LSHIFT] && !oldkeys[KEY_INPUT_LSHIFT] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_1)) {
+				startorEnd = true;
+				canControl = false;
 			}
 		}
 	}
@@ -186,8 +141,118 @@ void Menu::Draw() {
 				DrawGraph(barPosX[i], barPosY[i], menuHandle[i * 2], true);
 			}
 		}
+		if (GetJoypadNum() > 0) {
+			DrawGraph(cancelPos[0], cancelPos[1], cancelHandle[1], true);
+		}
+		else {
+			DrawGraph(cancelPos[0], cancelPos[1], cancelHandle[0], true);
+		}
 	}
 	DrawFormatString(10, 10, GetColor(0, 0, 0), "blinkingTimer : %d", blinkingTimer);
 	DrawFormatString(10, 25, GetColor(0, 0, 0), "canControl : %d", canControl);
-	DrawFormatString(10, 40, GetColor(0, 0, 0), "logoPosY : %d", logoPosY);
+	DrawFormatString(10, 40, GetColor(0, 0, 0), "startorEnd : %d", startorEnd);
+	DrawFormatString(10, 55, GetColor(0, 0, 0), "logoPosY : %d", logoPosY);
+}
+
+void Menu::InOutTitle() {
+	if (!canControl && !logoEndMove) {
+		moveStartTimer--;
+		if (moveStartTimer < 0) {
+			logoMoveStart = true;
+		}
+	}
+	if (logoMoveStart || logoEndMove) {
+		if (logoCoolTimer < 90) {
+			logoCoolTimer++;
+		}
+		if (logoMoveStart) {
+			logoPosY = EASE::OutQuad(winHeight / 4 + logoSizeY / 2, -logoSizeY, 90, logoCoolTimer);
+		}
+		else if (logoEndMove) {
+			logoPosY = EASE::InQuad(-logoSizeY - logoSizeY / 2, winHeight / 4 - logoSizeY / 2, 90, logoCoolTimer);
+			if (blinkingCount < 10) {
+				blinkingTimer++;
+			}
+			if (blinkingTimer > 32) {
+				blinkingTimer = 28;
+				blinkingCount++;
+			}
+		}
+	}
+	if (logoCoolTimer >= 90) {
+		logoMoveStart = false;
+		logoCoolTimer = 0;
+		canControl = true;
+		moveStartTimer = 15;
+		if (logoEndMove) {
+			logoEndMove = false;
+			canControl = false;
+			scene = 1;
+			blinkingTimer = 0;
+			blinkingCount = 0;
+		}
+	}
+}
+
+void Menu::InOutMenu() {
+	//ìoèÍèàóù
+	if (!canControl) {
+		moveStartTimer--;
+		if (moveStartTimer < 0) {
+			moveStartTimer = 5;
+			if (!startorEnd) {
+				moveStart[startCounter] = true;
+			}
+			else {
+				endMove[startCounter] = true;
+			}
+			if (startCounter < 4) {
+				startCounter++;
+			}
+		}
+	}
+	for (int i = 0; i < menuNum; i++) {
+		if (moveStart[i] || endMove[i]) {
+			if (coolTimer[i] < 60) {
+				coolTimer[i]++;
+			}
+			if (moveStart[i]) {
+				barPosX[i] = EASE::OutQuad(winWidth / 4 + barSizeX / 2, -barSizeX, 60, coolTimer[i]);
+				//BACK
+				if (i == 4) {
+					cancelPos[1] = EASE::OutQuad(-cancelSize[1], winHeight, 60, coolTimer[i]);
+				}
+			}
+			else if (endMove[i]) {
+				barPosX[i] = EASE::InQuad(-barSizeX * 2, winWidth / 4 - barSizeX / 2, 60, coolTimer[i]);
+				//BACK
+				if (i == 4) {
+					cancelPos[1] = EASE::InQuad(+cancelSize[1], winHeight - cancelSize[1], 60, coolTimer[i]);
+				}
+			}
+		}
+	}
+	if (coolTimer[4] >= 60) {
+		canControl = true;
+		for (int i = 0; i < menuNum; i++) {
+			coolTimer[i] = 0;
+			moveStart[i] = false;
+			startCounter = 0;
+			moveStartTimer = 15;
+		}
+		if (startorEnd) {
+			canControl = false;
+			for (int i = 0; i < menuNum; i++) {
+				coolTimer[i] = 0;
+				endMove[i] = false;
+				startCounter = 0;
+				moveStartTimer = 15;
+				startorEnd = false;
+				scene = 0;
+			}
+		}
+		else {
+			barNum = 0;
+		}
+	}
 }
