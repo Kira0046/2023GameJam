@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlueBlock.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GreenBlock.cpp" />
     <ClCompile Include="main.cpp" />
@@ -143,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlueBlock.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GreenBlock.h" />
     <ClInclude Include="RedBlock.h" />

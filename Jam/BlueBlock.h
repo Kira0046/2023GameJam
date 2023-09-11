@@ -36,6 +36,57 @@ public:
 		this->x += x;
 		this->y += y;
 	}
+
+	void SetHitUp(bool hitup) {
+		this->hitup = hitup;
+	}
+
+	void SetHitDown(bool hitdown) {
+		this->hitdown = hitdown;
+	}
+
+	void SetHitLeft(bool hitleft) {
+		this->hitleft = hitleft;
+	}
+
+	void SetHitRight(bool hitright) {
+		this->hitright = hitright;
+	}
+
+	void SetHit(bool hit) {
+
+		this->hit = hit;
+	}
+
+	void SetFall(bool fall) {
+		this->fall = fall;
+	}
+
+	/// <summary>
+	/// ゲッター
+	/// </summary>
+	int GetPositionX() {
+		return x;
+	}
+
+	int GetPositionY() {
+		return y;
+	}
+
+	int GetSize() {
+		return size;
+	}
+
+	const bool& GetIshitUp() const { return hitup; }
+
+	const bool& GetIshitDown() const { return hitdown; }
+
+	const bool& GetIshitLeft() const { return hitleft; }
+
+	const bool& GetIshitRight() const { return hitright; }
+
+	const bool& GetIsFall() const { return fall; }
+
 private:
 	//模様  1: 2:
 	int pattern = 0;
@@ -44,5 +95,17 @@ private:
 	int y = 0;
 	//大きさ
 	int size = 24;
+
+	bool fall = true;
+
+	bool hitup = false;
+
+	bool hitdown = false;
+
+	bool hitleft = false;
+
+	bool hitright = false;
+
+	bool hit = false;
 };
 

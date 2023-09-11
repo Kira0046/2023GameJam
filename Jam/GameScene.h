@@ -40,6 +40,14 @@ public:
 	/// ブロック落下計算
 	/// </summary>
 	void FallBlockCalc();
+
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
+	void FallingCollision();
+
+
+
 private: //構造体
 	//中央からのブロック配置位置　 0:左上 1:右上 2:右下 3:左下
 	struct BlockLayoutPosition {
@@ -63,7 +71,7 @@ private:
 
 	//中央出現位置
 	int spawnpointX = 800;
-	int spawnpointY = 100;//-48;
+	int spawnpointY = 96;//-48;
 	//中央からのブロック出現幅
 	int blockspawnsize = 24;
 
