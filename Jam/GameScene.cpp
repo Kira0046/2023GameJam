@@ -1104,7 +1104,7 @@ void GameScene::FallingCollision() {
 				int LLX2 = (*itr2)->GetPositionX() - (*itr2)->GetSize();
 				int LLY2 = (*itr2)->GetPositionY() + (*itr2)->GetSize();
 
-				if ((*itr)->GetIsFall() == true || (*itr2)->GetIsFall() == true) {
+				if ((*itr)->GetIsFall() == false || (*itr2)->GetIsFall() == false) {
 					if (LLX1 == LHX2 && LLY1 == LHY2 && RLX1 == RHX2 && RLY1 == RHY2) {
 						(*itr)->SetHitDown(true);
 						(*itr2)->SetHitUp(true);
@@ -1161,7 +1161,7 @@ void GameScene::FallingCollision() {
 				int LLX2 = (*itr2)->GetPositionX() - (*itr2)->GetSize();
 				int LLY2 = (*itr2)->GetPositionY() + (*itr2)->GetSize();
 
-				if ((*itr)->GetIsFall() == true || (*itr2)->GetIsFall() == true) {
+				if ((*itr)->GetIsFall() == false || (*itr2)->GetIsFall() == false) {
 					if (LLX1 == LHX2 && LLY1 == LHY2 && RLX1 == RHX2 && RLY1 == RHY2) {
 						(*itr)->SetHitDown(true);
 						(*itr2)->SetHitUp(true);
@@ -1218,7 +1218,7 @@ void GameScene::FallingCollision() {
 					int LLX2 = (*itr2)->GetPositionX() - (*itr2)->GetSize();
 					int LLY2 = (*itr2)->GetPositionY() + (*itr2)->GetSize();
 
-					if ((*itr)->GetIsFall() == true || (*itr2)->GetIsFall() == true) {
+					if ((*itr)->GetIsFall() == false || (*itr2)->GetIsFall() == false) {
 						if (LLX1 == LHX2 && LLY1 == LHY2 && RLX1 == RHX2 && RLY1 == RHY2) {
 							(*itr)->SetHitDown(true);
 							(*itr2)->SetHitUp(true);
@@ -1276,7 +1276,7 @@ void GameScene::FallingCollision() {
 					int LLX2 = (*itr2)->GetPositionX() - (*itr2)->GetSize();
 					int LLY2 = (*itr2)->GetPositionY() + (*itr2)->GetSize();
 
-					if ((*itr)->GetIsFall() == true || (*itr2)->GetIsFall() == true) {
+					if ((*itr)->GetIsFall() == false || (*itr2)->GetIsFall() == false) {
 						if (LLX1 == LHX2 && LLY1 == LHY2 && RLX1 == RHX2 && RLY1 == RHY2) {
 							(*itr)->SetHitDown(true);
 							(*itr2)->SetHitUp(true);
@@ -1334,7 +1334,7 @@ void GameScene::FallingCollision() {
 					int LLX2 = (*itr2)->GetPositionX() - (*itr2)->GetSize();
 					int LLY2 = (*itr2)->GetPositionY() + (*itr2)->GetSize();
 
-					if ((*itr)->GetIsFall() == true || (*itr2)->GetIsFall() == true) {
+					if ((*itr)->GetIsFall() == false || (*itr2)->GetIsFall() == false) {
 						if (LLX1 == LHX2 && LLY1 == LHY2 && RLX1 == RHX2 && RLY1 == RHY2) {
 							(*itr)->SetHitDown(true);
 							(*itr2)->SetHitUp(true);

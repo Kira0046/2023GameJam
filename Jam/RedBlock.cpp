@@ -16,7 +16,7 @@ void RedBlock::Update() {
 
 void RedBlock::Draw() {
 
-	if (hitdown == false) {
+	if (hitright == false) {
 		if (pattern == 1) {
 			DrawBox(x - size, y - size, x + size, y + size, GetColor(255, 0, 0), true);
 		}
