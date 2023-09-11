@@ -47,7 +47,7 @@ void Block::Initialize(int windowWidth, int windowHeight) {
 	//テスト設置
 	int numX = 0;
 	int numY = 1;
-	for (int i = 0; i < 162; i++) {
+	for (int i = 0; i < 142; i++) {
 		block[i].posX = float(fieldPosX[0]) + float(fieldFlameSizeX) + blockSizeX * numX;
 		block[i].posY = float(fieldPosY[0]) + fieldSizeY - float(fieldFlameSizeX) - blockSizeY * numY;
 		block[i].appearingNow = true;
@@ -77,7 +77,7 @@ void Block::Draw() {
 	//ブロック描画
 	for (int i = 0; i < blockNum; i++) {
 		if (block[i].appearingNow) {
-			if (block[i].isDelete && !block[i].doubleMutch && !block[i].involvement) {
+			/*if (block[i].isDelete && !block[i].doubleMutch && !block[i].involvement) {
 				DrawGraph(block[i].posX, block[i].posY, connectHandle[block[i].colorPattern], true);
 			}
 			else if (block[i].isDelete && block[i].doubleMutch && !block[i].involvement) {
@@ -88,7 +88,8 @@ void Block::Draw() {
 			}
 			else {
 				DrawGraph(block[i].posX, block[i].posY, blockHandle[block[i].colorPattern], true);
-			}
+			}*/
+			DrawGraph(block[i].posX, block[i].posY, blockHandle[block[i].colorPattern], true);
 		}
 	}
 

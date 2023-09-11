@@ -63,6 +63,11 @@ private:
 	int winWidth;
 	int winHeight;
 
+	//アップバー
+	int upBarHandle[5];
+	int upBarPosY;
+	int upBarSize[2];
+
 	//背景
 	int backHandle01[5];
 	int backHandle02[5];
@@ -86,6 +91,11 @@ private:
 	int naviTitleSize[2];
 	int blinkingTimer;
 	int blinkingCount;
+
+	//ルール説明
+	int tabHandle[5];
+	int tabPos[2];
+	int tabSize[2];
 
 	//ジョイパッド
 	int oldInput[2];	//とりあえず上下

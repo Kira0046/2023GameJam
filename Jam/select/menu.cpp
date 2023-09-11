@@ -43,9 +43,18 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 		wachiBlinling[i] = false;
 	}
 
+	//タブ（説明）
+	LoadDivGraph("Resource/menu/tabs.png", 5, 5, 1, 750, 750, tabHandle);
+	GetGraphSize(tabHandle[0], &tabSize[0], &tabSize[1]);
+	tabPos[0] = windowWidth / 2;
+	tabPos[1] = windowHeight / 2 * 1.1 - tabSize[1] / 2;
+
 	//背景座標など
 	backPosX[0] = 0;
 	backPosX[1] = backSizeX;
+	LoadDivGraph("Resource/menu/upber.png", 5, 5, 1, 1600, 100, upBarHandle);
+	GetGraphSize(upBarHandle[0], &upBarSize[0], &upBarSize[1]);
+	upBarPosY = -upBarSize[1];
 
 	//タイトルロゴ
 	logoHandle = LoadGraph("Resource/menu/logo.png");
@@ -152,6 +161,10 @@ void Menu::Draw() {
 				}
 			}
 		}
+		if (canControl) {
+			DrawGraph(tabPos[0], tabPos[1], tabHandle[barNum], true);
+		}
+
 		if (!wachiBlinling[5] || wachiBlinling[5] && menuBlinlingTimer < 3) {
 			if (GetJoypadNum() > 0) {
 				DrawGraph(cancelPos[0], cancelPos[1], cancelHandle[1], true);
@@ -160,6 +173,7 @@ void Menu::Draw() {
 				DrawGraph(cancelPos[0], cancelPos[1], cancelHandle[0], true);
 			}
 		}
+		DrawGraph(0, upBarPosY, upBarHandle[barNum], true);
 	}
 	DrawFormatString(10, 10, GetColor(0, 0, 0), "blinkingTimer : %d", blinkingTimer);
 	DrawFormatString(10, 25, GetColor(0, 0, 0), "canControl : %d", canControl);
@@ -238,17 +252,18 @@ void Menu::InOutMenu() {
 			}
 			if (moveStart[i]) {
 				barPosX[i] = EASE::OutQuad(winWidth / 4 + barSizeX / 2, -barSizeX, 60, coolTimer[i]);
-				//BACK
 				if (i == 4) {
-					cancelPos[1] = EASE::OutQuad(-cancelSize[1], winHeight, 60, coolTimer[i]);
+					cancelPos[1] = EASE::OutQuad(-cancelSize[1], winHeight, 60, coolTimer[i]);	//キャンセル
+					upBarPosY = EASE::OutQuad(upBarSize[1], -upBarSize[1], 60, coolTimer[i]);	//アップバー
 				}
 			}
 			else if (endMove[i]) {
 				if (scene < 2) {
 					barPosX[i] = EASE::InQuad(-barSizeX * 2, winWidth / 4 - barSizeX / 2, 60, coolTimer[i]);
-					//BACK
 					if (i == 4) {
-						cancelPos[1] = EASE::InQuad(+cancelSize[1], winHeight - cancelSize[1], 60, coolTimer[i]);
+						cancelPos[1] = EASE::InQuad(+cancelSize[1], winHeight - cancelSize[1], 60, coolTimer[i]);	//キャンセル
+						upBarPosY = EASE::InQuad(-upBarSize[1], 0, 60, coolTimer[i]);	//アップバー
+
 					}
 				}
 			}
