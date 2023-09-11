@@ -10,7 +10,6 @@ public:
 	/// <param name="y">初期位置Y</param>
 	/// <param name="pattern">模様</param>
 	RedBlock(int x, int y, int pattern);
-
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -23,8 +22,19 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// セッター
+	/// </summary>
+	/// <param name="x">x座標</param>
+	/// <param name="y">y座標</param>
+	void SetPosition(int x, int y) {
+		this->x += x;
+		this->y += y;
+	}
+
 private:
-	//模様  
+	//模様  1: 2:
 	int pattern = 0;
 	//中央座標
 	int x = 0;
@@ -32,4 +42,3 @@ private:
 	//大きさ
 	int size = 24;
 };
-

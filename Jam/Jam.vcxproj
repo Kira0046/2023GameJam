@@ -140,13 +140,16 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GreenBlock.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu.cpp" />
     <ClCompile Include="RedBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="BlueBlock.h" />
+    <ClInclude Include="easing.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GreenBlock.h" />
+    <ClInclude Include="menu.h" />
     <ClInclude Include="RedBlock.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

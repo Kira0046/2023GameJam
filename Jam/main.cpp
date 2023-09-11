@@ -1,8 +1,10 @@
 #include "DxLib.h"
+#include "menu.h"
+#include "block.h"
 #include "GameScene.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "";
+const char TITLE[] = "カラガラ";
 
 // ウィンドウ横幅
 const int WIN_WIDTH = 1600;
@@ -39,8 +41,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// 画像などのリソースデータの変数宣言と読み込み
 
+
 	// ゲームループで使う変数の宣言
-	GameScene* gameScene = nullptr;
+	GameScene* gameScene = new GameScene();
+	gameScene->Initialize();
+
+	//クラス
+	Block block;	//ゲーム内のブロック処理
+	Menu menu;		//メニュー処理
+	//初期化
+	block.Initialize(WIN_WIDTH, WIN_HEIGHT);
+	menu.Initialize(WIN_WIDTH, WIN_HEIGHT);
 
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
@@ -58,13 +69,26 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		ClearDrawScreen();
 		//---------  ここからプログラムを記述  ----------//
 
-		// 更新処理
-		gameScene->Update();
-
-
+		// 更新処理	メニューの番号に応じて表示、更新するものを変更する
+		if (menu.GetSceneNum() < 2) {
+			menu.Update(keys, oldkeys);
+		}
+		else if (menu.GetSceneNum() == 2) {
+			block.Update();
+			gameScene->Update();
+		}
 		// 描画処理
-		gameScene->Draw();
-	
+		if (menu.GetSceneNum() < 2) {
+			menu.Draw();
+		}
+		else if (menu.GetSceneNum() == 2) {
+			block.Draw();
+			gameScene->Draw();
+		}
+
+		for (int i = 0; i < 256; i++) {
+			oldkeys[i] = keys[i];
+		}
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
