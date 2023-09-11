@@ -47,11 +47,17 @@ private:
 	bool canControl;
 
 	//キャンセル
-	int cancelHandle[2];
+	int cancelHandle[4];
 	//座標
 	int cancelPos[2];
 	//サイズ
 	int cancelSize[2];
+	//フラグ
+	bool isCancel;
+	//表示時間
+	int menuBlinlingTimer;
+	bool wachiBlinling[6];
+	const int allTabNum = 6;	//点滅用の全ての項目の番号（キャンセル含む）
 
 	//画面サイズ、他でも使うので格納
 	int winWidth;

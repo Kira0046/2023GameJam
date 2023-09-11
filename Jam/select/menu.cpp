@@ -16,7 +16,7 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	LoadDivGraph("Resource/menu/menu_flame.png", 10, 10, 1, 612, 87, menuHandle);
 	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle01);
 	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle02);
-	LoadDivGraph("Resource/menu/menu_back.png", 2, 2, 1, 400, 100, cancelHandle);
+	LoadDivGraph("Resource/menu/menu_back.png", 4, 4, 1, 400, 100, cancelHandle);
 	GetGraphSize(menuHandle[0], &barSizeX, &barSizeY);
 	for (int i = 0; i < menuNum; i++) {
 		//barPosX[i] = windowWidth / 4 - barSizeX / 2;
@@ -30,11 +30,18 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	moveStartTimer = 5;
 	startCounter = 0;
 	startorEnd = false;	 //‰Šúó‘Ô‚Í“oê
+	menuBlinlingTimer = 0;
 
 	//BACK
 	GetGraphSize(cancelHandle[0], &cancelSize[0], &cancelSize[1]);
 	cancelPos[0] = 0;
 	cancelPos[1] = windowHeight;
+	isCancel = false;
+
+	//€–Ú‘S‘Ì
+	for (int i = 0; i < allTabNum; i++) {
+		wachiBlinling[i] = false;
+	}
 
 	//”wŒiÀ•W‚È‚Ç
 	backPosX[0] = 0;
@@ -77,7 +84,7 @@ void Menu::Update(char* keys, char* oldkeys) {
 		}
 
 	}
-	else if (scene == 1) {	
+	else if (scene == 1) {
 		//“oê‘Þêˆ—
 		InOutMenu();
 
@@ -101,6 +108,8 @@ void Menu::Update(char* keys, char* oldkeys) {
 			else if (keys[KEY_INPUT_LSHIFT] && !oldkeys[KEY_INPUT_LSHIFT] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_1)) {
 				startorEnd = true;
 				canControl = false;
+				wachiBlinling[5] = true;
+				isCancel = true;
 			}
 		}
 	}
@@ -138,20 +147,27 @@ void Menu::Draw() {
 				DrawExtendGraph(barPosX[i] - 20, barPosY[i] - 20, barPosX[i] + barSizeX + 19, barPosY[i] + barSizeY, menuHandle[i * 2 + 1], true);
 			}
 			else {
-				DrawGraph(barPosX[i], barPosY[i], menuHandle[i * 2], true);
+				if (!wachiBlinling[i] || wachiBlinling[i] && menuBlinlingTimer < 3) {
+					DrawGraph(barPosX[i], barPosY[i], menuHandle[i * 2], true);
+				}
 			}
 		}
-		if (GetJoypadNum() > 0) {
-			DrawGraph(cancelPos[0], cancelPos[1], cancelHandle[1], true);
-		}
-		else {
-			DrawGraph(cancelPos[0], cancelPos[1], cancelHandle[0], true);
+		if (!wachiBlinling[5] || wachiBlinling[5] && menuBlinlingTimer < 3) {
+			if (GetJoypadNum() > 0) {
+				DrawGraph(cancelPos[0], cancelPos[1], cancelHandle[1], true);
+			}
+			else {
+				DrawGraph(cancelPos[0], cancelPos[1], cancelHandle[0], true);
+			}
 		}
 	}
 	DrawFormatString(10, 10, GetColor(0, 0, 0), "blinkingTimer : %d", blinkingTimer);
 	DrawFormatString(10, 25, GetColor(0, 0, 0), "canControl : %d", canControl);
 	DrawFormatString(10, 40, GetColor(0, 0, 0), "startorEnd : %d", startorEnd);
 	DrawFormatString(10, 55, GetColor(0, 0, 0), "logoPosY : %d", logoPosY);
+	DrawFormatString(10, 70, GetColor(0, 0, 0), "scene : %d", scene);
+	DrawFormatString(10, 85, GetColor(0, 0, 0), "back00 : {%d ,%d}", backPosX[0], 0);
+	DrawFormatString(10, 100, GetColor(0, 0, 0), "back01 : {%d ,%d}", backPosX[1],0);
 }
 
 void Menu::InOutTitle() {
@@ -210,6 +226,10 @@ void Menu::InOutMenu() {
 				startCounter++;
 			}
 		}
+		menuBlinlingTimer++;
+		if (menuBlinlingTimer > 5) {
+			menuBlinlingTimer = 0;
+		}
 	}
 	for (int i = 0; i < menuNum; i++) {
 		if (moveStart[i] || endMove[i]) {
@@ -224,10 +244,12 @@ void Menu::InOutMenu() {
 				}
 			}
 			else if (endMove[i]) {
-				barPosX[i] = EASE::InQuad(-barSizeX * 2, winWidth / 4 - barSizeX / 2, 60, coolTimer[i]);
-				//BACK
-				if (i == 4) {
-					cancelPos[1] = EASE::InQuad(+cancelSize[1], winHeight - cancelSize[1], 60, coolTimer[i]);
+				if (scene < 2) {
+					barPosX[i] = EASE::InQuad(-barSizeX * 2, winWidth / 4 - barSizeX / 2, 60, coolTimer[i]);
+					//BACK
+					if (i == 4) {
+						cancelPos[1] = EASE::InQuad(+cancelSize[1], winHeight - cancelSize[1], 60, coolTimer[i]);
+					}
 				}
 			}
 		}
@@ -248,8 +270,17 @@ void Menu::InOutMenu() {
 				startCounter = 0;
 				moveStartTimer = 15;
 				startorEnd = false;
-				scene = 0;
 			}
+			if (isCancel) {
+				scene--;
+				isCancel = false;
+			}
+			for (int i = 0; i < allTabNum; i++) {
+				if (wachiBlinling[i]) {
+					wachiBlinling[i] = false;
+				}
+			}
+			menuBlinlingTimer = 0;
 		}
 		else {
 			barNum = 0;
