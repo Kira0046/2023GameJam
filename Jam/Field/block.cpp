@@ -77,7 +77,7 @@ void Block::Draw() {
 	//ƒuƒƒbƒN•`‰æ
 	for (int i = 0; i < blockNum; i++) {
 		if (block[i].appearingNow) {
-			/*if (block[i].isDelete && !block[i].doubleMutch && !block[i].involvement) {
+			if (block[i].isDelete && !block[i].doubleMutch && !block[i].involvement) {
 				DrawGraph(block[i].posX, block[i].posY, connectHandle[block[i].colorPattern], true);
 			}
 			else if (block[i].isDelete && block[i].doubleMutch && !block[i].involvement) {
@@ -88,8 +88,7 @@ void Block::Draw() {
 			}
 			else {
 				DrawGraph(block[i].posX, block[i].posY, blockHandle[block[i].colorPattern], true);
-			}*/
-			DrawGraph(block[i].posX, block[i].posY, blockHandle[block[i].colorPattern], true);
+			}
 		}
 	}
 
