@@ -97,6 +97,16 @@ private:
 	int tabPos[2];
 	int tabSize[2];
 
+	//操作UI
+	int selectNaviHandle[4];
+	int changeTimer;
+	int arrowHandle[2];
+	int arrowMoveTimer;
+	int selectNaviPos[2];
+	int selectNaviSize[2];
+	int arrowPos[2][2];
+	int arrowSize[2];
+
 	//ジョイパッド
 	int oldInput[2];	//とりあえず上下
 };

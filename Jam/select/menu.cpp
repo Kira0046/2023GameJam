@@ -46,8 +46,22 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	//タブ（説明）
 	LoadDivGraph("Resource/menu/tabs.png", 5, 5, 1, 750, 750, tabHandle);
 	GetGraphSize(tabHandle[0], &tabSize[0], &tabSize[1]);
-	tabPos[0] = windowWidth / 2;
+	tabPos[0] = windowWidth / 2 * 1.05;
 	tabPos[1] = windowHeight / 2 * 1.1 - tabSize[1] / 2;
+
+	//操作ナビ
+	LoadDivGraph("Resource/menu/navi_ud.png", 4, 4, 1, 96, 192, selectNaviHandle);
+	LoadDivGraph("Resource/menu/arrow.png", 2, 2, 1, 96, 96, arrowHandle);
+	GetGraphSize(selectNaviHandle[0], &selectNaviSize[0], &selectNaviSize[1]);
+	GetGraphSize(arrowHandle[0], &arrowSize[0], &arrowSize[1]);
+	selectNaviPos[0] = windowWidth / 2 - selectNaviSize[0] + selectNaviSize[0] / 4;
+	selectNaviPos[1] = windowHeight / 2 - selectNaviSize[1] / 2;
+	arrowPos[0][0] = selectNaviPos[0];
+	arrowPos[0][1] = selectNaviPos[1];
+	arrowPos[1][0] = selectNaviPos[0];
+	arrowPos[1][1] = selectNaviPos[1];
+	changeTimer = 0;
+	arrowMoveTimer = 0;
 
 	//背景座標など
 	backPosX[0] = 0;
@@ -102,13 +116,13 @@ void Menu::Update(char* keys, char* oldkeys) {
 			if (keys[KEY_INPUT_SPACE] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_2)) {
 				scene = 2;
 			}
-			if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP) && !oldInput[0]) {
+			if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP) && !oldInput[0] || keys[KEY_INPUT_W] && !oldkeys[KEY_INPUT_W]) {
 				barNum--;
 				if (barNum < 0) {
 					barNum = 4;
 				}
 			}
-			else if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN) && !oldInput[1]) {
+			else if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN) && !oldInput[1] || keys[KEY_INPUT_S] && !oldkeys[KEY_INPUT_S]) {
 				barNum++;
 				if (barNum > 4) {
 					barNum = 0;
@@ -120,6 +134,19 @@ void Menu::Update(char* keys, char* oldkeys) {
 				wachiBlinling[5] = true;
 				isCancel = true;
 			}
+			changeTimer++;
+			if (changeTimer > 120) {
+				changeTimer = 0;
+			}
+			
+			if (arrowMoveTimer < 30) {
+				arrowMoveTimer++;
+			}
+			else {
+				arrowMoveTimer = 0;
+			}
+			arrowPos[0][1] = EASE::OutQuad(-arrowSize[1] / 4, selectNaviPos[1] - arrowSize[1], 30, arrowMoveTimer);
+			arrowPos[1][1] = EASE::OutQuad(arrowSize[1] / 4, selectNaviPos[1] + selectNaviSize[1], 30, arrowMoveTimer);
 		}
 	}
 
@@ -163,6 +190,24 @@ void Menu::Draw() {
 		}
 		if (canControl) {
 			DrawGraph(tabPos[0], tabPos[1], tabHandle[barNum], true);
+			if (GetJoypadNum() > 0) {
+				if (changeTimer < 60) {
+					DrawGraph(selectNaviPos[0], selectNaviPos[1], selectNaviHandle[2], true);
+				}
+				else {
+					DrawGraph(selectNaviPos[0], selectNaviPos[1], selectNaviHandle[3], true);
+				}
+			}
+			else {
+				if (changeTimer < 60) {
+					DrawGraph(selectNaviPos[0], selectNaviPos[1], selectNaviHandle[0], true);
+				}
+				else {
+					DrawGraph(selectNaviPos[0], selectNaviPos[1], selectNaviHandle[1], true);
+				}
+			}
+			DrawGraph(arrowPos[0][0], arrowPos[0][1], arrowHandle[0], true);
+			DrawGraph(arrowPos[1][0], arrowPos[1][1], arrowHandle[1], true);
 		}
 
 		if (!wachiBlinling[5] || wachiBlinling[5] && menuBlinlingTimer < 3) {
@@ -180,7 +225,7 @@ void Menu::Draw() {
 	DrawFormatString(10, 40, GetColor(0, 0, 0), "startorEnd : %d", startorEnd);
 	DrawFormatString(10, 55, GetColor(0, 0, 0), "logoPosY : %d", logoPosY);
 	DrawFormatString(10, 70, GetColor(0, 0, 0), "scene : %d", scene);
-	DrawFormatString(10, 85, GetColor(0, 0, 0), "back00 : {%d ,%d}", backPosX[0], 0);
+	DrawFormatString(10, 85, GetColor(0, 0, 0), "arrow: {%d ,%d}", arrowPos[0][0], arrowPos[0][1]);
 	DrawFormatString(10, 100, GetColor(0, 0, 0), "back01 : {%d ,%d}", backPosX[1],0);
 }
 
@@ -277,6 +322,8 @@ void Menu::InOutMenu() {
 			startCounter = 0;
 			moveStartTimer = 15;
 		}
+		changeTimer = 0;
+		arrowMoveTimer = 0;
 		if (startorEnd) {
 			canControl = false;
 			for (int i = 0; i < menuNum; i++) {
