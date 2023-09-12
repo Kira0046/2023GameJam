@@ -1,7 +1,7 @@
 #include "GameScene.h"
 #include <ctime>
 
-#include "Collision.h"
+
 
 void GameScene::Initialize() {
 	// 最新のキーボード情報用
@@ -51,23 +51,17 @@ void GameScene::Update() {
 		BlockOperation();
 		FallingCalc();
 
+		PiledBlock();
 		if (centerY == 816) {
 
-			for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
-				(*redblockitr)->SetFall(false);
-			}
-
-			for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
-				(*greenblockitr)->SetFall(false);
-			}
-
-
-			for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
-				(*blueblockitr)->SetFall(false);
-			}
+			SetBlockToFallFalse();
 
 			fallphase = 0;
 		}
+	}
+
+	if (fallphase == 3) {
+
 	}
 
 }
@@ -1777,6 +1771,384 @@ void GameScene::FallingCollision() {
 		}
 	}
 
+}
+
+void GameScene::PiledBlock(){
+
+	{
+		///赤
+		if (createredblock > 0) {
+			//4つ
+			if (createredblock == 4) {
+				if (redBlockList.size() >= 4) {
+					auto itr = redBlockList.end();
+					--itr;
+					--itr;
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (redBlockList.size() >= 3) {
+					auto itr = redBlockList.end();
+					--itr;
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (redBlockList.size() >= 2) {
+					auto itr = redBlockList.end();
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (!redBlockList.empty()) {
+
+					if (redBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+
+				}
+			}
+
+			//3つ
+			if (createredblock == 3) {
+				if (redBlockList.size() >= 3) {
+					auto itr = redBlockList.end();
+					--itr;
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (redBlockList.size() >= 2) {
+					auto itr = redBlockList.end();
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (!redBlockList.empty()) {
+
+					if (redBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+			}
+
+			//２つ
+			if (createredblock == 2) {
+				if (redBlockList.size() >= 2) {
+					auto itr = redBlockList.end();
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (!redBlockList.empty()) {
+
+					if (redBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+			}
+
+			//１つ
+			if (createredblock == 1) {
+				if (!redBlockList.empty()) {
+
+					if (redBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+			}
+
+		}
+
+		///緑
+		if (creategreenblock > 0) {
+			//4つ
+			if (creategreenblock == 4) {
+
+				if (greenBlockList.size() >= 4) {
+					auto itr = greenBlockList.end();
+					--itr;
+					--itr;
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (greenBlockList.size() >= 3) {
+					auto itr = greenBlockList.end();
+					--itr;
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (greenBlockList.size() >= 2) {
+					auto itr = greenBlockList.end();
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (!greenBlockList.empty()) {
+
+					if (greenBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+
+				}
+			}
+
+			//3つ
+			if (creategreenblock == 3) {
+
+				if (greenBlockList.size() >= 3) {
+					auto itr = greenBlockList.end();
+					--itr;
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (greenBlockList.size() >= 2) {
+					auto itr = greenBlockList.end();
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (!greenBlockList.empty()) {
+
+					if (greenBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+
+				}
+			}
+
+			//2つ
+			if (creategreenblock == 2) {
+
+				if (greenBlockList.size() >= 2) {
+					auto itr = greenBlockList.end();
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (!greenBlockList.empty()) {
+
+					if (greenBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+			}
+
+			//1つ
+			if (creategreenblock == 1) {
+
+				if (!greenBlockList.empty()) {
+
+					if (greenBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+			}
+		}
+
+		///青
+		if (createblueblock > 0) {
+			//4つ
+			if (createblueblock == 4) {
+
+				if (blueBlockList.size() >= 4) {
+					auto itr = blueBlockList.end();
+					--itr;
+					--itr;
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (blueBlockList.size() >= 3) {
+
+					auto itr = blueBlockList.end();
+					--itr;
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (blueBlockList.size() >= 2) {
+
+					auto itr = blueBlockList.end();
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (!blueBlockList.empty()) {
+
+					if (blueBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+			}
+
+			//3つ
+			if (createblueblock == 3) {
+
+				if (blueBlockList.size() >= 3) {
+					auto itr = blueBlockList.end();
+					--itr;
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (blueBlockList.size() >= 2) {
+					auto itr = blueBlockList.end();
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (!blueBlockList.empty()) {
+
+					if (blueBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+			}
+
+			//2つ
+			if (createblueblock == 2) {
+				if (blueBlockList.size() >= 2) {
+					auto itr = blueBlockList.end();
+					--itr;
+					--itr;
+					if ((*itr)->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+				if (!blueBlockList.empty()) {
+
+					if (blueBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+				}
+			}
+
+			//1つ
+			if (createblueblock == 1) {
+				if (!blueBlockList.empty()) {
+
+					if (blueBlockList.back()->hitdown == true) {
+						SetBlockToFallFalse();
+
+						fallphase = 0;
+					}
+
+				}
+			}
+		}
+	}
+}
+
+void GameScene::SetBlockToFallFalse(){
+	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+		(*redblockitr)->SetFall(false);
+	}
+
+	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+		(*greenblockitr)->SetFall(false);
+	}
+
+
+	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+		(*blueblockitr)->SetFall(false);
+	}
 }
 
 

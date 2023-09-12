@@ -42,11 +42,19 @@ public:
 	void FallBlockCalc();
 
 	/// <summary>
-	/// 当たり判定
+	/// ブロック縦横判定
 	/// </summary>
 	void FallingCollision();
 
+	/// <summary>
+	/// ブロック積み上げ判定
+	/// </summary>
+	void PiledBlock();
 
+	/// <summary>
+	/// 全ブロック固定化
+	/// </summary>
+	void SetBlockToFallFalse();
 
 private: //構造体
 	//中央からのブロック配置位置　 0:左上 1:右上 2:右下 3:左下
@@ -58,7 +66,7 @@ private: //構造体
 	};
 
 private:
-	//落下フェーズ 0:配置待機 1:配置 2:落下
+	//落下フェーズ 0:配置待機 1:配置 2:落下　3:ブロック消し
 	int fallphase = 0;
 	//落下更新待機時間
 	int fallupdatetime = 60;
