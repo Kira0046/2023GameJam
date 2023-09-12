@@ -12,10 +12,23 @@ void GameScene::Initialize() {
 
 	srand((unsigned)time(NULL));
 
-	redBlockList.push_back(new RedBlock(680, 264, 1));
-	//redBlockList.push_back(new RedBlock(600, 450, 1));
-	greenBlockList.push_back(new GreenBlock(824, 264, 1));
-	blueBlockList.push_back(new BlueBlock(968, 264, 1));
+	//redBlockList.push_back(new RedBlock(680, 264, 1));
+	////redBlockList.push_back(new RedBlock(600, 450, 1));
+	//greenBlockList.push_back(new GreenBlock(824, 264, 1));
+	//blueBlockList.push_back(new BlueBlock(968, 264, 1));
+
+	//フィールド
+	//画像読み込み
+	fieldHandle = LoadGraph("Resource/field/field_kari.png");
+	//画像サイズ取得
+	GetGraphSize(fieldHandle, &fieldSizeX, &fieldSizeY);
+	//フィールド座標入力
+	fieldPosX[0] = 1600 / 2 - fieldSizeX / 2;
+	fieldPosY[0] = 900 / 2 - fieldSizeY / 2;
+
+	centerX = fieldPosX[0] + fieldSizeX / 2 + fieldFlameSizeX;
+	centerY = fieldPosY[0] + fieldFlameSizeY;
+	spawnpointY = fieldPosY[0] + fieldFlameSizeY;
 }
 
 void GameScene::Update() {
@@ -52,12 +65,14 @@ void GameScene::Update() {
 		FallingCalc();
 
 		PiledBlock();
-		if (centerY == 816) {
+
+		PileBlockToLand();
+		/*if (centerY == 816) {
 
 			SetBlockToFallFalse();
 
 			fallphase = 0;
-		}
+		}*/
 	}
 
 	if (fallphase == 3) {
@@ -67,6 +82,8 @@ void GameScene::Update() {
 }
 
 void GameScene::Draw() {
+	DrawGraph(fieldPosX[0], fieldPosY[0], fieldHandle, true);
+
 	//赤ブロック描画
 	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
 		(*redblockitr)->Draw();
@@ -103,9 +120,14 @@ void GameScene::Draw() {
 
 void GameScene::BlockLayoutSetting() {
 	//配置場所  i=0:左上 1:右上 2:右下 3:左下
+
+	//色決定 0:配置しない　1:赤　2:緑  3:青
+	blocklayoutposition[0].blocklayoutcolor = rand() % 3 + 1;
+	blocklayoutposition[1].blocklayoutcolor = 0;
+	blocklayoutposition[2].blocklayoutcolor = 0;
+	blocklayoutposition[3].blocklayoutcolor = rand() % 3 + 1;
 	for (int i = 0; i < 4; i++) {
-		//色決定 0:配置しない　1:赤　2:緑  3:青
-		blocklayoutposition[i].blocklayoutcolor = rand() % 4;
+		
 		//模様決定 1: 2:
 		blocklayoutposition[i].blocklayoutpattern = rand() % 2 + 1;
 
@@ -666,238 +688,240 @@ void GameScene::BlockOperation() {
 	}
 	if (redblocklefthit == false && greenblocklefthit == false && blueblocklefthit == false) {
 		if (keys[KEY_INPUT_A] == 1 && oldkeys[KEY_INPUT_A] == 0) {
-			centerX -= amountmovement;
-			{
-				///赤
-				if (createredblock > 0) {
-					//4つ
-					if (createredblock == 4) {
-						if (redBlockList.size() >= 4) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (redBlockList.size() >= 3) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (redBlockList.size() >= 2) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (!redBlockList.empty()) {
+			if (centerX > fieldPosX[0] + fieldFlameSizeX + 24 + 48) {
+				centerX -= amountmovement;
+				{
+					///赤
+					if (createredblock > 0) {
+						//4つ
+						if (createredblock == 4) {
+							if (redBlockList.size() >= 4) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (redBlockList.size() >= 3) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (redBlockList.size() >= 2) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (!redBlockList.empty()) {
 
-							redBlockList.back()->SetPosition(-amountmovement, 0);
+								redBlockList.back()->SetPosition(-amountmovement, 0);
+							}
+						}
+
+						//3つ
+						if (createredblock == 3) {
+							if (redBlockList.size() >= 3) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (redBlockList.size() >= 2) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (!redBlockList.empty()) {
+
+								redBlockList.back()->SetPosition(-amountmovement, 0);
+							}
+						}
+
+						//２つ
+						if (createredblock == 2) {
+							if (redBlockList.size() >= 2) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (!redBlockList.empty()) {
+
+								redBlockList.back()->SetPosition(-amountmovement, 0);
+							}
+						}
+
+						//１つ
+						if (createredblock == 1) {
+							if (!redBlockList.empty()) {
+
+								redBlockList.back()->SetPosition(-amountmovement, 0);
+							}
+						}
+
+					}
+
+					///緑
+					if (creategreenblock > 0) {
+						//4つ
+						if (creategreenblock == 4) {
+
+							if (greenBlockList.size() >= 4) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (greenBlockList.size() >= 3) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (greenBlockList.size() >= 2) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (!greenBlockList.empty()) {
+
+								greenBlockList.back()->SetPosition(-amountmovement, 0);
+							}
+						}
+
+						//3つ
+						if (creategreenblock == 3) {
+
+							if (greenBlockList.size() >= 3) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (greenBlockList.size() >= 2) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (!greenBlockList.empty()) {
+
+								greenBlockList.back()->SetPosition(-amountmovement, 0);
+							}
+						}
+
+						//2つ
+						if (creategreenblock == 2) {
+
+							if (greenBlockList.size() >= 2) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (!greenBlockList.empty()) {
+
+								greenBlockList.back()->SetPosition(-amountmovement, 0);
+							}
+						}
+
+						//1つ
+						if (creategreenblock == 1) {
+
+							if (!greenBlockList.empty()) {
+
+								greenBlockList.back()->SetPosition(-amountmovement, 0);
+							}
 						}
 					}
 
-					//3つ
-					if (createredblock == 3) {
-						if (redBlockList.size() >= 3) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
+					///青
+					if (createblueblock > 0) {
+						//4つ
+						if (createblueblock == 4) {
+
+							if (blueBlockList.size() >= 4) {
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (blueBlockList.size() >= 3) {
+
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (blueBlockList.size() >= 2) {
+
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (!blueBlockList.empty()) {
+
+								blueBlockList.back()->SetPosition(-amountmovement, 0);
+							}
 						}
-						if (redBlockList.size() >= 2) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
+
+						//3つ
+						if (createblueblock == 3) {
+
+							if (blueBlockList.size() >= 3) {
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (blueBlockList.size() >= 2) {
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (!blueBlockList.empty()) {
+
+								blueBlockList.back()->SetPosition(-amountmovement, 0);
+							}
 						}
-						if (!redBlockList.empty()) {
 
-							redBlockList.back()->SetPosition(-amountmovement, 0);
+						//2つ
+						if (createblueblock == 2) {
+							if (blueBlockList.size() >= 2) {
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(-amountmovement, 0);
+							}
+							if (!blueBlockList.empty()) {
+
+								blueBlockList.back()->SetPosition(-amountmovement, 0);
+							}
 						}
-					}
 
-					//２つ
-					if (createredblock == 2) {
-						if (redBlockList.size() >= 2) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (!redBlockList.empty()) {
+						//1つ
+						if (createblueblock == 1) {
+							if (!blueBlockList.empty()) {
 
-							redBlockList.back()->SetPosition(-amountmovement, 0);
-						}
-					}
-
-					//１つ
-					if (createredblock == 1) {
-						if (!redBlockList.empty()) {
-
-							redBlockList.back()->SetPosition(-amountmovement, 0);
-						}
-					}
-
-				}
-
-				///緑
-				if (creategreenblock > 0) {
-					//4つ
-					if (creategreenblock == 4) {
-
-						if (greenBlockList.size() >= 4) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (greenBlockList.size() >= 3) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (greenBlockList.size() >= 2) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (!greenBlockList.empty()) {
-
-							greenBlockList.back()->SetPosition(-amountmovement, 0);
-						}
-					}
-
-					//3つ
-					if (creategreenblock == 3) {
-
-						if (greenBlockList.size() >= 3) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (greenBlockList.size() >= 2) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (!greenBlockList.empty()) {
-
-							greenBlockList.back()->SetPosition(-amountmovement, 0);
-						}
-					}
-
-					//2つ
-					if (creategreenblock == 2) {
-
-						if (greenBlockList.size() >= 2) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (!greenBlockList.empty()) {
-
-							greenBlockList.back()->SetPosition(-amountmovement, 0);
-						}
-					}
-
-					//1つ
-					if (creategreenblock == 1) {
-
-						if (!greenBlockList.empty()) {
-
-							greenBlockList.back()->SetPosition(-amountmovement, 0);
-						}
-					}
-				}
-
-				///青
-				if (createblueblock > 0) {
-					//4つ
-					if (createblueblock == 4) {
-
-						if (blueBlockList.size() >= 4) {
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (blueBlockList.size() >= 3) {
-
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (blueBlockList.size() >= 2) {
-
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (!blueBlockList.empty()) {
-
-							blueBlockList.back()->SetPosition(-amountmovement, 0);
-						}
-					}
-
-					//3つ
-					if (createblueblock == 3) {
-
-						if (blueBlockList.size() >= 3) {
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (blueBlockList.size() >= 2) {
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (!blueBlockList.empty()) {
-
-							blueBlockList.back()->SetPosition(-amountmovement, 0);
-						}
-					}
-
-					//2つ
-					if (createblueblock == 2) {
-						if (blueBlockList.size() >= 2) {
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(-amountmovement, 0);
-						}
-						if (!blueBlockList.empty()) {
-
-							blueBlockList.back()->SetPosition(-amountmovement, 0);
-						}
-					}
-
-					//1つ
-					if (createblueblock == 1) {
-						if (!blueBlockList.empty()) {
-
-							blueBlockList.back()->SetPosition(-amountmovement, 0);
+								blueBlockList.back()->SetPosition(-amountmovement, 0);
+							}
 						}
 					}
 				}
@@ -907,238 +931,240 @@ void GameScene::BlockOperation() {
 
 	if (redblockrighthit == false && greenblockrighthit == false && blueblockrighthit == false) {
 		if (keys[KEY_INPUT_D] == 1 && oldkeys[KEY_INPUT_D] == 0) {
-			centerX += amountmovement;
-			{
-				///赤
-				if (createredblock > 0) {
-					//4つ
-					if (createredblock == 4) {
-						if (redBlockList.size() >= 4) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (redBlockList.size() >= 3) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (redBlockList.size() >= 2) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (!redBlockList.empty()) {
+			if (centerX < fieldPosX[0] + fieldSizeX - fieldFlameSizeX - 24) {
+				centerX += amountmovement;
+				{
+					///赤
+					if (createredblock > 0) {
+						//4つ
+						if (createredblock == 4) {
+							if (redBlockList.size() >= 4) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (redBlockList.size() >= 3) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (redBlockList.size() >= 2) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (!redBlockList.empty()) {
 
-							redBlockList.back()->SetPosition(amountmovement, 0);
+								redBlockList.back()->SetPosition(amountmovement, 0);
+							}
+						}
+
+						//3つ
+						if (createredblock == 3) {
+							if (redBlockList.size() >= 3) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (redBlockList.size() >= 2) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (!redBlockList.empty()) {
+
+								redBlockList.back()->SetPosition(amountmovement, 0);
+							}
+						}
+
+						//２つ
+						if (createredblock == 2) {
+							if (redBlockList.size() >= 2) {
+								auto itr = redBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (!redBlockList.empty()) {
+
+								redBlockList.back()->SetPosition(amountmovement, 0);
+							}
+						}
+
+						//１つ
+						if (createredblock == 1) {
+							if (!redBlockList.empty()) {
+
+								redBlockList.back()->SetPosition(amountmovement, 0);
+							}
+						}
+
+					}
+
+					///緑
+					if (creategreenblock > 0) {
+						//4つ
+						if (creategreenblock == 4) {
+
+							if (greenBlockList.size() >= 4) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (greenBlockList.size() >= 3) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (greenBlockList.size() >= 2) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (!greenBlockList.empty()) {
+
+								greenBlockList.back()->SetPosition(amountmovement, 0);
+							}
+						}
+
+						//3つ
+						if (creategreenblock == 3) {
+
+							if (greenBlockList.size() >= 3) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (greenBlockList.size() >= 2) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (!greenBlockList.empty()) {
+
+								greenBlockList.back()->SetPosition(amountmovement, 0);
+							}
+						}
+
+						//2つ
+						if (creategreenblock == 2) {
+
+							if (greenBlockList.size() >= 2) {
+								auto itr = greenBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (!greenBlockList.empty()) {
+
+								greenBlockList.back()->SetPosition(amountmovement, 0);
+							}
+						}
+
+						//1つ
+						if (creategreenblock == 1) {
+
+							if (!greenBlockList.empty()) {
+
+								greenBlockList.back()->SetPosition(amountmovement, 0);
+							}
 						}
 					}
 
-					//3つ
-					if (createredblock == 3) {
-						if (redBlockList.size() >= 3) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
+					///青
+					if (createblueblock > 0) {
+						//4つ
+						if (createblueblock == 4) {
+
+							if (blueBlockList.size() >= 4) {
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (blueBlockList.size() >= 3) {
+
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (blueBlockList.size() >= 2) {
+
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (!blueBlockList.empty()) {
+
+								blueBlockList.back()->SetPosition(amountmovement, 0);
+							}
 						}
-						if (redBlockList.size() >= 2) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
+
+						//3つ
+						if (createblueblock == 3) {
+
+							if (blueBlockList.size() >= 3) {
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (blueBlockList.size() >= 2) {
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (!blueBlockList.empty()) {
+
+								blueBlockList.back()->SetPosition(amountmovement, 0);
+							}
 						}
-						if (!redBlockList.empty()) {
 
-							redBlockList.back()->SetPosition(amountmovement, 0);
+						//2つ
+						if (createblueblock == 2) {
+							if (blueBlockList.size() >= 2) {
+								auto itr = blueBlockList.end();
+								--itr;
+								--itr;
+								(*itr)->SetPosition(amountmovement, 0);
+							}
+							if (!blueBlockList.empty()) {
+
+								blueBlockList.back()->SetPosition(amountmovement, 0);
+							}
 						}
-					}
 
-					//２つ
-					if (createredblock == 2) {
-						if (redBlockList.size() >= 2) {
-							auto itr = redBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (!redBlockList.empty()) {
+						//1つ
+						if (createblueblock == 1) {
+							if (!blueBlockList.empty()) {
 
-							redBlockList.back()->SetPosition(amountmovement, 0);
-						}
-					}
-
-					//１つ
-					if (createredblock == 1) {
-						if (!redBlockList.empty()) {
-
-							redBlockList.back()->SetPosition(amountmovement, 0);
-						}
-					}
-
-				}
-
-				///緑
-				if (creategreenblock > 0) {
-					//4つ
-					if (creategreenblock == 4) {
-
-						if (greenBlockList.size() >= 4) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (greenBlockList.size() >= 3) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (greenBlockList.size() >= 2) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (!greenBlockList.empty()) {
-
-							greenBlockList.back()->SetPosition(amountmovement, 0);
-						}
-					}
-
-					//3つ
-					if (creategreenblock == 3) {
-
-						if (greenBlockList.size() >= 3) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (greenBlockList.size() >= 2) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (!greenBlockList.empty()) {
-
-							greenBlockList.back()->SetPosition(amountmovement, 0);
-						}
-					}
-
-					//2つ
-					if (creategreenblock == 2) {
-
-						if (greenBlockList.size() >= 2) {
-							auto itr = greenBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (!greenBlockList.empty()) {
-
-							greenBlockList.back()->SetPosition(amountmovement, 0);
-						}
-					}
-
-					//1つ
-					if (creategreenblock == 1) {
-
-						if (!greenBlockList.empty()) {
-
-							greenBlockList.back()->SetPosition(amountmovement, 0);
-						}
-					}
-				}
-
-				///青
-				if (createblueblock > 0) {
-					//4つ
-					if (createblueblock == 4) {
-
-						if (blueBlockList.size() >= 4) {
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (blueBlockList.size() >= 3) {
-
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (blueBlockList.size() >= 2) {
-
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (!blueBlockList.empty()) {
-
-							blueBlockList.back()->SetPosition(amountmovement, 0);
-						}
-					}
-
-					//3つ
-					if (createblueblock == 3) {
-
-						if (blueBlockList.size() >= 3) {
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (blueBlockList.size() >= 2) {
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (!blueBlockList.empty()) {
-
-							blueBlockList.back()->SetPosition(amountmovement, 0);
-						}
-					}
-
-					//2つ
-					if (createblueblock == 2) {
-						if (blueBlockList.size() >= 2) {
-							auto itr = blueBlockList.end();
-							--itr;
-							--itr;
-							(*itr)->SetPosition(amountmovement, 0);
-						}
-						if (!blueBlockList.empty()) {
-
-							blueBlockList.back()->SetPosition(amountmovement, 0);
-						}
-					}
-
-					//1つ
-					if (createblueblock == 1) {
-						if (!blueBlockList.empty()) {
-
-							blueBlockList.back()->SetPosition(amountmovement, 0);
+								blueBlockList.back()->SetPosition(amountmovement, 0);
+							}
 						}
 					}
 				}
@@ -1152,7 +1178,7 @@ void GameScene::FallingCalc() {
 	FallingCollision();
 	if (fallupdatetime == 0) {
 		centerY += amountmovement;
-		fallupdatetime = 5;
+		fallupdatetime = maxUpdateTime;
 		FallBlockCalc();
 		for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
 			(*redblockitr)->SetHitUp(false);
@@ -2145,9 +2171,40 @@ void GameScene::SetBlockToFallFalse(){
 		(*greenblockitr)->SetFall(false);
 	}
 
-
 	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
 		(*blueblockitr)->SetFall(false);
+	}
+}
+
+void GameScene::PileBlockToLand(){
+	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+		if ((*redblockitr)->fall == true) {
+			if ((*redblockitr)->GetPositionY() == 834 + 24) {
+				SetBlockToFallFalse();
+
+				fallphase = 0;
+			}
+		}
+	}
+
+	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+		if ((*greenblockitr)->fall == true) {
+			if ((*greenblockitr)->GetPositionY() == 834 + 24) {
+				SetBlockToFallFalse();
+
+				fallphase = 0;
+			}
+		}
+	}
+
+	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+		if ((*blueblockitr)->fall == true) {
+			if ((*blueblockitr)->GetPositionY() == 834 + 24) {
+				SetBlockToFallFalse();
+
+				fallphase = 0;
+			}
+		}
 	}
 }
 

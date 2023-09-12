@@ -56,6 +56,11 @@ public:
 	/// </summary>
 	void SetBlockToFallFalse();
 
+	/// <summary>
+	/// ブロック地面着地
+	/// </summary>
+	void PileBlockToLand();
+
 private: //構造体
 	//中央からのブロック配置位置　 0:左上 1:右上 2:右下 3:左下
 	struct BlockLayoutPosition {
@@ -66,20 +71,35 @@ private: //構造体
 	};
 
 private:
+	//フィールドハンドル
+	int fieldHandle;
+	//フィールド座標
+	int fieldPosX[2];
+	int fieldPosY[2];
+	//Fieldサイズ
+	int fieldSizeX;
+	int fieldSizeY;
+	//枠分サイズ
+	const int fieldFlameSizeX = 6;
+	const int fieldFlameSizeY = 6;
+
+
 	//落下フェーズ 0:配置待機 1:配置 2:落下　3:ブロック消し
 	int fallphase = 0;
 	//落下更新待機時間
-	int fallupdatetime = 60;
+	int fallupdatetime = 5;
+	//更新時間
+	const int maxUpdateTime = 5;
 	//移動量
-	int amountmovement = 24;
+	int amountmovement = 48;
 
 	//中央座標
-	int centerX = 0;
-	int centerY = 0;
+	int centerX;// = 0;
+	int centerY;// = 0;
 
 	//中央出現位置
-	int spawnpointX = 800;
-	int spawnpointY = 96;//-48;
+	int spawnpointX = 800 + 24;
+	int spawnpointY;// = 48 + 6;//-48;
 	//中央からのブロック出現幅
 	int blockspawnsize = 24;
 

@@ -84,7 +84,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			menu.Draw();
 		}
 		else if (menu.GetSceneNum() == 2) {
-			block.Draw();
+			//block.Draw();
 			gameScene->Draw();
 		}
 

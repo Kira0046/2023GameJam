@@ -108,6 +108,8 @@ private:
 	//‘å‚«‚³
 	int size = 24;
 
-	
+	const int blockSizeX = 48;
+	const int blockSizeY = 48;
+	int blockHandle[6];
 };
 
