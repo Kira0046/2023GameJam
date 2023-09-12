@@ -63,20 +63,20 @@ public:
 		this->hit = hit;
 	}
 
+	//uが上、dが下、lが左、rが右の意	0が色で1が柄
+	void SetMatch(bool u, bool d, bool l, bool r, int num);
+
+	void SetDelete(bool deleteFlag, bool doubkeMuctchFlag, bool involvement);
+
 	/// <summary>
 	/// ゲッター
 	/// </summary>
-	int GetPositionX() {
-		return x;
-	}
-
-	int GetPositionY() {
-		return y;
-	}
-
-	int GetSize() {
-		return size;
-	}
+	int GetPositionX() { return x; }	//X座標
+	int GetPositionY() { return y; }	//Y座標
+	int GetSize() { return size; }		//サイズ
+	int GetPattern() { return pattern; }//柄
+	bool GetIsDelete() { return isDelete; }//削除フラグ
+	bool GetDoubleMutch() { return doubleMutch; }	//両一致フラグ
 
 	const bool& GetIshitUp() const { return hitup; }
 
@@ -109,8 +109,24 @@ private:
 	//大きさ
 	int size = 24;
 
+	//画像表示用
 	const int blockSizeX = 48;
 	const int blockSizeY = 48;
 	int blockHandle[6];
+	//接続確認用画像ハンドル
+	int connectHandle[6];
+	int doubleHandle[6];
+	int involvementHnadle[6];
+
+	//接続判定
+	bool up[2] = { false,false };
+	bool down[2] = { false,false };
+	bool left[2] = { false,false };
+	bool right[2] = { false,false };
+
+	//消滅判定
+	bool isDelete = false;
+	bool doubleMutch = false;	//両一致判定
+	bool involvement = false;	//巻き込み判定
 };
 

@@ -66,6 +66,8 @@ void GameScene::Update() {
 
 		PiledBlock();
 
+		CheckConnect();
+
 		PileBlockToLand();
 		/*if (centerY == 816) {
 
@@ -73,6 +75,7 @@ void GameScene::Update() {
 
 			fallphase = 0;
 		}*/
+		//接続確認
 	}
 
 	if (fallphase == 3) {
@@ -127,7 +130,7 @@ void GameScene::BlockLayoutSetting() {
 	blocklayoutposition[2].blocklayoutcolor = 0;
 	blocklayoutposition[3].blocklayoutcolor = rand() % 3 + 1;
 	for (int i = 0; i < 4; i++) {
-		
+
 		//模様決定 1: 2:
 		blocklayoutposition[i].blocklayoutpattern = rand() % 2 + 1;
 
@@ -1799,7 +1802,7 @@ void GameScene::FallingCollision() {
 
 }
 
-void GameScene::PiledBlock(){
+void GameScene::PiledBlock() {
 
 	{
 		///赤
@@ -2162,7 +2165,7 @@ void GameScene::PiledBlock(){
 	}
 }
 
-void GameScene::SetBlockToFallFalse(){
+void GameScene::SetBlockToFallFalse() {
 	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
 		(*redblockitr)->SetFall(false);
 	}
@@ -2176,7 +2179,7 @@ void GameScene::SetBlockToFallFalse(){
 	}
 }
 
-void GameScene::PileBlockToLand(){
+void GameScene::PileBlockToLand() {
 	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
 		if ((*redblockitr)->fall == true) {
 			if ((*redblockitr)->GetPositionY() == 834 + 24) {
@@ -2208,6 +2211,555 @@ void GameScene::PileBlockToLand(){
 	}
 }
 
+//接続チェック
+void GameScene::CheckConnect() {
+	//各種ブロックについて
+	//落下状態ではないことのチェック
+	//赤
+	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+		if (!(*redblockitr)->GetIsFall()) {
+			//接続確認
+			//隣接したブロックの座標取得
+			float connectPos[8];
+			//上
+			connectPos[0] = (*redblockitr)->GetPositionX();// -fieldFlameSizeX;
+			connectPos[1] = (*redblockitr)->GetPositionY() - (*redblockitr)->GetSize() - halfSize;
+			//下
+			connectPos[2] = (*redblockitr)->GetPositionX();// -fieldFlameSizeX;
+			connectPos[3] = (*redblockitr)->GetPositionY() + (*redblockitr)->GetSize() + halfSize;
+			//左
+			connectPos[4] = (*redblockitr)->GetPositionX() - (*redblockitr)->GetSize() - halfSize;
+			connectPos[5] = (*redblockitr)->GetPositionY();
+			//右
+			connectPos[6] = (*redblockitr)->GetPositionX() + (*redblockitr)->GetSize() + halfSize;
+			connectPos[7] = (*redblockitr)->GetPositionY();
+			//一致した場合のみカウント、2以上で消える
+			int matchCount[2][2] = { { 0,0 },{0,0} };	//{{縦色,横色},{縦柄,横柄}}
 
+			//各色ごとに接続確認
+			//赤
+			for (auto redblockitr2 = redBlockList.begin(); redblockitr2 != redBlockList.end(); ++redblockitr2) {
+				//自分自身は弾く
+				if (redblockitr != redblockitr2) {
+					for (int i = 0; i < 8; i) {
+						//上下左右の順で接続チェック
+						if (connectPos[i] == (*redblockitr2)->GetPositionX() && connectPos[i + 1] == (*redblockitr2)->GetPositionY()) {
+							//同じ色は確定なので条件分岐させる必要なし
+							if (i < 4) {
+								matchCount[0][0]++;
+							}
+							else if (i > 3) {
+								matchCount[0][1]++;
+							}
+							//柄一致確認
+							if ((*redblockitr)->GetPattern() == (*redblockitr2)->GetPattern()) {
+								if (i < 4) {
+									matchCount[1][0]++;
+								}
+								else if (i > 3) {
+									matchCount[1][1]++;
+								}
+							}
+						}
+						i += 2;
+					}
+				}
+			}
+			//蒼
+			for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+				for (int i = 0; i < 8; i) {
+					//上下左右の順で接続チェック
+					if (connectPos[i] == (*blueblockitr)->GetPositionX() && connectPos[i + 1] == (*blueblockitr)->GetPositionY()) {
+						//柄一致確認
+						if ((*redblockitr)->GetPattern() == (*blueblockitr)->GetPattern()) {
+							if (i < 4) {
+								matchCount[1][0]++;
+							}
+							else if (i > 3) {
+								matchCount[1][1]++;
+							}
+						}
+					}
+					i += 2;
+				}
+			}
+			//緑
+			for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+				for (int i = 0; i < 8; i) {
+					//上下左右の順で接続チェック
+					if (connectPos[i] == (*greenblockitr)->GetPositionX() && connectPos[i + 1] == (*greenblockitr)->GetPositionY()) {
+						//柄一致確認
+						if ((*redblockitr)->GetPattern() == (*greenblockitr)->GetPattern()) {
+							if (i < 4) {
+								matchCount[1][0]++;
+							}
+							else if (i > 3) {
+								matchCount[1][1]++;
+							}
+						}
+					}
+					i += 2;
+				}
+			}
+			//カウントが超えた場合消す
+			for (int i = 0; i < 2; i++) {
+				//赤
+				for (auto redblockitr2 = redBlockList.begin(); redblockitr2 != redBlockList.end(); ++redblockitr2) {
+					if (matchCount[i][0] > deleteConnectNum) {
+						(*redblockitr)->SetDelete(true, false, false);
+						if ((*redblockitr2)->GetPositionX() == connectPos[0] && (*redblockitr2)->GetPositionY() == connectPos[1]) {
+							(*redblockitr2)->SetDelete(true, false, false);
+						}
+						if ((*redblockitr2)->GetPositionX() == connectPos[2] && (*redblockitr2)->GetPositionY() == connectPos[3]) {
+							(*redblockitr2)->SetDelete(true, false, false);
+						}
+					}
+					if (matchCount[i][1] > deleteConnectNum) {
+						(*redblockitr)->SetDelete(true, false, false);
+						if ((*redblockitr2)->GetPositionX() == connectPos[4] && (*redblockitr2)->GetPositionY() == connectPos[5]) {
+							(*redblockitr2)->SetDelete(true, false, false);
+						}
+						if ((*redblockitr2)->GetPositionX() == connectPos[6] && (*redblockitr2)->GetPositionY() == connectPos[7]) {
+							(*redblockitr2)->SetDelete(true, false, false);
+						}
+					}
+				}
+				//青
+				for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+					//柄一致のみ
+					if (matchCount[i][1] > deleteConnectNum) {
+						(*redblockitr)->SetDelete(true, false, false);
+						if ((*blueblockitr)->GetPositionX() == connectPos[4] && (*blueblockitr)->GetPositionY() == connectPos[5]) {
+							(*blueblockitr)->SetDelete(true, false, false);
+						}
+						if ((*blueblockitr)->GetPositionX() == connectPos[6] && (*blueblockitr)->GetPositionY() == connectPos[7]) {
+							(*blueblockitr)->SetDelete(true, false, false);
+						}
+					}
+				}
+				//緑
+				for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+					//柄一致のみ
+					if (matchCount[i][1] > deleteConnectNum) {
+						(*redblockitr)->SetDelete(true, false, false);
+						if ((*greenblockitr)->GetPositionX() == connectPos[4] && (*greenblockitr)->GetPositionY() == connectPos[5]) {
+							(*greenblockitr)->SetDelete(true, false, false);
+						}
+						if ((*greenblockitr)->GetPositionX() == connectPos[6] && (*greenblockitr)->GetPositionY() == connectPos[7]) {
+							(*greenblockitr)->SetDelete(true, false, false);
+						}
+					}
+				}
+			}
+			//両一致チェック
+			//上下
+			if (matchCount[0][0] > deleteConnectNum && matchCount[1][0] > deleteConnectNum) {
+				//赤
+				for (auto redblockitr2 = redBlockList.begin(); redblockitr2 != redBlockList.end(); ++redblockitr2) {
+					(*redblockitr)->SetDelete(true, true, false);
+					if ((*redblockitr2)->GetPositionX() == connectPos[0] && (*redblockitr2)->GetPositionY() == connectPos[1]) {
+						(*redblockitr2)->SetDelete(true, true, false);
+					}
+					if ((*redblockitr2)->GetPositionX() == connectPos[2] && (*redblockitr2)->GetPositionY() == connectPos[3]) {
+						(*redblockitr2)->SetDelete(true, true, false);
+					}
+				}
+			}
+			//左右
+			if (matchCount[0][1] > deleteConnectNum && matchCount[1][1] > deleteConnectNum) {
+				//赤
+				for (auto redblockitr2 = redBlockList.begin(); redblockitr2 != redBlockList.end(); ++redblockitr2) {
+					(*redblockitr)->SetDelete(true, true, false);
+					if ((*redblockitr2)->GetPositionX() == connectPos[4] && (*redblockitr2)->GetPositionY() == connectPos[5]) {
+						(*redblockitr2)->SetDelete(true, true, false);
+					}
+					if ((*redblockitr2)->GetPositionX() == connectPos[6] && (*redblockitr2)->GetPositionY() == connectPos[7]) {
+						(*redblockitr2)->SetDelete(true, true, false);
+					}
+				}
+			}
+		}
+	}
+	//青
+	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+		if (!(*blueblockitr)->GetIsFall()) {
+			//接続確認
+			//隣接したブロックの座標取得
+			float connectPos[8];
+			//上
+			connectPos[0] = (*blueblockitr)->GetPositionX();
+			connectPos[1] = (*blueblockitr)->GetPositionY() - (*blueblockitr)->GetSize() - halfSize;
+			//下
+			connectPos[2] = (*blueblockitr)->GetPositionX();
+			connectPos[3] = (*blueblockitr)->GetPositionY() + (*blueblockitr)->GetSize() + halfSize;
+			//左
+			connectPos[4] = (*blueblockitr)->GetPositionX() - (*blueblockitr)->GetSize() - halfSize;
+			connectPos[5] = (*blueblockitr)->GetPositionY();
+			//右
+			connectPos[6] = (*blueblockitr)->GetPositionX() + (*blueblockitr)->GetSize() + halfSize;
+			connectPos[7] = (*blueblockitr)->GetPositionY();
+			//一致した場合のみカウント、2以上で消える
+			int matchCount[2][2] = { { 0,0 },{0,0} };	//{{縦色,横色},{縦柄,横柄}}
 
+			//各色ごとに接続確認
+			//青
+			for (auto blueblockitr2 = blueBlockList.begin(); blueblockitr2 != blueBlockList.end(); ++blueblockitr2) {
+				//自分自身は弾く
+				if (blueblockitr != blueblockitr2) {
+					for (int i = 0; i < 8; i) {
+						//上下左右の順で接続チェック
+						if (connectPos[i] == (*blueblockitr2)->GetPositionX() && connectPos[i + 1] == (*blueblockitr2)->GetPositionY()) {
+							//同じ色は確定なので条件分岐させる必要なし
+							if (i < 4) {
+								matchCount[0][0]++;
+							}
+							else if (i > 3) {
+								matchCount[0][1]++;
+							}
+							//柄一致確認
+							if ((*blueblockitr)->GetPattern() == (*blueblockitr2)->GetPattern()) {
+								if (i < 4) {
+									matchCount[1][0]++;
+								}
+								else if (i > 3) {
+									matchCount[1][1]++;
+								}
+							}
+						}
+						i += 2;
+					}
+				}
+			}
+			//赤
+			for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+				for (int i = 0; i < 8; i) {
+					//上下左右の順で接続チェック
+					if (connectPos[i] == (*redblockitr)->GetPositionX() && connectPos[i + 1] == (*redblockitr)->GetPositionY()) {
+						//柄一致確認
+						if ((*blueblockitr)->GetPattern() == (*redblockitr)->GetPattern()) {
+							if (i < 4) {
+								matchCount[1][0]++;
+							}
+							else if (i > 3) {
+								matchCount[1][1]++;
+							}
+						}
+					}
+					i += 2;
+				}
+			}
+			//緑
+			for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+				for (int i = 0; i < 8; i) {
+					//上下左右の順で接続チェック
+					if (connectPos[i] == (*greenblockitr)->GetPositionX() && connectPos[i + 1] == (*greenblockitr)->GetPositionY()) {
+						//柄一致確認
+						if ((*blueblockitr)->GetPattern() == (*greenblockitr)->GetPattern()) {
+							if (i < 4) {
+								matchCount[1][0]++;
+							}
+							else if (i > 3) {
+								matchCount[1][1]++;
+							}
+						}
+					}
+					i += 2;
+				}
+			}
+			//カウントが超えた場合消す
+			for (int i = 0; i < 2; i++) {
+				//青
+				for (auto blueblockitr2 = blueBlockList.begin(); blueblockitr2 != blueBlockList.end(); ++blueblockitr2) {
+					if (matchCount[i][0] > deleteConnectNum) {
+						(*blueblockitr)->SetDelete(true, false, false);
+						if ((*blueblockitr2)->GetPositionX() == connectPos[0] && (*blueblockitr2)->GetPositionY() == connectPos[1]) {
+							(*blueblockitr2)->SetDelete(true, false, false);
+						}
+						if ((*blueblockitr2)->GetPositionX() == connectPos[2] && (*blueblockitr2)->GetPositionY() == connectPos[3]) {
+							(*blueblockitr2)->SetDelete(true, false, false);
+						}
+					}
+					if (matchCount[i][1] > deleteConnectNum) {
+						(*blueblockitr)->SetDelete(true, false, false);
+						if ((*blueblockitr2)->GetPositionX() == connectPos[4] && (*blueblockitr2)->GetPositionY() == connectPos[5]) {
+							(*blueblockitr2)->SetDelete(true, false, false);
+						}
+						if ((*blueblockitr2)->GetPositionX() == connectPos[6] && (*blueblockitr2)->GetPositionY() == connectPos[7]) {
+							(*blueblockitr2)->SetDelete(true, false, false);
+						}
+					}
+				}
+				//赤
+				for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+					//柄一致のみ
+					if (matchCount[i][1] > deleteConnectNum) {
+						(*blueblockitr)->SetDelete(true, false, false);
+						if ((*redblockitr)->GetPositionX() == connectPos[4] && (*redblockitr)->GetPositionY() == connectPos[5]) {
+							(*redblockitr)->SetDelete(true, false, false);
+						}
+						if ((*redblockitr)->GetPositionX() == connectPos[6] && (*redblockitr)->GetPositionY() == connectPos[7]) {
+							(*redblockitr)->SetDelete(true, false, false);
+						}
+					}
+				}
+				//緑
+				for (auto greenblockitr = redBlockList.begin(); greenblockitr != redBlockList.end(); ++greenblockitr) {
+					//柄一致のみ
+					if (matchCount[i][1] > deleteConnectNum) {
+						(*blueblockitr)->SetDelete(true, false, false);
+						if ((*greenblockitr)->GetPositionX() == connectPos[4] && (*greenblockitr)->GetPositionY() == connectPos[5]) {
+							(*greenblockitr)->SetDelete(true, false, false);
+						}
+						if ((*greenblockitr)->GetPositionX() == connectPos[6] && (*greenblockitr)->GetPositionY() == connectPos[7]) {
+							(*greenblockitr)->SetDelete(true, false, false);
+						}
+					}
+				}
+			}
+			//両一致チェック
+			//上下
+			if (matchCount[0][0] > deleteConnectNum && matchCount[1][0] > deleteConnectNum) {
+				//赤
+				for (auto blueblockitr2 = blueBlockList.begin(); blueblockitr2 != blueBlockList.end(); ++blueblockitr2) {
+					(*blueblockitr)->SetDelete(true, true, false);
+					if ((*blueblockitr2)->GetPositionX() == connectPos[0] && (*blueblockitr2)->GetPositionY() == connectPos[1]) {
+						(*blueblockitr2)->SetDelete(true, true, false);
+					}
+					if ((*blueblockitr2)->GetPositionX() == connectPos[2] && (*blueblockitr2)->GetPositionY() == connectPos[3]) {
+						(*blueblockitr2)->SetDelete(true, true, false);
+					}
+				}
+			}
+			//左右
+			if (matchCount[0][1] > deleteConnectNum && matchCount[1][1] > deleteConnectNum) {
+				//赤
+				for (auto blueblockitr2 = blueBlockList.begin(); blueblockitr2 != blueBlockList.end(); ++blueblockitr2) {
+					(*blueblockitr)->SetDelete(true, true, false);
+					if ((*blueblockitr2)->GetPositionX() == connectPos[4] && (*blueblockitr2)->GetPositionY() == connectPos[5]) {
+						(*blueblockitr2)->SetDelete(true, true, false);
+					}
+					if ((*blueblockitr2)->GetPositionX() == connectPos[6] && (*blueblockitr2)->GetPositionY() == connectPos[7]) {
+						(*blueblockitr2)->SetDelete(true, true, false);
+					}
+				}
+			}
+		}
+	}
+	//緑
+	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+		if (!(*greenblockitr)->GetIsFall()) {
+			//接続確認
+			//隣接したブロックの座標取得
+			float connectPos[8];
+			//上
+			connectPos[0] = (*greenblockitr)->GetPositionX();
+			connectPos[1] = (*greenblockitr)->GetPositionY() - (*greenblockitr)->GetSize() - halfSize;
+			//下
+			connectPos[2] = (*greenblockitr)->GetPositionX();
+			connectPos[3] = (*greenblockitr)->GetPositionY() + (*greenblockitr)->GetSize() + halfSize;
+			//左
+			connectPos[4] = (*greenblockitr)->GetPositionX() - (*greenblockitr)->GetSize() - halfSize;
+			connectPos[5] = (*greenblockitr)->GetPositionY();
+			//右
+			connectPos[6] = (*greenblockitr)->GetPositionX() + (*greenblockitr)->GetSize() + halfSize;
+			connectPos[7] = (*greenblockitr)->GetPositionY();
+			//一致した場合のみカウント、2以上で消える
+			int matchCount[2][2] = { { 0,0 },{0,0} };	//{{縦色,横色},{縦柄,横柄}}
 
+			//各色ごとに接続確認
+			//緑
+			for (auto greenblockitr2 = greenBlockList.begin(); greenblockitr2 != greenBlockList.end(); ++greenblockitr2) {
+				//自分自身は弾く
+				if (greenblockitr != greenblockitr2) {
+					for (int i = 0; i < 8; i) {
+						//上下左右の順で接続チェック
+						if (connectPos[i] == (*greenblockitr2)->GetPositionX() && connectPos[i + 1] == (*greenblockitr2)->GetPositionY()) {
+							//同じ色は確定なので条件分岐させる必要なし
+							if (i < 4) {
+								matchCount[0][0]++;
+							}
+							else if (i > 3) {
+								matchCount[0][1]++;
+							}
+							//柄一致確認
+							if ((*greenblockitr)->GetPattern() == (*greenblockitr2)->GetPattern()) {
+								if (i < 4) {
+									matchCount[1][0]++;
+								}
+								else if (i > 3) {
+									matchCount[1][1]++;
+								}
+							}
+						}
+						i += 2;
+					}
+				}
+			}
+			//赤
+			for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+				for (int i = 0; i < 8; i) {
+					//上下左右の順で接続チェック
+					if (connectPos[i] == (*redblockitr)->GetPositionX() && connectPos[i + 1] == (*redblockitr)->GetPositionY()) {
+						//柄一致確認
+						if ((*greenblockitr)->GetPattern() == (*redblockitr)->GetPattern()) {
+							if (i < 4) {
+								matchCount[1][0]++;
+							}
+							else if (i > 3) {
+								matchCount[1][1]++;
+							}
+						}
+					}
+					i += 2;
+				}
+			}
+			//青
+			for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+				for (int i = 0; i < 8; i) {
+					//上下左右の順で接続チェック
+					if (connectPos[i] == (*blueblockitr)->GetPositionX() && connectPos[i + 1] == (*blueblockitr)->GetPositionY()) {
+						//柄一致確認
+						if ((*greenblockitr)->GetPattern() == (*blueblockitr)->GetPattern()) {
+							if (i < 4) {
+								matchCount[1][0]++;
+							}
+							else if (i > 3) {
+								matchCount[1][1]++;
+							}
+						}
+					}
+					i += 2;
+				}
+			}
+			//カウントが超えた場合消す
+			for (int i = 0; i < 2; i++) {
+				//緑
+				for (auto greenblockitr2 = greenBlockList.begin(); greenblockitr2 != greenBlockList.end(); ++greenblockitr2) {
+					if (matchCount[i][0] > deleteConnectNum) {
+						(*greenblockitr)->SetDelete(true, false, false);
+						if ((*greenblockitr2)->GetPositionX() == connectPos[0] && (*greenblockitr2)->GetPositionY() == connectPos[1]) {
+							(*greenblockitr2)->SetDelete(true, false, false);
+						}
+						if ((*greenblockitr2)->GetPositionX() == connectPos[2] && (*greenblockitr2)->GetPositionY() == connectPos[3]) {
+							(*greenblockitr2)->SetDelete(true, false, false);
+						}
+					}
+					if (matchCount[i][1] > deleteConnectNum) {
+						(*greenblockitr)->SetDelete(true, false, false);
+						if ((*greenblockitr2)->GetPositionX() == connectPos[4] && (*greenblockitr2)->GetPositionY() == connectPos[5]) {
+							(*greenblockitr2)->SetDelete(true, false, false);
+						}
+						if ((*greenblockitr2)->GetPositionX() == connectPos[6] && (*greenblockitr2)->GetPositionY() == connectPos[7]) {
+							(*greenblockitr2)->SetDelete(true, false, false);
+						}
+					}
+				}
+				//赤
+				for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+					//柄一致のみ
+					if (matchCount[i][1] > deleteConnectNum) {
+						(*greenblockitr)->SetDelete(true, false, false);
+						if ((*redblockitr)->GetPositionX() == connectPos[4] && (*redblockitr)->GetPositionY() == connectPos[5]) {
+							(*redblockitr)->SetDelete(true, false, false);
+						}
+						if ((*redblockitr)->GetPositionX() == connectPos[6] && (*redblockitr)->GetPositionY() == connectPos[7]) {
+							(*redblockitr)->SetDelete(true, false, false);
+						}
+					}
+				}
+				//青
+				for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+					//柄一致のみ
+					if (matchCount[i][1] > deleteConnectNum) {
+						(*blueblockitr)->SetDelete(true, false, false);
+						if ((*greenblockitr)->GetPositionX() == connectPos[4] && (*blueblockitr)->GetPositionY() == connectPos[5]) {
+							(*blueblockitr)->SetDelete(true, false, false);
+						}
+						if ((*blueblockitr)->GetPositionX() == connectPos[6] && (*blueblockitr)->GetPositionY() == connectPos[7]) {
+							(*blueblockitr)->SetDelete(true, false, false);
+						}
+					}
+				}
+			}
+			//両一致チェック
+			//上下
+			if (matchCount[0][0] > deleteConnectNum && matchCount[1][0] > deleteConnectNum) {
+				for (auto greenblockitr2 = greenBlockList.begin(); greenblockitr2 != greenBlockList.end(); ++greenblockitr2) {
+					(*greenblockitr)->SetDelete(true, true, false);
+					if ((*greenblockitr2)->GetPositionX() == connectPos[0] && (*greenblockitr2)->GetPositionY() == connectPos[1]) {
+						(*greenblockitr2)->SetDelete(true, true, false);
+					}
+					if ((*greenblockitr2)->GetPositionX() == connectPos[2] && (*greenblockitr2)->GetPositionY() == connectPos[3]) {
+						(*greenblockitr2)->SetDelete(true, true, false);
+					}
+				}
+			}
+			//左右
+			if (matchCount[0][1] > deleteConnectNum && matchCount[1][1] > deleteConnectNum) {
+				for (auto greenblockitr2 = greenBlockList.begin(); greenblockitr2 != greenBlockList.end(); ++greenblockitr2) {
+					(*greenblockitr)->SetDelete(true, true, false);
+					if ((*greenblockitr2)->GetPositionX() == connectPos[4] && (*greenblockitr2)->GetPositionY() == connectPos[5]) {
+						(*greenblockitr2)->SetDelete(true, true, false);
+					}
+					if ((*greenblockitr2)->GetPositionX() == connectPos[6] && (*greenblockitr2)->GetPositionY() == connectPos[7]) {
+						(*greenblockitr2)->SetDelete(true, true, false);
+					}
+				}
+			}
+		}
+	}
+
+	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+		if ((*redblockitr)->GetIsDelete()) {
+			countStart = true;
+		}
+	}
+	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+		if ((*blueblockitr)->GetIsDelete()) {
+			countStart = true;
+		}
+	}
+	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+		if ((*greenblockitr)->GetIsDelete()) {
+			countStart = true;
+		}
+
+	}
+	//巻き込み確認
+	//赤
+	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+		if ((*redblockitr)->GetDoubleMutch()) {
+			for (auto redblockitr2 = redBlockList.begin(); redblockitr2 != redBlockList.end(); ++redblockitr2) {
+				if ((*redblockitr2)->GetPattern() == (*redblockitr)->GetPattern()) {
+					if (!(*redblockitr2)->GetIsDelete()) {
+						(*redblockitr2)->SetDelete(false, false, true);
+					}
+				}
+			}
+		}
+	}
+	//青
+	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+		if ((*blueblockitr)->GetDoubleMutch()) {
+			for (auto blueblockitr2 = blueBlockList.begin(); blueblockitr2 != blueBlockList.end(); ++blueblockitr2) {
+				if ((*blueblockitr2)->GetPattern() == (*blueblockitr)->GetPattern()) {
+					if (!(*blueblockitr2)->GetIsDelete()) {
+						(*blueblockitr2)->SetDelete(false, false, true);
+					}
+				}
+			}
+		}
+	}
+	//緑
+	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+		if ((*greenblockitr)->GetDoubleMutch()) {
+			for (auto greenblockitr2 = greenBlockList.begin(); greenblockitr2 != greenBlockList.end(); ++greenblockitr2) {
+				if ((*greenblockitr2)->GetPattern() == (*greenblockitr)->GetPattern()) {
+					if (!(*greenblockitr2)->GetIsDelete()) {
+						(*greenblockitr2)->SetDelete(false, false, true);
+					}
+				}
+			}
+		}
+	}
+}

@@ -60,6 +60,17 @@ public:
 	/// ブロック地面着地
 	/// </summary>
 	void PileBlockToLand();
+private:
+	//接続状態チェック
+	void CheckConnect();
+	void IsConnect();
+	//巻き込みチェック※優先順位は通常消し > 巻き込み
+	void CheckInvolvement(int num);
+	//ブロック消去
+	void DeleteBlock();
+	//スコア加算
+	void AddScore();
+
 
 private: //構造体
 	//中央からのブロック配置位置　 0:左上 1:右上 2:右下 3:左下
@@ -127,4 +138,11 @@ private:
 	char keys[256];
 	// 1ループ(フレーム)前のキーボード情報
 	char oldkeys[256];
+
+	//接続->消えるまでの待機時間
+	const int maxTimer = 60;
+	int deleteTimer = 0;;
+	bool countStart = false;;	//カウント開始変数
+	const int halfSize = 24;
+	int deleteConnectNum = 1;	//消えるのに必要な数
 };
