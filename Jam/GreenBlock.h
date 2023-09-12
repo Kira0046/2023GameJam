@@ -61,10 +61,6 @@ public:
 		this->fall = fall;
 	}
 
-	void SetHit(bool hit) {
-
-		this->hit = hit;
-	}
 
 	/// <summary>
 	/// ゲッター
@@ -101,7 +97,6 @@ public:
 
 	bool hitright = false;
 
-	bool hit = false;
 
 private:
 	//模様  1: 2:

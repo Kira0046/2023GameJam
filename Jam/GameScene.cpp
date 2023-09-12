@@ -2583,42 +2583,6 @@ void GameScene::PileBlockToLand(){
 			}
 		}
 	}
-
-
-	/*{
-		for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
-			if ((*redblockitr)->fall == true) {
-				if ((*redblockitr)->GetPositionY() == 840) {
-					(*redblockitr)->SetHitDown(true);
-					SetBlockToFallFalse();
-
-					fallphase = 0;
-				}
-			}
-		}
-
-		for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
-			if ((*greenblockitr)->fall == true) {
-				if ((*greenblockitr)->GetPositionY() == 840) {
-					(*greenblockitr)->SetHitDown(true);
-					SetBlockToFallFalse();
-
-					fallphase = 0;
-				}
-			}
-		}
-
-		for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
-			if ((*blueblockitr)->fall == true) {
-				if ((*blueblockitr)->GetPositionY() == 840) {
-					(*blueblockitr)->SetHitDown(true);
-					SetBlockToFallFalse();
-
-					fallphase = 0;
-				}
-			}
-		}
-	}*/
 }
 
 void GameScene::SetBlockonLand(){
@@ -2663,7 +2627,7 @@ void GameScene::BlockFallProcess(){
 		blockfallupdatecount += 1;
 		blockfallupdatetime = 1;
 	}
-	if (blockfallupdatecount > 16) {
+	if (blockfallupdatecount > 20) {
 		BackToReset();
 	}
 }
@@ -2724,19 +2688,19 @@ void GameScene::BackToReset(){
 
 
 	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
-		if (/*(*redblockitr)->GetIshitDown() == true &&*/ (*redblockitr)->GetIsFall() == false) {
+		if ((*redblockitr)->GetIsFall() == false) {
 			redcheck = 1;
 		}
 	}
 
 	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
-		if (/*(*greenblockitr)->GetIshitDown() == true &&*/ (*greenblockitr)->GetIsFall() == false) {
+		if ((*greenblockitr)->GetIsFall() == false) {
 			greencheck = 1;
 		}
 	}
 
 	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
-		if (/*(*blueblockitr)->GetIshitDown() == true &&*/ (*blueblockitr)->GetIsFall() == false) {
+		if ((*blueblockitr)->GetIsFall() == false) {
 			bluecheck = 1;
 		}
 	}

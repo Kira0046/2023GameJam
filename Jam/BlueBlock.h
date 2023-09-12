@@ -55,10 +55,6 @@ public:
 		this->hitright = hitright;
 	}
 
-	void SetHit(bool hit) {
-
-		this->hit = hit;
-	}
 
 	void SetFall(bool fall) {
 		this->fall = fall;
@@ -99,7 +95,6 @@ public:
 
 	bool hitright = false;
 
-	bool hit = false;
 
 private:
 	//–Í—l  1: 2:

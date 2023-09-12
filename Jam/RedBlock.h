@@ -61,10 +61,7 @@ public:
 	}
 
 
-	void SetHit(bool hit) {
-
-		this->hit = hit;
-	}
+	
 
 	/// <summary>
 	/// ゲッター
@@ -89,8 +86,6 @@ public:
 
 	const bool& GetIshitRight() const { return hitright; }
 
-	const bool& GetIsHit() const { return hit; }
-
 	const bool& GetIsFall() const { return fall; }
 
 
@@ -105,7 +100,6 @@ public:
 
 	bool hitright = false;
 
-	bool hit = false;
 private:
 	//模様  1: 2:
 	int pattern = 0;
