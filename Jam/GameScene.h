@@ -88,6 +88,13 @@ private:
 	int creategreenblock = 0;
 	int createblueblock = 0;
 
+	bool redblocklefthit = false;
+	bool redblockrighthit = false;
+	bool greenblocklefthit = false;
+	bool greenblockrighthit = false;
+	bool blueblocklefthit = false;
+	bool blueblockrighthit = false;
+
 	// 最新のキーボード情報用
 	char keys[256];
 	// 1ループ(フレーム)前のキーボード情報

@@ -87,15 +87,6 @@ public:
 
 	const bool& GetIsFall() const { return fall; }
 
-private:
-	//模様  1: 2:
-	int pattern = 0;
-	//中央座標
-	int x = 0;
-	int y = 0;
-	//大きさ
-	int size = 24;
-
 	bool fall = true;
 
 	bool hitup = false;
@@ -107,5 +98,16 @@ private:
 	bool hitright = false;
 
 	bool hit = false;
+
+private:
+	//模様  1: 2:
+	int pattern = 0;
+	//中央座標
+	int x = 0;
+	int y = 0;
+	//大きさ
+	int size = 24;
+
+	
 };
 
