@@ -70,7 +70,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			menu.Update(keys,oldkeys);
 		}
 		else if (menu.GetSceneNum() == 2) {
-			block.Update();
+			block.Update(keys,oldkeys);
 		}
 		// •`‰æˆ—
 		if (menu.GetSceneNum() < 2) {

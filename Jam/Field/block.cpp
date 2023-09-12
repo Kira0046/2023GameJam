@@ -27,6 +27,7 @@ void Block::Initialize(int windowWidth, int windowHeight) {
 		block[i].isDelete = false;
 		block[i].doubleMutch = false;
 		block[i].involvement = false;
+		block[i].center = false;
 		for (int j = 0; j < connectNum; j++) {
 			block[i].connectionStatus[j] = false;
 		}
@@ -44,23 +45,38 @@ void Block::Initialize(int windowWidth, int windowHeight) {
 	deleteBlockNum = 0;
 	involvementBlockNum = 0;
 
-	//テスト設置
-	int numX = 0;
-	int numY = 1;
-	for (int i = 0; i < 142; i++) {
-		block[i].posX = float(fieldPosX[0]) + float(fieldFlameSizeX) + blockSizeX * numX;
-		block[i].posY = float(fieldPosY[0]) + fieldSizeY - float(fieldFlameSizeX) - blockSizeY * numY;
-		block[i].appearingNow = true;
-		block[i].colorPattern = GetRand(5);
-		numX++;
-		if (numX > 8) {
-			numX = 0;
-			numY++;
-		}
+	//操作系列
+	isControl = false;
+	speed = 1.0f;
+	level = 1.0f;
+	rotateNum = 0;	//0から上左右下の順
+
+	isDelete = false;
+
+	for (int i = 0; i < 28; i++) {
+		oldInput[i] = false;
 	}
+
+	////テスト設置
+	//int numX = 0;
+	//int numY = 1;
+	//for (int i = 0; i < 142; i++) {
+	//	block[i].posX = float(fieldPosX[0]) + float(fieldFlameSizeX) + blockSizeX * numX;
+	//	block[i].posY = float(fieldPosY[0]) + fieldSizeY - float(fieldFlameSizeX) - blockSizeY * numY;
+	//	block[i].appearingNow = true;
+	//	block[i].colorPattern = GetRand(5);
+	//	numX++;
+	//	if (numX > 8) {
+	//		numX = 0;
+	//		numY++;
+	//	}
+	//}
 }
 
-void Block::Update() {
+void Block::Update(char* keys, char* oldkeys) {
+	//操作
+	FallBlock(keys, oldkeys);
+
 	//接続確認
 	CheckConnect();
 
@@ -98,6 +114,194 @@ void Block::Draw() {
 	DrawFormatString(10, 40, GetColor(255, 255, 255), "DeleteTimer : %d", deleteTimer);
 }
 
+//操作
+void Block::FallBlock(char* keys, char* oldkeys) {
+	//操作中ブロックがないなら
+	if (!isControl && !isDelete) {
+		int counter = 0;
+		//フリーのブロックを探す
+		for (int i = 0; i < blockNum; i++) {
+			if (!block[i].appearingNow) {
+				block[i].appearingNow = true;
+				block[i].isControl = true;
+				block[i].colorPattern = GetRand(5);
+				if (counter < 1) {
+					block[i].center = true;	//中心の決定
+					block[i].posX = fieldPosX[0] + fieldFlameSizeX + blockSizeX * 4;
+					block[i].posY = fieldPosY[0] + fieldFlameSizeY;
+					centerPos[0] = block[i].posX;
+					centerPos[1] = block[i].posY;
+				}
+				counter++;	//2個探したら脱出
+				if (counter > 1) {
+					block[i].posX = fieldPosX[0] + fieldFlameSizeX + blockSizeX * 4;
+					block[i].posY = fieldPosY[0] + fieldFlameSizeY - blockSizeY;
+					break;
+				}
+			}
+		}
+		isControl = true;
+	}
+
+	for (int i = 0; i < blockNum; i++) {
+		if (block[i].isControl) {
+			block[i].posY += speed * level;
+		}
+		if (block[i].center) {	//中心ブロックの座標を常に取得
+			centerPos[0] = block[i].posX;
+			centerPos[1] = block[i].posY;
+		}
+	}
+	//回転
+	if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B) && !oldInput[5] || keys[KEY_INPUT_LEFT] && !oldkeys[KEY_INPUT_LEFT]) {
+		rotateNum++;
+		if (rotateNum > 3) {
+			rotateNum = 0;
+		}
+	}
+	else if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A) && !oldInput[4] || keys[KEY_INPUT_RIGHT] && !oldkeys[KEY_INPUT_RIGHT]) {
+		rotateNum--;
+		if (rotateNum < 0) {
+			rotateNum = 3;
+		}
+	}
+
+	//横移動
+	if (isControl) {
+		if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP) && !oldInput[0] || keys[KEY_INPUT_W] && !oldkeys[KEY_INPUT_W]) {
+		}
+		if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT) && !oldInput[1] || keys[KEY_INPUT_A] && !oldkeys[KEY_INPUT_A]) {
+			for (int i = 0; i < blockNum; i++) {
+				if (block[i].isControl) {
+					block[i].posX -= blockSizeX;
+					if (block[i].posX < fieldPosX[0] + fieldFlameSizeX) {
+						block[i].posX += blockSizeX;
+					}
+					else if (rotateNum == 1 && block[i].posX - blockSizeX < fieldPosX[0] + fieldFlameSizeX) {
+						block[i].posX += blockSizeX;
+					}
+				}
+			}
+		}
+		else if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT) && !oldInput[3] || keys[KEY_INPUT_D] && !oldkeys[KEY_INPUT_D]) {
+			for (int i = 0; i < blockNum; i++) {
+				if (block[i].isControl) {
+					block[i].posX += blockSizeX;
+					if (block[i].posX + blockSizeX > fieldPosX[0] + fieldSizeX - fieldFlameSizeX) {
+						block[i].posX -= blockSizeX;
+					}
+					else if (rotateNum == 3 && block[i].posX + blockSizeX * 2 > fieldPosX[0] + fieldSizeX - fieldFlameSizeX) {
+						block[i].posX -= blockSizeX;
+					}
+				}
+			}
+		}
+		if ((GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN) || keys[KEY_INPUT_S]) {
+			//クイックドロップ
+			for (int i = 0; i < blockNum; i++) {
+				if (block[i].isControl) {
+					block[i].posY += speed * 16 * level;
+					if (block[i].center) {	//中心ブロックの座標を常に取得
+						centerPos[0] = block[i].posX;
+						centerPos[1] = block[i].posY;
+					}
+				}
+			}
+		}
+
+		//番号に合わせてブロックの位置変更※上左下右の順
+		if (rotateNum == 0) {
+			for (int i = 0; i < blockNum; i++) {
+				if (!block[i].center && block[i].isControl) {
+					block[i].posX = centerPos[0];
+					block[i].posY = centerPos[1] - blockSizeY;
+				}
+			}
+		}
+		else if (rotateNum == 1) {
+			for (int i = 0; i < blockNum; i++) {
+				if (!block[i].center && block[i].isControl) {
+					block[i].posX = centerPos[0] - blockSizeX;
+					block[i].posY = centerPos[1];
+				}
+			}
+		}
+		else if (rotateNum == 2) {
+			for (int i = 0; i < blockNum; i++) {
+				if (!block[i].center && block[i].isControl) {
+					block[i].posX = centerPos[0];
+					block[i].posY = centerPos[1] + blockSizeY;
+				}
+			}
+		}
+		else if (rotateNum == 3) {
+			for (int i = 0; i < blockNum; i++) {
+				if (!block[i].center && block[i].isControl) {
+					block[i].posX = centerPos[0] + blockSizeX;
+					block[i].posY = centerPos[1];
+				}
+			}
+		}
+	}
+
+	//めり込み回避
+	for (int i = 0; i < blockNum; i++) {
+		if (block[i].center) {
+			if (rotateNum == 1 && block[i].posX == fieldPosX[0] + fieldFlameSizeX) {
+				block[i].posX += blockSizeX;
+			}
+			if (rotateNum == 3 && block[i].posX + blockSizeX == fieldPosX[0] + fieldSizeX - fieldFlameSizeX) {
+				block[i].posX -= blockSizeX;
+			}
+		}
+	}
+
+	//着地処理
+	for (int i = 0; i < blockNum; i++) {
+		if (block[i].isControl) {
+			if (block[i].posY + blockSizeY > fieldPosY[0] + fieldSizeY - fieldFlameSizeY) {
+				block[i].posY = fieldPosY[0] + fieldSizeY - fieldFlameSizeY - blockSizeY;
+				if (block[i].center && rotateNum == 0) {
+					for (int j = 0; j < blockNum; j++) {
+						if (block[j].isControl) {
+							block[j].isControl = false;
+						}
+					}
+				}
+				else if (!block[i].center && rotateNum == 2) {
+					for (int j = 0; j < blockNum; j++) {
+						if (block[j].center) {
+							block[j].center = false;
+						}
+					}
+				}
+				block[i].isControl = false;
+				block[i].center = false;
+				isControl = false;
+				//i++;
+			}
+		}
+	}
+	for (int i = 0; i < blockNum; i++) {
+		if (block[i].isControl) {
+			for (int j = 0; j < blockNum; j++) {
+				if (block[j].appearingNow && !block[j].isControl) {
+					if (block[i].posX == block[j].posX) {
+						if (block[i].posY + blockSizeY == block[j].posY) {
+							block[i].posY = block[j].posY - blockSizeY;
+							block[i].isControl = false;
+							block[i].center = false;
+							isControl = false;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	CheckOldInput();
+}
+
 //接続チェック
 void Block::CheckConnect() {
 	//全ブロックについて
@@ -105,11 +309,12 @@ void Block::CheckConnect() {
 		//フィールドにあるかチェック
 		if (block[i].appearingNow) {
 			//落下状態ではないことのチェック
-			if (!block[i].isFall) {
+			if (!block[i].isFall && !block[i].isControl) {
 				//接続確認
 				IsConnect(i);
 				if (block[i].isDelete) {
 					countStart = true;
+					isDelete = true;
 				}
 			}
 		}
@@ -270,6 +475,7 @@ void Block::DeleteBlock() {
 			//連鎖カウント加算
 			chain++;
 		}
+		isDelete = false;
 	}
 }
 
@@ -314,4 +520,13 @@ void Block::AllReset() {
 	canChain = false;
 	deleteBlockNum = 0;
 	involvementBlockNum = 0;
+}
+
+void Block::CheckOldInput() {
+	oldInput[0] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP);
+	oldInput[1] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT);
+	oldInput[2] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN);
+	oldInput[3] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT);
+	oldInput[4] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_A);
+	oldInput[5] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_B);
 }

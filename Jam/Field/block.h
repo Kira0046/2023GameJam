@@ -13,6 +13,7 @@ struct BlockData {
 	bool isDelete;	//消える？
 	bool doubleMutch;	//両一致判定
 	bool involvement;	//巻き込み判定
+	bool center;	//操作中ブロックの中心
 };
 
 class Block {
@@ -20,12 +21,17 @@ public:
 	//初期化
 	void Initialize(int windowWidth,int windowHeight);
 	//更新
-	void Update();
+	void Update(char* keys, char* oldkeys);
 	//描画
 	void Draw();
 	//リセット
 	void AllReset();
 private:
+	//操作
+	void FallBlock(char* keys, char* oldkeys);
+	//直前の操作読み込み
+	void CheckOldInput();
+
 	//接続状態チェック
 	void CheckConnect();
 	void IsConnect(int num);
@@ -69,6 +75,17 @@ private:
 	int deleteTimer;
 	bool countStart;	//カウント開始変数
 
+	//操作中ブロックの有無の変数
+	bool isControl;
+
+	//スピード
+	float speed;
+	float level;	//レベル（エンドレス用）
+
+	//回転用
+	int rotateNum;
+	float centerPos[2];	//中心ブロックの座標
+
 	//スコア
 	int score;
 	//最大スコア
@@ -83,4 +100,9 @@ private:
 	//削除ブロックカウント
 	int deleteBlockNum;
 	int involvementBlockNum;
+	//今消えてますよーってフラグ
+	bool isDelete;
+
+	//ジョイパッド
+	int oldInput[28];	
 };
