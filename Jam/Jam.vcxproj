@@ -90,12 +90,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\select;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\Field;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Resource;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Dxlib;C:\DxLib_VC3_24b\DxLib_VC\プロジェクトに追加すべきファイル_VC用;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\system;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\select;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\Field;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Resource;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Dxlib;C:\DxLib_VC3_24b\DxLib_VC\プロジェクトに追加すべきファイル_VC用;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\select;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\Field;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Resource;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Dxlib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\system;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\select;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\Field;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Resource;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Dxlib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -125,29 +125,37 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\select;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\Field;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Resource;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Dxlib;C:\DxLib_VC3_24b\DxLib_VC;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\system;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\select;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\Field;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Resource;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Dxlib;C:\DxLib_VC3_24b\DxLib_VC;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\select;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\Field;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Resource;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Dxlib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\system;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\select;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Jam\Field;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Resource;C:\デスクトップ移行先\学校制作物\10daysjam_2023\クローン2\Dxlib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Field\block.cpp" />
+    <ClCompile Include="Field\BlueBlock.cpp" />
+    <ClCompile Include="Field\GreenBlock.cpp" />
+    <ClCompile Include="Field\RedBlock.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="select\menu.cpp" />
+    <ClCompile Include="system\GameScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Field\block.h" />
+    <ClInclude Include="Field\BlueBlock.h" />
+    <ClInclude Include="Field\GreenBlock.h" />
+    <ClInclude Include="Field\RedBlock.h" />
     <ClInclude Include="select\easing.h" />
     <ClInclude Include="select\menu.h" />
+    <ClInclude Include="system\GameScene.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

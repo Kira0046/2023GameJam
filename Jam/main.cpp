@@ -1,6 +1,8 @@
 #include "DxLib.h"
+#include "GameScene.h"
 #include "block.h"
 #include "menu.h"
+#pragma warning(disable:4819)
 
 // ウィンドウのタイトルに表示する文字列
 const char TITLE[] = "カラガラ";
@@ -49,6 +51,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	block.Initialize(WIN_WIDTH,WIN_HEIGHT);
 	menu.Initialize(WIN_WIDTH,WIN_HEIGHT);
 
+	// ゲームループで使う変数の宣言
+	GameScene* gameScene = new GameScene();
+	gameScene->Initialize();
+
 	// 最新のキーボード情報用
 	char keys[256] = { 0 };
 
@@ -70,7 +76,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			menu.Update(keys,oldkeys);
 		}
 		else if (menu.GetSceneNum() == 2) {
-			block.Update();
+			gameScene->Update();
+			//block.Update();
 		}
 		// 描画処理
 		if (menu.GetSceneNum() < 2) {
@@ -78,11 +85,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		}
 		else if (menu.GetSceneNum() == 2) {
 			block.Draw();
+			gameScene->Draw();
 		}
 
 		for (int i = 0; i < 256; i++) {
 			oldkeys[i] = keys[i];
 		}
+
+		// 更新処理
+		
+
+		// 描画処理
+		
 
 		//---------  ここまでにプログラムを記述  ---------//
 		// (ダブルバッファ)裏面
