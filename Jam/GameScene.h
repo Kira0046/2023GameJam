@@ -61,6 +61,26 @@ public:
 	/// </summary>
 	void PileBlockToLand();
 
+	void SetBlockonLand();
+
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void BlockFallProcess();
+
+	/// <summary>
+	/// ブロック落下化
+	/// </summary>
+	void BlockFallSetting();
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void BlockToFall();
+
+	void BackToReset();
+
 private: //構造体
 	//中央からのブロック配置位置　 0:左上 1:右上 2:右下 3:左下
 	struct BlockLayoutPosition {
@@ -75,6 +95,8 @@ private:
 	int fallphase = 0;
 	//落下更新待機時間
 	int fallupdatetime = 60;
+	//ブロック落下更新待期時間
+	int blockfallupdatetime = 10;
 	//移動量
 	int amountmovement = 48;
 

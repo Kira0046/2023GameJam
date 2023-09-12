@@ -23,3 +23,7 @@ void BlueBlock::Draw() {
 	}
 
 }
+
+void BlueBlock::MoveY(){
+	y += 48;
+}

@@ -25,3 +25,7 @@ void GreenBlock::Draw() {
 	}
 	
 }
+
+void GreenBlock::MoveY(){
+	y += 48;
+}

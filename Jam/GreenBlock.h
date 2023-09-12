@@ -27,6 +27,9 @@ public:
 	/// </summary>
 	void Draw();
 
+
+	void MoveY();
+
 	/// <summary>
 	/// セッター
 	/// </summary>

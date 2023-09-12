@@ -25,3 +25,7 @@ void RedBlock::Draw() {
 	}
 	
 }
+
+void RedBlock::MoveY(){
+	y += 48;
+}
