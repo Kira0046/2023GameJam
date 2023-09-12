@@ -40,7 +40,8 @@ void GameScene::Update() {
 		createblueblock = 0;
 
 		fallupdatetime = 60;
-		blockfallupdatetime = 10;
+		blockfallupdatetime = 1;
+		blockfallupdatecount = 0;
 
 		fallphase = 1;
 	}
@@ -2659,8 +2660,11 @@ void GameScene::BlockFallProcess(){
 			(*blueblockitr)->SetHitDown(false);
 		}
 
-		blockfallupdatetime = 10;
-
+		blockfallupdatecount += 1;
+		blockfallupdatetime = 1;
+	}
+	if (blockfallupdatecount > 16) {
+		BackToReset();
 	}
 }
 
@@ -2741,7 +2745,4 @@ void GameScene::BackToReset(){
 		fallphase = 0;
 	}
 }
-
-
-
 

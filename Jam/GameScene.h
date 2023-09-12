@@ -96,7 +96,8 @@ private:
 	//落下更新待機時間
 	int fallupdatetime = 60;
 	//ブロック落下更新待期時間
-	int blockfallupdatetime = 10;
+	int blockfallupdatetime = 1;
+	int blockfallupdatecount = 0;
 	//移動量
 	int amountmovement = 48;
 
