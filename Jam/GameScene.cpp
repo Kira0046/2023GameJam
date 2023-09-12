@@ -52,12 +52,14 @@ void GameScene::Update() {
 		FallingCalc();
 
 		PiledBlock();
-		if (centerY == 816) {
+
+		PileBlockToLand();
+		/*if (centerY == 816) {
 
 			SetBlockToFallFalse();
 
 			fallphase = 0;
-		}
+		}*/
 	}
 
 	if (fallphase == 3) {
@@ -2145,9 +2147,40 @@ void GameScene::SetBlockToFallFalse(){
 		(*greenblockitr)->SetFall(false);
 	}
 
-
 	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
 		(*blueblockitr)->SetFall(false);
+	}
+}
+
+void GameScene::PileBlockToLand(){
+	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+		if ((*redblockitr)->fall == true) {
+			if ((*redblockitr)->GetPositionY() == 840) {
+				SetBlockToFallFalse();
+
+				fallphase = 0;
+			}
+		}
+	}
+
+	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+		if ((*greenblockitr)->fall == true) {
+			if ((*greenblockitr)->GetPositionY() == 840) {
+				SetBlockToFallFalse();
+
+				fallphase = 0;
+			}
+		}
+	}
+
+	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+		if ((*blueblockitr)->fall == true) {
+			if ((*blueblockitr)->GetPositionY() == 840) {
+				SetBlockToFallFalse();
+
+				fallphase = 0;
+			}
+		}
 	}
 }
 
