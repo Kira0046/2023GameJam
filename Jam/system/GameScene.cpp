@@ -1152,7 +1152,7 @@ void GameScene::FallingCalc() {
 	FallingCollision();
 	if (fallupdatetime == 0) {
 		centerY += amountmovement;
-		fallupdatetime = 60;
+		fallupdatetime = 5;
 		FallBlockCalc();
 		for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
 			(*redblockitr)->SetHitUp(false);

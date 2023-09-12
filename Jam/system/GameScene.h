@@ -71,7 +71,7 @@ private:
 	//落下更新待機時間
 	int fallupdatetime = 60;
 	//移動量
-	int amountmovement = 48;
+	int amountmovement = 24;
 
 	//中央座標
 	int centerX = 0;
