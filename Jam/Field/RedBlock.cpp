@@ -83,3 +83,9 @@ void RedBlock::SetDelete(bool deleteFlag, bool doubkeMuctchFlag, bool involvemen
 		this->involvement = involvement;
 	}
 }
+
+void RedBlock::MoveY() {
+	//srand((unsigned)time(NULL));
+	fall = false;
+	y += 40;
+}

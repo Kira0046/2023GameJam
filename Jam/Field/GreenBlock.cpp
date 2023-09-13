@@ -81,3 +81,8 @@ void GreenBlock::SetDelete(bool deleteFlag, bool doubkeMuctchFlag, bool involvem
 		this->involvement = involvement;
 	}
 }
+
+void GreenBlock::MoveY() {
+	fall = false;
+	y += 48;
+}

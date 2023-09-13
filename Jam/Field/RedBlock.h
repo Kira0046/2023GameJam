@@ -27,6 +27,8 @@ public:
 	/// </summary>
 	void Draw();
 
+	void MoveY();
+
 	/// <summary>
 	/// セッター
 	/// </summary>
@@ -65,6 +67,14 @@ public:
 
 	void SetCenter(bool center) {
 		this->center = center;
+	}
+
+	void SetNumber(int num) {
+		this->Number = num;
+	}
+
+	void SetDelete(bool isdelete) {
+		this->isdelete = isdelete;
 	}
 
 	//uが上、dが下、lが左、rが右の意	0が色で1が柄
@@ -111,6 +121,8 @@ public:
 	bool hitright = false;
 
 	bool hit = false;
+
+	bool isdelete = false;
 private:
 	//模様  1: 2:
 	int pattern = 0;
@@ -142,5 +154,7 @@ private:
 	bool involvement = false;	//巻き込み判定
 
 	bool center = false;
+
+	int Number = 0;
 };
 

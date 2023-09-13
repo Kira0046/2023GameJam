@@ -81,14 +81,19 @@ public:
 
 	void BackToReset();
 
+	void DeleteBlock();
+
+	void SetNumber();
+
+	void DeleteBlockMove();
 private:
 	//接続状態チェック
-	void CheckConnect();
+	//void CheckConnect();
 	void IsConnect();
 	//巻き込みチェック※優先順位は通常消し > 巻き込み
 	void CheckInvolvement(int num);
 	//ブロック消去
-	void DeleteBlock();
+	//void DeleteBlock();
 	//スコア加算
 	void AddScore();
 
@@ -151,6 +156,14 @@ private:
 	int creategreenblock = 0;
 	int createblueblock = 0;
 
+	int allcreateredblock = 0;
+	int allcreategreenblock = 0;
+	int allcreateblueblock = 0;
+
+	int redNumber = 0;
+	int greenNumber = 0;
+	int blueNumber = 0;
+
 	bool redblocklefthit = false;
 	bool redblockrighthit = false;
 	bool greenblocklefthit = false;
@@ -162,6 +175,9 @@ private:
 	char keys[256];
 	// 1ループ(フレーム)前のキーボード情報
 	char oldkeys[256];
+
+	int test = 0;
+	int test2 = 0;
 
 	//接続->消えるまでの待機時間
 	const int maxTimer = 30;

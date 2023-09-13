@@ -79,3 +79,8 @@ void BlueBlock::SetDelete(bool deleteFlag, bool doubkeMuctchFlag, bool involveme
 		this->involvement = involvement;
 	}
 }
+
+void BlueBlock::MoveY() {
+	fall = false;
+	y += 48;
+}
