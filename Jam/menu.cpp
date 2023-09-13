@@ -134,17 +134,17 @@ void Menu::Update(char* keys, char* oldkeys) {
 				PlaySoundMem(soundHandlDecision, DX_PLAYTYPE_NORMAL, TRUE);
 			}
 			if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP]) {
+				PlaySoundMem(soundHandlCursorMove, DX_PLAYTYPE_NORMAL, TRUE);
 				barNum--;
 				if (barNum < 0) {
 					barNum = 4;
-					PlaySoundMem(soundHandlCursorMove, DX_PLAYTYPE_NORMAL, TRUE);
 				}
 			}
 			else if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN]) {
+				PlaySoundMem(soundHandlCursorMove, DX_PLAYTYPE_NORMAL, TRUE);
 				barNum++;
 				if (barNum > 4) {
 					barNum = 0;
-					PlaySoundMem(soundHandlCursorMove, DX_PLAYTYPE_NORMAL, TRUE);
 				}
 			}
 		}
