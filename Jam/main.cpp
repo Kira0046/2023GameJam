@@ -4,7 +4,7 @@
 #include "GameScene.h"
 
 // ウィンドウのタイトルに表示する文字列
-const char TITLE[] = "カラガラ";
+const char TITLE[] = "3048_カラガラ";
 
 // ウィンドウ横幅
 const int WIN_WIDTH = 1600;

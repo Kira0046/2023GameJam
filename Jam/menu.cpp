@@ -15,6 +15,7 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle02);
 	soundHandlDecision = LoadSoundMem("Resource/sound/決定ボタンを押す.mp3");
 	soundHandlCursorMove = LoadSoundMem("Resource/sound/カーソル移動.mp3");
+	soundHandlTitle = LoadSoundMem("Resource/sound/タイトル.mp3");
 	GetGraphSize(menuHandle[0], &barSizeX, &barSizeY);
 	for (int i = 0; i < menuNum; i++) {
 		//barPosX[i] = windowWidth / 4 - barSizeX / 2;
@@ -49,6 +50,7 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 
 void Menu::Update(char* keys, char* oldkeys) {
 	if (scene == 0) {
+		PlaySoundMem(soundHandlTitle, DX_PLAYTYPE_LOOP, TRUE);
 		if (!canControl && !logoEndMove) {
 			moveStartTimer--;
 			if (moveStartTimer < 0) {

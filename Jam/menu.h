@@ -58,6 +58,7 @@ private:
 	//サウンド
 	int soundHandlDecision;
 	int soundHandlCursorMove;
+	int soundHandlTitle;
 
 	//ナビ
 	int naviTitleHandle[2];
