@@ -124,12 +124,13 @@ private:
 	//落下フェーズ 0:配置待機 1:配置 2:落下　3:ブロック消し
 	int fallphase = 0;
 	//落下更新待機時間
-	int fallupdatetime = 5;
+	int fallupdatetime = 30;
 	//ブロック落下更新待期時間
 	int blockfallupdatetime = 1;
 	int blockfallupdatecount = 0;
 	//更新時間
-	const int maxUpdateTime = 5;
+	int maxUpdateTime = 30;
+	int defaultTime = 30;
 	//移動量
 	int amountmovement = 48;
 
@@ -203,4 +204,9 @@ private:
 	//回転処理
 	int rotateNum = 0;
 	int centerPos[2] = { 0,0 };
+
+	//ジョイパッド
+	int oldInput[4] = {0,0,0,0};	//左右と下
+	//向き
+	int direction = 0;
 };

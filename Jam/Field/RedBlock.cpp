@@ -50,9 +50,6 @@ void RedBlock::Draw() {
 			DrawGraph(x - size, y - size, involvementHnadle[1], true);
 		}
 	}
-	if (center) {
-		DrawGraph(x - size, y - size, involvementHnadle[1], true);
-	}
 }
 
 void RedBlock::SetMatch(bool u, bool d, bool l, bool r, int num) {

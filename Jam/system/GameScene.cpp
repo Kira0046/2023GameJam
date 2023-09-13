@@ -52,6 +52,10 @@ void GameScene::Update() {
 		creategreenblock = 0;
 		createblueblock = 0;
 
+		fallupdatetime = 60;
+		blockfallupdatetime = 1;
+		blockfallupdatecount = 0;
+
 		fallphase = 1;
 	}
 	//ブロック配置
@@ -80,19 +84,15 @@ void GameScene::Update() {
 		BlockFallProcess();
 	}
 
-	if (fallphase == 4) {
-		if (!countStart) {
-			//CheckConnect();
-		}
+	//直前の入力状態読み込み
+	oldInput[0] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP);
+	oldInput[1] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT);
+	oldInput[2] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN);
+	oldInput[3] = (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT);
 
-		DeleteBlock();
-
-		AddScore();
-	}
-
-	if (keys[KEY_INPUT_E] == 1 && oldkeys[KEY_INPUT_E] == 0) {
+	/*if (keys[KEY_INPUT_E] == 1 && oldkeys[KEY_INPUT_E] == 0) {
 		fallphase = 0;
-	}
+	}*/
 }
 
 void GameScene::Draw() {
@@ -137,11 +137,21 @@ void GameScene::Draw() {
 void GameScene::BlockLayoutSetting() {
 	//配置場所  i=0:左上 1:右上 2:右下 3:左下
 
+	direction = GetRand(2);
+
 	//色決定 0:配置しない　1:赤　2:緑  3:青
-	blocklayoutposition[0].blocklayoutcolor = rand() % 3 + 1;
-	blocklayoutposition[1].blocklayoutcolor = 0;
-	blocklayoutposition[2].blocklayoutcolor = 0;
-	blocklayoutposition[3].blocklayoutcolor = rand() % 3 + 1;
+	if (direction == 0) {
+		blocklayoutposition[0].blocklayoutcolor = rand() % 3 + 1;
+		blocklayoutposition[1].blocklayoutcolor = rand() % 3 + 1;
+		blocklayoutposition[2].blocklayoutcolor = 0;
+		blocklayoutposition[3].blocklayoutcolor = 0;
+	}
+	else if (direction == 1) {
+		blocklayoutposition[0].blocklayoutcolor = rand() % 3 + 1;
+		blocklayoutposition[1].blocklayoutcolor = 0;
+		blocklayoutposition[2].blocklayoutcolor = 0;
+		blocklayoutposition[3].blocklayoutcolor = rand() % 3 + 1;
+	}
 	for (int i = 0; i < 4; i++) {
 
 		//模様決定 1: 2:
@@ -726,8 +736,19 @@ void GameScene::BlockOperation() {
 			}
 		}
 	}
+	if (keys[KEY_INPUT_S] == 1 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_DOWN)) {
+		maxUpdateTime = 2;
+		if (fallupdatetime > 2) {
+			fallupdatetime = 2;
+		}
+	}
+	else {
+		maxUpdateTime = defaultTime;
+	}
+
+
 	if (redblocklefthit == false && greenblocklefthit == false && blueblocklefthit == false) {
-		if (keys[KEY_INPUT_A] == 1 && oldkeys[KEY_INPUT_A] == 0) {
+		if (keys[KEY_INPUT_A] == 1 && oldkeys[KEY_INPUT_A] == 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_LEFT) && !oldInput[1]) {
 			centerX -= amountmovement;
 			{
 				///赤
@@ -968,7 +989,7 @@ void GameScene::BlockOperation() {
 	}
 
 	if (redblockrighthit == false && greenblockrighthit == false && blueblockrighthit == false) {
-		if (keys[KEY_INPUT_D] == 1 && oldkeys[KEY_INPUT_D] == 0) {
+		if (keys[KEY_INPUT_D] == 1 && oldkeys[KEY_INPUT_D] == 0 || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_RIGHT) && !oldInput[3]) {
 			centerX += amountmovement;
 			{
 				///赤
@@ -2405,7 +2426,7 @@ void GameScene::PileBlockToLand() {
 					--itr;
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2423,7 +2444,7 @@ void GameScene::PileBlockToLand() {
 					--itr;
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2439,7 +2460,7 @@ void GameScene::PileBlockToLand() {
 					auto itr = redBlockList.end();
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2453,7 +2474,7 @@ void GameScene::PileBlockToLand() {
 				}
 				if (!redBlockList.empty()) {
 
-					if (redBlockList.back()->GetPositionY() == 840) {
+					if (redBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2475,7 +2496,7 @@ void GameScene::PileBlockToLand() {
 					--itr;
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2491,7 +2512,7 @@ void GameScene::PileBlockToLand() {
 					auto itr = redBlockList.end();
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2505,7 +2526,7 @@ void GameScene::PileBlockToLand() {
 				}
 				if (!redBlockList.empty()) {
 
-					if (redBlockList.back()->GetPositionY() == 840) {
+					if (redBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2525,7 +2546,7 @@ void GameScene::PileBlockToLand() {
 					auto itr = redBlockList.end();
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2539,7 +2560,7 @@ void GameScene::PileBlockToLand() {
 				}
 				if (!redBlockList.empty()) {
 
-					if (redBlockList.back()->GetPositionY() == 840) {
+					if (redBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2557,7 +2578,7 @@ void GameScene::PileBlockToLand() {
 			if (createredblock == 1) {
 				if (!redBlockList.empty()) {
 
-					if (redBlockList.back()->GetPositionY() == 840) {
+					if (redBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2584,7 +2605,7 @@ void GameScene::PileBlockToLand() {
 					--itr;
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2601,7 +2622,7 @@ void GameScene::PileBlockToLand() {
 					--itr;
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2617,7 +2638,7 @@ void GameScene::PileBlockToLand() {
 					auto itr = greenBlockList.end();
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2631,7 +2652,7 @@ void GameScene::PileBlockToLand() {
 				}
 				if (!greenBlockList.empty()) {
 
-					if (greenBlockList.back()->GetPositionY() == 840) {
+					if (greenBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2654,7 +2675,7 @@ void GameScene::PileBlockToLand() {
 					--itr;
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2670,7 +2691,7 @@ void GameScene::PileBlockToLand() {
 					auto itr = greenBlockList.end();
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2684,7 +2705,7 @@ void GameScene::PileBlockToLand() {
 				}
 				if (!greenBlockList.empty()) {
 
-					if (greenBlockList.back()->GetPositionY() == 840) {
+					if (greenBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2706,7 +2727,7 @@ void GameScene::PileBlockToLand() {
 					auto itr = greenBlockList.end();
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2720,7 +2741,7 @@ void GameScene::PileBlockToLand() {
 				}
 				if (!greenBlockList.empty()) {
 
-					if (greenBlockList.back()->GetPositionY() == 840) {
+					if (greenBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2739,7 +2760,7 @@ void GameScene::PileBlockToLand() {
 
 				if (!greenBlockList.empty()) {
 
-					if (greenBlockList.back()->GetPositionY() == 840) {
+					if (greenBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2765,7 +2786,7 @@ void GameScene::PileBlockToLand() {
 					--itr;
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2783,7 +2804,7 @@ void GameScene::PileBlockToLand() {
 					--itr;
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2800,7 +2821,7 @@ void GameScene::PileBlockToLand() {
 					auto itr = blueBlockList.end();
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2814,7 +2835,7 @@ void GameScene::PileBlockToLand() {
 				}
 				if (!blueBlockList.empty()) {
 
-					if (blueBlockList.back()->GetPositionY() == 840) {
+					if (blueBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2836,7 +2857,7 @@ void GameScene::PileBlockToLand() {
 					--itr;
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2852,7 +2873,7 @@ void GameScene::PileBlockToLand() {
 					auto itr = blueBlockList.end();
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2866,7 +2887,7 @@ void GameScene::PileBlockToLand() {
 				}
 				if (!blueBlockList.empty()) {
 
-					if (blueBlockList.back()->GetPositionY() == 840) {
+					if (blueBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2886,7 +2907,7 @@ void GameScene::PileBlockToLand() {
 					auto itr = blueBlockList.end();
 					--itr;
 					--itr;
-					if ((*itr)->GetPositionY() == 840) {
+					if ((*itr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2900,7 +2921,7 @@ void GameScene::PileBlockToLand() {
 				}
 				if (!blueBlockList.empty()) {
 
-					if (blueBlockList.back()->GetPositionY() == 840) {
+					if (blueBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2918,7 +2939,7 @@ void GameScene::PileBlockToLand() {
 			if (createblueblock == 1) {
 				if (!blueBlockList.empty()) {
 
-					if (blueBlockList.back()->GetPositionY() == 840) {
+					if (blueBlockList.back()->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 						SetNumber();
 						SetBlockonLand();
 						SetBlockToFallFalse();
@@ -2939,7 +2960,7 @@ void GameScene::PileBlockToLand() {
 void GameScene::SetBlockonLand() {
 	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
 		if ((*redblockitr)->isdelete == false) {
-			if ((*redblockitr)->GetPositionY() == 840) {
+			if ((*redblockitr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 				(*redblockitr)->SetHitDown(true);
 			}
 		}
@@ -2947,7 +2968,7 @@ void GameScene::SetBlockonLand() {
 
 	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
 		if ((*greenblockitr)->isdelete == false) {
-			if ((*greenblockitr)->GetPositionY() == 840) {
+			if ((*greenblockitr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 				(*greenblockitr)->SetHitDown(true);
 			}
 		}
@@ -2955,7 +2976,7 @@ void GameScene::SetBlockonLand() {
 
 	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
 		if ((*blueblockitr)->isdelete == false) {
-			if ((*blueblockitr)->GetPositionY() == 840) {
+			if ((*blueblockitr)->GetPositionY() == fieldPosY[0] + fieldSizeY - fieldFlameSizeY - 24) {
 				(*blueblockitr)->SetHitDown(true);
 			}
 		}
