@@ -56,6 +56,8 @@ void GameScene::Update() {
 		blockfallupdatetime = 1;
 		blockfallupdatecount = 0;
 
+		chain = 0;
+
 		fallphase = 1;
 	}
 	//ƒuƒƒbƒN”z’u
@@ -131,7 +133,7 @@ void GameScene::Draw() {
 		blueblocklefthit,
 		blueblockrighthit,
 		score,
-		fallphase);
+		chain);
 }
 
 void GameScene::BlockLayoutSetting() {
@@ -3108,6 +3110,7 @@ void GameScene::BackToReset() {
 }
 
 void GameScene::DeleteBlock() {
+	chain++;
 	//Ô
 	if (redBlockList.size() >= 2) {
 		for (auto itr = redBlockList.begin(); itr != redBlockList.end(); ++itr) {
@@ -3120,6 +3123,7 @@ void GameScene::DeleteBlock() {
 							(*itr2)->SetDelete(true);
 							(*itr3)->SetDelete(true);
 							blockfallupdatecount = 0;
+							score += add * 3 * chain;
 						}
 					}
 					//c
@@ -3129,6 +3133,7 @@ void GameScene::DeleteBlock() {
 							(*itr2)->SetDelete(true);
 							(*itr3)->SetDelete(true);
 							blockfallupdatecount = 0;
+							score += add * 3 * chain;
 						}
 					}
 				}
@@ -3148,6 +3153,7 @@ void GameScene::DeleteBlock() {
 							(*itr2)->SetDelete(true);
 							(*itr3)->SetDelete(true);
 							blockfallupdatecount = 0;
+							score += add * 3 * chain;
 						}
 					}
 					//c
@@ -3157,6 +3163,7 @@ void GameScene::DeleteBlock() {
 							(*itr2)->SetDelete(true);
 							(*itr3)->SetDelete(true);
 							blockfallupdatecount = 0;
+							score += add * 3 * chain;
 						}
 					}
 				}
@@ -3175,6 +3182,7 @@ void GameScene::DeleteBlock() {
 							(*itr2)->SetDelete(true);
 							(*itr3)->SetDelete(true);
 							blockfallupdatecount = 0;
+							score += add * 3 * chain;
 						}
 					}
 					//c
@@ -3184,6 +3192,7 @@ void GameScene::DeleteBlock() {
 							(*itr2)->SetDelete(true);
 							(*itr3)->SetDelete(true);
 							blockfallupdatecount = 0;
+							score += add * 3 * chain;
 						}
 					}
 				}
