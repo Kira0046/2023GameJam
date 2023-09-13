@@ -88,6 +88,10 @@ public:
 		return Number;
 	}
 
+	int GetPattern() {
+		return pattern;
+	}
+
 	const bool& GetIshitUp() const { return hitup; }
 
 	const bool& GetIshitDown() const { return hitdown; }
