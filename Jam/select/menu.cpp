@@ -5,7 +5,7 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	//シーンチェンジ
 	//※タイトル→メニュー→ゲーム画面を考慮して初期値を1にしておきます
 	//本番リリース時は0にしておく
-	scene = 0;
+	scene = 2;
 
 	//画面サイズ格納
 	winWidth = windowWidth;

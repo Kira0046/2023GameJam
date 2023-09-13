@@ -198,8 +198,20 @@ private:
 	//最大スコア
 	int hiScore;
 	//加算スコア
-	const int add = 20;
-	const int bonus = 30;
+	const int add = 60;
+	const int bonus = 70;
+
+	int scoreNumHandle[7][11];
+	int hiScoreNumHandle[7][11];
+	int fontSize[2];
+	int fontPos[4];
+
+	int sidebarHandele;
+	int scoreFontHandle[2];
+	int sidebarSize[2];
+	int scoreFontSize[2];
+	int sidebarPos[2];
+	int scoreFontPos[4];
 
 	//回転処理
 	int rotateNum = 0;
