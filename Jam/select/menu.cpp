@@ -5,7 +5,7 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	//シーンチェンジ
 	//※タイトル→メニュー→ゲーム画面を考慮して初期値を1にしておきます
 	//本番リリース時は0にしておく
-	scene = 2;
+	scene = 1;
 
 	//画面サイズ格納
 	winWidth = windowWidth;
@@ -17,6 +17,7 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle01);
 	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle02);
 	LoadDivGraph("Resource/menu/menu_back.png", 4, 4, 1, 400, 100, cancelHandle);
+	hydeHandle = LoadGraph("Resource/menu/taremaku.png");
 	GetGraphSize(menuHandle[0], &barSizeX, &barSizeY);
 	for (int i = 0; i < menuNum; i++) {
 		//barPosX[i] = windowWidth / 4 - barSizeX / 2;
@@ -37,6 +38,14 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	cancelPos[0] = 0;
 	cancelPos[1] = windowHeight;
 	isCancel = false;
+
+	//垂れ幕
+	GetGraphSize(hydeHandle, &hydeSize[0], &hydeSize[1]);
+	hydePos[0] = 0;
+	hydePos[1] = -hydeSize[1];
+	hydeStart = false;
+	hydeEnd = false;
+	hydeTimer = 0;
 
 	//項目全体
 	for (int i = 0; i < allTabNum; i++) {
@@ -110,11 +119,15 @@ void Menu::Update(char* keys, char* oldkeys) {
 	else if (scene == 1) {
 		//登場退場処理
 		InOutMenu();
+		InHyde();
 
 		//シーンチェンジのテスト
 		if (canControl) {
 			if (keys[KEY_INPUT_SPACE] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_2)) {
-				scene = 2;
+				if (barNum == 0) {
+					hydeStart = true;
+					canControl = false;
+				}
 			}
 			if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP] || (GetJoypadInputState(DX_INPUT_PAD1) & PAD_INPUT_UP) && !oldInput[0] || keys[KEY_INPUT_W] && !oldkeys[KEY_INPUT_W]) {
 				barNum--;
@@ -230,7 +243,7 @@ void Menu::Draw() {
 }
 
 void Menu::InOutTitle() {
-	if (!canControl && !logoEndMove) {
+	if (!canControl && !logoEndMove && !hydeStart) {
 		moveStartTimer--;
 		if (moveStartTimer < 0) {
 			logoMoveStart = true;
@@ -271,7 +284,7 @@ void Menu::InOutTitle() {
 
 void Menu::InOutMenu() {
 	//登場処理
-	if (!canControl) {
+	if (!canControl && !hydeStart) {
 		moveStartTimer--;
 		if (moveStartTimer < 0) {
 			moveStartTimer = 5;
@@ -348,4 +361,37 @@ void Menu::InOutMenu() {
 			barNum = 0;
 		}
 	}
+}
+
+void Menu::InHyde() {
+	if (hydeStart && !hydeEnd) {
+		if (hydeTimer < 60) {
+			hydeTimer++;
+		}
+		else {
+			hydeEnd = true;
+			hydeTimer = 0;
+			hydeStart = false;
+			scene = 2;
+		}
+		hydePos[1] = EASE::OutQuad(hydeSize[1], -hydeSize[1], 60, hydeTimer);
+	}
+}
+
+void Menu::OutHyde() {
+	if (hydeEnd) {
+		hydePos[1] = EASE::InQuad(-hydeSize[1], 0, 60, hydeTimer);
+		if (hydeTimer < 60) {
+			hydeTimer++;
+		}
+		else {
+			hydeEnd = false;
+			hydeTimer = 0;
+			hydePos[1] = -hydeSize[1];
+		}
+	}
+}
+
+void Menu::HydeDraw() {
+	DrawGraph(hydePos[0], hydePos[1], hydeHandle, true);
 }

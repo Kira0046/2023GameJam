@@ -9,6 +9,8 @@ public:
 	void Update(char *keys,char *oldkeys);
 	//描画
 	void Draw();
+	//シーン無視の描画
+	void HydeDraw();
 	//シーン番号送信
 	void SendSceneNum(int num);
 
@@ -16,10 +18,15 @@ public:
 	int GetSceneNum() {
 		return scene;
 	}
+
+	void OutHyde();
 private:
 	//登場処理・退場処理
 	void InOutTitle();
 	void InOutMenu();
+
+	//垂れ幕処理
+	void InHyde();
 
 private:
 	//シーン番号
@@ -109,4 +116,12 @@ private:
 
 	//ジョイパッド
 	int oldInput[2];	//とりあえず上下
+
+	//垂れ幕
+	int hydeHandle;
+	int hydePos[2];
+	int hydeSize[2];
+	bool hydeStart;
+	bool hydeEnd;
+	int hydeTimer;
 };

@@ -137,7 +137,7 @@ void GameScene::Draw() {
 void GameScene::BlockLayoutSetting() {
 	//配置場所  i=0:左上 1:右上 2:右下 3:左下
 
-	direction = GetRand(2);
+	direction = GetRand(1);
 
 	//色決定 0:配置しない　1:赤　2:緑  3:青
 	if (direction == 0) {
