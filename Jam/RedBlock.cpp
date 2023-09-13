@@ -1,4 +1,5 @@
 #include "RedBlock.h"
+#include <ctime>
 
 RedBlock::RedBlock(int x, int y, int pattern) {
 	this->x = x;
@@ -16,16 +17,27 @@ void RedBlock::Update() {
 
 void RedBlock::Draw() {
 
-	
-	if (pattern == 1) {
-		DrawBox(x - size, y - size, x + size, y + size, GetColor(255, 0, 0), true);
+	if (isdelete == false) {
+		if (pattern == 1) {
+			DrawBox(x - size, y - size, x + size, y + size, GetColor(255, 0, 0), true);
+		}
+		if (pattern == 2) {
+			DrawBox(x - size, y - size, x + size, y + size, GetColor(255, 0, 0), true);
+		}
 	}
-	if (pattern == 2) {
-		DrawBox(x - size, y - size, x + size, y + size, GetColor(255, 0, 0), true);
+	if (isdelete == true) {
+		if (pattern == 1) {
+			DrawBox(x - size, y - size, x + size, y + size, GetColor(0, 0, 0), true);
+		}
+		if (pattern == 2) {
+			DrawBox(x - size, y - size, x + size, y + size, GetColor(0, 0, 0), true);
+		}
 	}
-	
+
 }
 
-void RedBlock::MoveY(){
-	y += 48;
+void RedBlock::MoveY() {
+	//srand((unsigned)time(NULL));
+	fall = false;
+	y += 40;
 }

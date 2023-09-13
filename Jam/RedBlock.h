@@ -60,7 +60,13 @@ public:
 		this->fall = fall;
 	}
 
+	void SetDelete(bool isdelete) {
+		this->isdelete = isdelete;
+	}
 
+	void SetNumber(int num) {
+		this->Number = num;
+	}
 	
 
 	/// <summary>
@@ -76,6 +82,10 @@ public:
 
 	int GetSize() {
 		return size;
+	}
+
+	int GetNumber() {
+		return Number;
 	}
 
 	const bool& GetIshitUp() const { return hitup; }
@@ -100,6 +110,8 @@ public:
 
 	bool hitright = false;
 
+	bool isdelete = false;
+
 private:
 	//–Í—l  1: 2:
 	int pattern = 0;
@@ -110,6 +122,6 @@ private:
 	//‘å‚«‚³
 	int size = 24;
 
-	
+	int Number = 0;
 };
 

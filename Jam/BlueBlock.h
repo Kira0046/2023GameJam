@@ -60,6 +60,14 @@ public:
 		this->fall = fall;
 	}
 
+	void SetNumber(int num) {
+		this->Number = num;
+	}
+
+	void SetDelete(bool isdelete) {
+		this->isdelete = isdelete;
+	}
+
 	/// <summary>
 	/// ゲッター
 	/// </summary>
@@ -73,6 +81,10 @@ public:
 
 	int GetSize() {
 		return size;
+	}
+
+	int GetNumber() {
+		return Number;
 	}
 
 	const bool& GetIshitUp() const { return hitup; }
@@ -95,6 +107,7 @@ public:
 
 	bool hitright = false;
 
+	bool isdelete = false;
 
 private:
 	//模様  1: 2:
@@ -105,6 +118,6 @@ private:
 	//大きさ
 	int size = 24;
 
-	
+	int Number = 0;
 };
 
