@@ -13,6 +13,8 @@ void Menu::Initialize(int windowWidth, int windowHeight) {
 	LoadDivGraph("Resource/menu/menu_flame.png", 10, 10, 1, 612, 87, menuHandle);
 	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle01);
 	LoadDivGraph("Resource/menu/backGround.png", 5, 5, 1, 1600, 900, backHandle02);
+	soundHandlDecision = LoadSoundMem("Resource/sound/決定ボタンを押す.mp3");
+	soundHandlCursorMove = LoadSoundMem("Resource/sound/カーソル移動.mp3");
 	GetGraphSize(menuHandle[0], &barSizeX, &barSizeY);
 	for (int i = 0; i < menuNum; i++) {
 		//barPosX[i] = windowWidth / 4 - barSizeX / 2;
@@ -93,6 +95,7 @@ void Menu::Update(char* keys, char* oldkeys) {
 				logoEndMove = true;
 				canControl = false;
 				blinkingTimer = 28;
+				PlaySoundMem(soundHandlDecision, DX_PLAYTYPE_NORMAL, TRUE);
 			}
 		}
 
@@ -128,17 +131,20 @@ void Menu::Update(char* keys, char* oldkeys) {
 		if (canControl) {
 			if (keys[KEY_INPUT_SPACE]) {
 				scene = 2;
+				PlaySoundMem(soundHandlDecision, DX_PLAYTYPE_NORMAL, TRUE);
 			}
 			if (keys[KEY_INPUT_UP] && !oldkeys[KEY_INPUT_UP]) {
 				barNum--;
 				if (barNum < 0) {
 					barNum = 4;
+					PlaySoundMem(soundHandlCursorMove, DX_PLAYTYPE_NORMAL, TRUE);
 				}
 			}
 			else if (keys[KEY_INPUT_DOWN] && !oldkeys[KEY_INPUT_DOWN]) {
 				barNum++;
 				if (barNum > 4) {
 					barNum = 0;
+					PlaySoundMem(soundHandlCursorMove, DX_PLAYTYPE_NORMAL, TRUE);
 				}
 			}
 		}

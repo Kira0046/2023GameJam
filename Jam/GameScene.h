@@ -4,6 +4,10 @@
 #include "GreenBlock.h"
 #include "BlueBlock.h"
 #include <list>
+
+#define WIDTH 9
+#define HEIGHT 18
+
 class GameScene {
 public:
 	/// <summary>
@@ -61,6 +65,35 @@ private:
 	std::list <GreenBlock*> greenBlockList;
 	//構造体の配列宣言
 	BlockLayoutPosition blocklayoutposition[4];
+
+	//ブロック
+	int BLOCK = 1;
+	int NONE = 0;
+
+	//ブロック画像
+	int blockHandle;
+
+	//全体のフィールド
+	int Field[HEIGHT][WIDTH] = {
+		{1,1,1,1,1,1,1,1,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,0,0,0,0,0,0,0,1},
+		{1,1,1,1,1,1,1,1,1}
+	};
 
 	//作成されたブロックの個数
 	int createredblock = 0;

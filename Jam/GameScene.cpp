@@ -10,6 +10,8 @@ void GameScene::Initialize() {
 	redBlockList.push_back(new RedBlock(600, 450, 1));
 	greenBlockList.push_back(new GreenBlock(1000, 450, 1));
 	blueBlockList.push_back(new BlueBlock(1200, 450, 1));
+	blockHandle = LoadGraph("Resource/field/field.png");
+	
 }
 void GameScene::Update() {
 	// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存
@@ -62,6 +64,17 @@ void GameScene::Draw() {
 		createredblock,
 		creategreenblock,
 		createblueblock);
+
+	/*for (int y = 0; y < HEIGHT; y++)
+	{
+		for (int x = 0; x < WIDTH; x++)
+		{
+			if (Field[y][x] == BLOCK)
+			{
+				DrawGraph(x * 16, y * 16, blockHandle, true);
+			}
+		}
+	}*/
 }
 void GameScene::BlockLayoutSetting() {
 	//配置場所  i=0:左上 1:右上 2:右下 3:左下
@@ -695,6 +708,11 @@ void GameScene::BlockOperation() {
 				}
 			}
 		}
+	}
+	if (centerY > 819)
+	{
+		fallphase = 0;
+
 	}
 }
 

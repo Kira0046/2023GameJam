@@ -53,7 +53,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	block.Initialize(WIN_WIDTH, WIN_HEIGHT);
 	menu.Initialize(WIN_WIDTH, WIN_HEIGHT);
 
-	// 最新のキーボード情報用
+	// 最新のキーボード情報用j
 	char keys[256] = { 0 };
 
 	// 1ループ(フレーム)前のキーボード情報
