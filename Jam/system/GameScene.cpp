@@ -81,9 +81,13 @@ void GameScene::Update() {
 	}
 
 	if (fallphase == 4) {
-		CheckConnect();
+		if (!countStart) {
+			CheckConnect();
+		}
 
 		DeleteBlock();
+
+		AddScore();
 	}
 
 	if (keys[KEY_INPUT_E] == 1 && oldkeys[KEY_INPUT_E] == 0) {
@@ -110,7 +114,7 @@ void GameScene::Draw() {
 	}
 	//DrawBox(centerX - blockspawnsize, centerY - blockspawnsize, centerX + blockspawnsize, centerY + blockspawnsize, GetColor(255, 255, 0), true);
 
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "LH:%d\n%d\nRH:%d\n%d\nRL:%d\n%d\nLL:%d\n%d\nred:%d\ngreen:%d\nblue:%d\n%d %d\nR%d %d\nG%d %d\nB%d %d\nchain : %d\nfallphase : %d",
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "LH:%d\n%d\nRH:%d\n%d\nRL:%d\n%d\nLL:%d\n%d\nred:%d\ngreen:%d\nblue:%d\n%d %d\nR%d %d\nG%d %d\nB%d %d\nscore : %d\nfallphase : %d",
 		blocklayoutposition[0].blocklayoutcolor, blocklayoutposition[0].blocklayoutpattern,
 		blocklayoutposition[1].blocklayoutcolor, blocklayoutposition[1].blocklayoutpattern,
 		blocklayoutposition[2].blocklayoutcolor, blocklayoutposition[2].blocklayoutpattern,
@@ -126,7 +130,7 @@ void GameScene::Draw() {
 		greenblockrighthit,
 		blueblocklefthit,
 		blueblockrighthit,
-		chain,
+		score,
 		fallphase);
 }
 
@@ -2194,7 +2198,7 @@ void GameScene::PileBlockToLand() {
 			if ((*redblockitr)->GetPositionY() == 834 + 24) {
 				SetBlockToFallFalse();
 
-				fallphase = 0;
+				fallphase = 3;
 			}
 		}
 	}
@@ -2204,7 +2208,7 @@ void GameScene::PileBlockToLand() {
 			if ((*greenblockitr)->GetPositionY() == 834 + 24) {
 				SetBlockToFallFalse();
 
-				fallphase = 0;
+				fallphase = 3;
 			}
 		}
 	}
@@ -2214,7 +2218,7 @@ void GameScene::PileBlockToLand() {
 			if ((*blueblockitr)->GetPositionY() == 834 + 24) {
 				SetBlockToFallFalse();
 
-				fallphase = 0;
+				fallphase = 3;
 			}
 		}
 	}
@@ -2244,7 +2248,7 @@ void GameScene::BlockFallProcess() {
 	blockfallupdatetime--;
 	SetBlockonLand();
 	FallingCollision();
-	if (blockfallupdatetime == 0) {
+	if (blockfallupdatetime < 0) {
 		BlockFallSetting();
 		BlockToFall();
 		//BackToReset();
@@ -2259,11 +2263,13 @@ void GameScene::BlockFallProcess() {
 			(*blueblockitr)->SetHitDown(false);
 		}
 
-		blockfallupdatecount += 2;
+		blockfallupdatecount++;
 		blockfallupdatetime = 1;
 	}
-	if (blockfallupdatecount > 20) {
+	if (blockfallupdatecount > 10) {
 		BackToReset();
+		blockfallupdatecount = 0;
+		blockfallupdatetime = 0;
 	}
 }
 
@@ -2323,36 +2329,36 @@ void GameScene::BackToReset() {
 
 
 	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
-		if ((*redblockitr)->GetIsFall() == false) {
+		if ((*redblockitr)->GetIsFall()) {
 			redcheck = 1;
 		}
-		else {
+		else if (!redcheck) {
 			redcheck = 0;
 		}
 	}
 
 	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
-		if ((*greenblockitr)->GetIsFall() == false) {
+		if ((*greenblockitr)->GetIsFall()) {
 			greencheck = 1;
 		}
-		else {
+		else if (!greencheck) {
 			greencheck = 0;
 		}
 	}
 
 	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
-		if ((*blueblockitr)->GetIsFall() == false) {
+		if ((*blueblockitr)->GetIsFall()) {
 			bluecheck = 1;
 		}
-		else {
+		else if (!bluecheck) {
 			bluecheck = 0;
 		}
 	}
 
-	if (redcheck == 1 && greencheck == 1 && bluecheck == 1) {
-		//fallphase = 4;
+	if (redcheck == 0 && greencheck == 0 && bluecheck == 0) {
+		fallphase = 4;
 	}
-	fallphase = 4;
+	//fallphase = 4;
 }
 
 //接続チェック
@@ -2984,4 +2990,17 @@ void GameScene::DeleteBlock() {
 		fallphase = 0;
 		chain = 0;
 	}
+}
+
+void GameScene::AddScore() {
+	//スコア計算
+	//(基礎スコア × 通常消ししたブロック数 + ボーナススコア × 一致消しで巻き込んだブロック数) × 連鎖数
+	score += (add * deleteBlockNum + bonus * involvementBlockNum) * chain;
+	//ハイスコア更新してたら更新
+	if (hiScore < score) {
+		hiScore = score;
+	}
+	//リセット
+	deleteBlockNum = 0;
+	involvementBlockNum = 0;
 }

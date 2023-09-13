@@ -164,8 +164,8 @@ private:
 	char oldkeys[256];
 
 	//接続->消えるまでの待機時間
-	const int maxTimer = 60;
-	int deleteTimer = 0;;
+	const int maxTimer = 0;
+	int deleteTimer = 0;
 	bool countStart = false;;	//カウント開始変数
 	const int halfSize = 24;
 	int deleteConnectNum = 1;	//消えるのに必要な数
@@ -176,4 +176,11 @@ private:
 
 	//連鎖・スコア
 	int chain = 0;
+	//スコア
+	int score;
+	//最大スコア
+	int hiScore;
+	//加算スコア
+	const int add = 20;
+	const int bonus = 30;
 };
