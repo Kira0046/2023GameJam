@@ -1,6 +1,6 @@
 #include "RedBlock.h"
 
-RedBlock::RedBlock(int x, int y, int pattern) {
+RedBlock::RedBlock(int x, int y, int pattern, bool center) {
 	this->x = x;
 	this->y = y;
 	this->pattern = pattern;
@@ -8,6 +8,7 @@ RedBlock::RedBlock(int x, int y, int pattern) {
 	LoadDivGraph("Resource/field/color_block_connect.png", 6, 6, 1, blockSizeX, blockSizeY, connectHandle);
 	LoadDivGraph("Resource/field/color_block_double.png", 6, 6, 1, blockSizeX, blockSizeY, doubleHandle);
 	LoadDivGraph("Resource/field/color_block_Involvement.png", 6, 6, 1, blockSizeX, blockSizeY, involvementHnadle);
+	this->center = center;
 }
 
 void RedBlock::Initialize() {
@@ -49,7 +50,9 @@ void RedBlock::Draw() {
 			DrawGraph(x - size, y - size, involvementHnadle[1], true);
 		}
 	}
-
+	if (center) {
+		DrawGraph(x - size, y - size, involvementHnadle[1], true);
+	}
 }
 
 void RedBlock::SetMatch(bool u, bool d, bool l, bool r, int num) {

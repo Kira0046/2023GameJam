@@ -10,7 +10,7 @@ public:
 	/// <param name="x">初期位置X</param>
 	/// <param name="y">初期位置Y</param>
 	/// <param name="pattern">模様</param>
-	RedBlock(int x, int y, int pattern);
+	RedBlock(int x, int y, int pattern,bool center);
 
 	/// <summary>
 	/// 初期化
@@ -62,8 +62,13 @@ public:
 
 		this->hit = hit;
 	}
+
+	void SetCenter(bool center) {
+		this->center = center;
+	}
+
 	//uが上、dが下、lが左、rが右の意	0が色で1が柄
-	void SetMatch(bool u, bool d, bool l, bool r,int num);
+	void SetMatch(bool u, bool d, bool l, bool r, int num);
 
 	void SetDelete(bool deleteFlag, bool doubkeMuctchFlag, bool involvement);
 
@@ -79,6 +84,7 @@ public:
 	bool GetIsDelete() { return isDelete; }//削除フラグ
 	bool GetDoubleMutch() { return doubleMutch; }	//両一致フラグ
 	bool GetInvolvement() { return involvement; }	//巻き込みフラグ
+	bool GetCenter() { return center; }	//中心フラグ
 
 	const bool& GetIshitUp() const { return hitup; }
 
@@ -134,5 +140,7 @@ private:
 	bool isDelete = false;
 	bool doubleMutch = false;	//両一致判定
 	bool involvement = false;	//巻き込み判定
+
+	bool center = false;
 };
 

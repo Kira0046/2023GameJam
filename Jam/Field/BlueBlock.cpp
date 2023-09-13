@@ -1,6 +1,6 @@
 #include "BlueBlock.h"
 
-BlueBlock::BlueBlock(int x, int y, int pattern) {
+BlueBlock::BlueBlock(int x, int y, int pattern, bool center) {
 	this->x = x;
 	this->y = y;
 	this->pattern = pattern;
@@ -8,6 +8,7 @@ BlueBlock::BlueBlock(int x, int y, int pattern) {
 	LoadDivGraph("Resource/field/color_block_connect.png", 6, 6, 1, blockSizeX, blockSizeY, connectHandle);
 	LoadDivGraph("Resource/field/color_block_double.png", 6, 6, 1, blockSizeX, blockSizeY, doubleHandle);
 	LoadDivGraph("Resource/field/color_block_Involvement.png", 6, 6, 1, blockSizeX, blockSizeY, involvementHnadle);
+	this->center = center;
 }
 
 void BlueBlock::Initialize() {

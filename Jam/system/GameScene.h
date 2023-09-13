@@ -164,8 +164,8 @@ private:
 	char oldkeys[256];
 
 	//接続->消えるまでの待機時間
-	const int maxTimer = 0;
-	int deleteTimer = 0;
+	const int maxTimer = 30;
+	int deleteTimer = 30;
 	bool countStart = false;;	//カウント開始変数
 	const int halfSize = 24;
 	int deleteConnectNum = 1;	//消えるのに必要な数
@@ -183,4 +183,8 @@ private:
 	//加算スコア
 	const int add = 20;
 	const int bonus = 30;
+
+	//回転処理
+	int rotateNum = 0;
+	int centerPos[2] = { 0,0 };
 };

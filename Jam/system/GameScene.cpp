@@ -139,9 +139,9 @@ void GameScene::BlockLayoutSetting() {
 
 	//色決定 0:配置しない　1:赤　2:緑  3:青
 	blocklayoutposition[0].blocklayoutcolor = rand() % 3 + 1;
-	blocklayoutposition[1].blocklayoutcolor = rand() % 3 + 1;
+	blocklayoutposition[1].blocklayoutcolor = 0;
 	blocklayoutposition[2].blocklayoutcolor = 0;
-	blocklayoutposition[3].blocklayoutcolor = 0;
+	blocklayoutposition[3].blocklayoutcolor = rand() % 3 + 1;
 	for (int i = 0; i < 4; i++) {
 
 		//模様決定 1: 2:
@@ -156,22 +156,22 @@ void GameScene::BlockLayoutSetting() {
 			if (blocklayoutposition[i].blocklayoutpattern == 1) {
 				//左上
 				if (i == 0) {
-					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY - blockspawnsize, 1));
+					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY - blockspawnsize, 1, true));
 					createredblock++;
 				}
 				//右上
 				if (i == 1) {
-					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY - blockspawnsize, 1));
+					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY - blockspawnsize, 1, false));
 					createredblock++;
 				}
 				//右下
 				if (i == 2) {
-					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY + blockspawnsize, 1));
+					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY + blockspawnsize, 1, false));
 					createredblock++;
 				}
 				//左下
 				if (i == 3) {
-					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY + blockspawnsize, 1));
+					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY + blockspawnsize, 1, false));
 					createredblock++;
 				}
 			}
@@ -179,21 +179,21 @@ void GameScene::BlockLayoutSetting() {
 			if (blocklayoutposition[i].blocklayoutpattern == 2) {
 				//左上
 				if (i == 0) {
-					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY - blockspawnsize, 2));
+					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY - blockspawnsize, 2, true));
 					createredblock++;
 				}
 				//右上
 				if (i == 1) {
-					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY - blockspawnsize, 2));
+					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY - blockspawnsize, 2, false));
 					createredblock++;
 				}
 
 				if (i == 2) {
-					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY + blockspawnsize, 2));
+					redBlockList.push_back(new RedBlock(centerX + blockspawnsize, centerY + blockspawnsize, 2, false));
 					createredblock++;
 				}
 				if (i == 3) {
-					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY + blockspawnsize, 2));
+					redBlockList.push_back(new RedBlock(centerX - blockspawnsize, centerY + blockspawnsize, 2, false));
 					createredblock++;
 				}
 			}
@@ -204,22 +204,22 @@ void GameScene::BlockLayoutSetting() {
 			if (blocklayoutposition[i].blocklayoutpattern == 1) {
 				//左上
 				if (i == 0) {
-					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY - blockspawnsize, 1));
+					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY - blockspawnsize, 1, true));
 					creategreenblock++;
 				}
 				//右上
 				if (i == 1) {
-					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY - blockspawnsize, 1));
+					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY - blockspawnsize, 1, false));
 					creategreenblock++;
 				}
 				//右下
 				if (i == 2) {
-					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY + blockspawnsize, 1));
+					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY + blockspawnsize, 1, true));
 					creategreenblock++;
 				}
 				//左下
 				if (i == 3) {
-					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY + blockspawnsize, 1));
+					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY + blockspawnsize, 1, false));
 					creategreenblock++;
 				}
 			}
@@ -227,22 +227,22 @@ void GameScene::BlockLayoutSetting() {
 			if (blocklayoutposition[i].blocklayoutpattern == 2) {
 				//左上
 				if (i == 0) {
-					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY - blockspawnsize, 2));
+					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY - blockspawnsize, 2, true));
 					creategreenblock++;
 				}
 				//右上
 				if (i == 1) {
-					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY - blockspawnsize, 2));
+					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY - blockspawnsize, 2, false));
 					creategreenblock++;
 				}
 				//右下
 				if (i == 2) {
-					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY + blockspawnsize, 2));
+					greenBlockList.push_back(new GreenBlock(centerX + blockspawnsize, centerY + blockspawnsize, 2, false));
 					creategreenblock++;
 				}
 				//左下
 				if (i == 3) {
-					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY + blockspawnsize, 2));
+					greenBlockList.push_back(new GreenBlock(centerX - blockspawnsize, centerY + blockspawnsize, 2, false));
 					creategreenblock++;
 				}
 			}
@@ -253,22 +253,22 @@ void GameScene::BlockLayoutSetting() {
 			if (blocklayoutposition[i].blocklayoutpattern == 1) {
 				//左上
 				if (i == 0) {
-					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY - blockspawnsize, 1));
+					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY - blockspawnsize, 1, true));
 					createblueblock++;
 				}
 				//右上
 				if (i == 1) {
-					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY - blockspawnsize, 1));
+					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY - blockspawnsize, 1, false));
 					createblueblock++;
 				}
 				//右下
 				if (i == 2) {
-					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY + blockspawnsize, 1));
+					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY + blockspawnsize, 1, false));
 					createblueblock++;
 				}
 				//左下
 				if (i == 3) {
-					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY + blockspawnsize, 1));
+					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY + blockspawnsize, 1, false));
 					createblueblock++;
 				}
 			}
@@ -276,22 +276,22 @@ void GameScene::BlockLayoutSetting() {
 			if (blocklayoutposition[i].blocklayoutpattern == 2) {
 				//左上
 				if (i == 0) {
-					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY - blockspawnsize, 2));
+					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY - blockspawnsize, 2, true));
 					createblueblock++;
 				}
 				//右上
 				if (i == 1) {
-					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY - blockspawnsize, 2));
+					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY - blockspawnsize, 2, false));
 					createblueblock++;
 				}
 				//右下
 				if (i == 2) {
-					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY + blockspawnsize, 2));
+					blueBlockList.push_back(new BlueBlock(centerX + blockspawnsize, centerY + blockspawnsize, 2, false));
 					createblueblock++;
 				}
 				//左下
 				if (i == 3) {
-					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY + blockspawnsize, 2));
+					blueBlockList.push_back(new BlueBlock(centerX - blockspawnsize, centerY + blockspawnsize, 2, false));
 					createblueblock++;
 				}
 			}
@@ -1187,6 +1187,85 @@ void GameScene::BlockOperation() {
 			}
 		}
 	}
+
+	if (keys[KEY_INPUT_LEFT] && !oldkeys[KEY_INPUT_LEFT]) {
+		rotateNum++;
+		if (rotateNum > 3) {
+			rotateNum = 0;
+		}
+	}
+	else if (keys[KEY_INPUT_RIGHT] && !oldkeys[KEY_INPUT_RIGHT]) {
+		rotateNum--;
+		if (rotateNum < 0) {
+			rotateNum = 3;
+		}
+	}
+
+	if (rotateNum == 0) {
+		{
+			///赤
+			if (createredblock > 0) {
+				//２つ
+				if (createredblock == 2) {
+					if (redBlockList.size() >= 2) {
+						auto itr = redBlockList.end();
+						--itr;
+						--itr;
+						if (!(*itr)->GetCenter()) {
+							(*itr)->SetPosition(0, 0);
+						}
+						if (!redBlockList.empty()) {
+
+							if (!redBlockList.back()->GetCenter()) {
+								redBlockList.back()->SetPosition(0, -amountmovement * 1.1);
+							}
+						}
+					}
+				}
+
+				///緑
+				if (creategreenblock > 0) {
+					//2つ
+					if (creategreenblock == 2) {
+
+						if (greenBlockList.size() >= 2) {
+							auto itr = greenBlockList.end();
+							--itr;
+							--itr;
+							if (!(*itr)->GetCenter()) {
+								(*itr)->SetPosition(0, amountmovement);
+
+							}
+							if (!greenBlockList.empty()) {
+
+								greenBlockList.back()->SetPosition(amountmovement, 0);
+							}
+						}
+					}
+				}
+
+				///青
+				if (createblueblock > 0) {
+					//2つ
+					if (createblueblock == 2) {
+						if (blueBlockList.size() >= 2) {
+							auto itr = blueBlockList.end();
+							--itr;
+							--itr;
+							if (!(*itr)->GetCenter()) {
+								(*itr)->SetPosition(0, amountmovement);
+
+							}
+							if (!blueBlockList.empty()) {
+
+								blueBlockList.back()->SetPosition(amountmovement, 0);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 void GameScene::FallingCalc() {
@@ -1820,85 +1899,6 @@ void GameScene::PiledBlock() {
 	{
 		///赤
 		if (createredblock > 0) {
-			//4つ
-			if (createredblock == 4) {
-				if (redBlockList.size() >= 4) {
-					auto itr = redBlockList.end();
-					--itr;
-					--itr;
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (redBlockList.size() >= 3) {
-					auto itr = redBlockList.end();
-					--itr;
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (redBlockList.size() >= 2) {
-					auto itr = redBlockList.end();
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (!redBlockList.empty()) {
-
-					if (redBlockList.back()->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-
-				}
-			}
-
-			//3つ
-			if (createredblock == 3) {
-				if (redBlockList.size() >= 3) {
-					auto itr = redBlockList.end();
-					--itr;
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (redBlockList.size() >= 2) {
-					auto itr = redBlockList.end();
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (!redBlockList.empty()) {
-
-					if (redBlockList.back()->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-			}
-
 			//２つ
 			if (createredblock == 2) {
 				if (redBlockList.size() >= 2) {
@@ -1907,6 +1907,7 @@ void GameScene::PiledBlock() {
 					--itr;
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
+						(*itr)->SetCenter(false);
 
 						fallphase = 3;
 					}
@@ -1915,110 +1916,15 @@ void GameScene::PiledBlock() {
 
 					if (redBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
-
+						redBlockList.back()->SetCenter(false);
 						fallphase = 3;
 					}
 				}
 			}
-
-			//１つ
-			if (createredblock == 1) {
-				if (!redBlockList.empty()) {
-
-					if (redBlockList.back()->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-			}
-
 		}
 
 		///緑
 		if (creategreenblock > 0) {
-			//4つ
-			if (creategreenblock == 4) {
-
-				if (greenBlockList.size() >= 4) {
-					auto itr = greenBlockList.end();
-					--itr;
-					--itr;
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (greenBlockList.size() >= 3) {
-					auto itr = greenBlockList.end();
-					--itr;
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (greenBlockList.size() >= 2) {
-					auto itr = greenBlockList.end();
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (!greenBlockList.empty()) {
-
-					if (greenBlockList.back()->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-
-				}
-			}
-
-			//3つ
-			if (creategreenblock == 3) {
-
-				if (greenBlockList.size() >= 3) {
-					auto itr = greenBlockList.end();
-					--itr;
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (greenBlockList.size() >= 2) {
-					auto itr = greenBlockList.end();
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (!greenBlockList.empty()) {
-
-					if (greenBlockList.back()->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-
-				}
-			}
-
 			//2つ
 			if (creategreenblock == 2) {
 
@@ -2028,7 +1934,7 @@ void GameScene::PiledBlock() {
 					--itr;
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
-
+						(*itr)->SetCenter(false);
 						fallphase = 3;
 					}
 				}
@@ -2036,20 +1942,7 @@ void GameScene::PiledBlock() {
 
 					if (greenBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-			}
-
-			//1つ
-			if (creategreenblock == 1) {
-
-				if (!greenBlockList.empty()) {
-
-					if (greenBlockList.back()->hitdown == true) {
-						SetBlockToFallFalse();
-
+						greenBlockList.back()->SetCenter(false);
 						fallphase = 3;
 					}
 				}
@@ -2058,88 +1951,6 @@ void GameScene::PiledBlock() {
 
 		///青
 		if (createblueblock > 0) {
-			//4つ
-			if (createblueblock == 4) {
-
-				if (blueBlockList.size() >= 4) {
-					auto itr = blueBlockList.end();
-					--itr;
-					--itr;
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (blueBlockList.size() >= 3) {
-
-					auto itr = blueBlockList.end();
-					--itr;
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (blueBlockList.size() >= 2) {
-
-					auto itr = blueBlockList.end();
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (!blueBlockList.empty()) {
-
-					if (blueBlockList.back()->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 0;
-					}
-				}
-			}
-
-			//3つ
-			if (createblueblock == 3) {
-
-				if (blueBlockList.size() >= 3) {
-					auto itr = blueBlockList.end();
-					--itr;
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (blueBlockList.size() >= 2) {
-					auto itr = blueBlockList.end();
-					--itr;
-					--itr;
-					if ((*itr)->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-				if (!blueBlockList.empty()) {
-
-					if (blueBlockList.back()->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-				}
-			}
-
 			//2つ
 			if (createblueblock == 2) {
 				if (blueBlockList.size() >= 2) {
@@ -2148,7 +1959,7 @@ void GameScene::PiledBlock() {
 					--itr;
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
-
+						(*itr)->SetCenter(false);
 						fallphase = 3;
 					}
 				}
@@ -2156,22 +1967,9 @@ void GameScene::PiledBlock() {
 
 					if (blueBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
-
+						blueBlockList.back()->SetCenter(false);
 						fallphase = 3;
 					}
-				}
-			}
-
-			//1つ
-			if (createblueblock == 1) {
-				if (!blueBlockList.empty()) {
-
-					if (blueBlockList.back()->hitdown == true) {
-						SetBlockToFallFalse();
-
-						fallphase = 3;
-					}
-
 				}
 			}
 		}
@@ -2913,7 +2711,7 @@ void GameScene::CheckConnect() {
 		}
 	}
 
-	fallphase = 0;
+	//fallphase = 0;
 }
 
 void GameScene::DeleteBlock() {
