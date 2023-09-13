@@ -116,7 +116,7 @@ void GameScene::Draw() {
 	}
 	//DrawBox(centerX - blockspawnsize, centerY - blockspawnsize, centerX + blockspawnsize, centerY + blockspawnsize, GetColor(255, 255, 0), true);
 
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "LH:%d\n%d\nRH:%d\n%d\nRL:%d\n%d\nLL:%d\n%d\nred:%d\ngreen:%d\nblue:%d\n%d %d\nR%d %d\nG%d %d\nB%d %d\nscore : %d\nfallphase : %d",
+	/*DrawFormatString(0, 0, GetColor(255, 255, 255), "LH:%d\n%d\nRH:%d\n%d\nRL:%d\n%d\nLL:%d\n%d\nred:%d\ngreen:%d\nblue:%d\n%d %d\nR%d %d\nG%d %d\nB%d %d\nscore : %d\nfallphase : %d",
 		blocklayoutposition[0].blocklayoutcolor, blocklayoutposition[0].blocklayoutpattern,
 		blocklayoutposition[1].blocklayoutcolor, blocklayoutposition[1].blocklayoutpattern,
 		blocklayoutposition[2].blocklayoutcolor, blocklayoutposition[2].blocklayoutpattern,
@@ -133,7 +133,7 @@ void GameScene::Draw() {
 		blueblocklefthit,
 		blueblockrighthit,
 		score,
-		chain);
+		chain);*/
 }
 
 void GameScene::BlockLayoutSetting() {
@@ -3198,6 +3198,10 @@ void GameScene::DeleteBlock() {
 				}
 			}
 		}
+	}
+
+	if (hiScore < score) {
+		hiScore < score;
 	}
 }
 

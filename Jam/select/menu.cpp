@@ -233,13 +233,13 @@ void Menu::Draw() {
 		}
 		DrawGraph(0, upBarPosY, upBarHandle[barNum], true);
 	}
-	DrawFormatString(10, 10, GetColor(0, 0, 0), "blinkingTimer : %d", blinkingTimer);
+	/*DrawFormatString(10, 10, GetColor(0, 0, 0), "blinkingTimer : %d", blinkingTimer);
 	DrawFormatString(10, 25, GetColor(0, 0, 0), "canControl : %d", canControl);
 	DrawFormatString(10, 40, GetColor(0, 0, 0), "startorEnd : %d", startorEnd);
 	DrawFormatString(10, 55, GetColor(0, 0, 0), "logoPosY : %d", logoPosY);
 	DrawFormatString(10, 70, GetColor(0, 0, 0), "scene : %d", scene);
 	DrawFormatString(10, 85, GetColor(0, 0, 0), "arrow: {%d ,%d}", arrowPos[0][0], arrowPos[0][1]);
-	DrawFormatString(10, 100, GetColor(0, 0, 0), "back01 : {%d ,%d}", backPosX[1],0);
+	DrawFormatString(10, 100, GetColor(0, 0, 0), "back01 : {%d ,%d}", backPosX[1],0);*/
 }
 
 void Menu::InOutTitle() {
