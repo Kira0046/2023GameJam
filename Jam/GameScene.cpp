@@ -3078,7 +3078,17 @@ void GameScene::DeleteBlock() {
 		for (auto itr = redBlockList.begin(); itr != redBlockList.end(); ++itr) {
 			for (auto itr2 = redBlockList.begin(); itr2 != redBlockList.end(); ++itr2) {
 				for (auto itr3 = redBlockList.begin(); itr3 != redBlockList.end(); ++itr3) {
-					if (((*itr)->GetPositionX() + 48) == (*itr2)->GetPositionX() && ((*itr2)->GetPositionX() + 48) == (*itr3)->GetPositionX() && (*itr)->GetPositionY() == (*itr2)->GetPositionY()) {
+					//‰¡
+					if (((*itr)->GetPositionX() + 48) == (*itr2)->GetPositionX() && ((*itr2)->GetPositionX() + 48) == (*itr3)->GetPositionX() && (*itr)->GetPositionY() == (*itr2)->GetPositionY() && (*itr2)->GetPositionY() == (*itr3)->GetPositionY()) {
+						if ((*itr)->isdelete == false && (*itr2)->isdelete == false && (*itr3)->isdelete == false) {
+							(*itr)->SetDelete(true);
+							(*itr2)->SetDelete(true);
+							(*itr3)->SetDelete(true);
+							blockfallupdatecount = 0;
+						}
+					}
+					//c
+					if ((*itr)->GetPositionX() == (*itr2)->GetPositionX() && (*itr2)->GetPositionX() == (*itr3)->GetPositionX() && ((*itr)->GetPositionY() + 48) == (*itr2)->GetPositionY() && ((*itr2)->GetPositionY() + 48) == (*itr3)->GetPositionY()) {
 						if ((*itr)->isdelete == false && (*itr2)->isdelete == false && (*itr3)->isdelete == false) {
 							(*itr)->SetDelete(true);
 							(*itr2)->SetDelete(true);
@@ -3096,7 +3106,17 @@ void GameScene::DeleteBlock() {
 		for (auto itr = greenBlockList.begin(); itr != greenBlockList.end(); ++itr) {
 			for (auto itr2 = greenBlockList.begin(); itr2 != greenBlockList.end(); ++itr2) {
 				for (auto itr3 = greenBlockList.begin(); itr3 != greenBlockList.end(); ++itr3) {
-					if (((*itr)->GetPositionX() + 48) == (*itr2)->GetPositionX() && ((*itr2)->GetPositionX() + 48) == (*itr3)->GetPositionX() && (*itr)->GetPositionY() == (*itr2)->GetPositionY()) {
+					//‰¡
+					if (((*itr)->GetPositionX() + 48) == (*itr2)->GetPositionX() && ((*itr2)->GetPositionX() + 48) == (*itr3)->GetPositionX() && (*itr)->GetPositionY() == (*itr2)->GetPositionY() && (*itr2)->GetPositionY() == (*itr3)->GetPositionY()) {
+						if ((*itr)->isdelete == false && (*itr2)->isdelete == false && (*itr3)->isdelete == false) {
+							(*itr)->SetDelete(true);
+							(*itr2)->SetDelete(true);
+							(*itr3)->SetDelete(true);
+							blockfallupdatecount = 0;
+						}
+					}
+					//c
+					if ((*itr)->GetPositionX() == (*itr2)->GetPositionX() && (*itr2)->GetPositionX() == (*itr3)->GetPositionX() && ((*itr)->GetPositionY() + 48) == (*itr2)->GetPositionY() && ((*itr2)->GetPositionY() + 48) == (*itr3)->GetPositionY()) {
 						if ((*itr)->isdelete == false && (*itr2)->isdelete == false && (*itr3)->isdelete == false) {
 							(*itr)->SetDelete(true);
 							(*itr2)->SetDelete(true);
@@ -3113,7 +3133,17 @@ void GameScene::DeleteBlock() {
 		for (auto itr = blueBlockList.begin(); itr != blueBlockList.end(); ++itr) {
 			for (auto itr2 = blueBlockList.begin(); itr2 != blueBlockList.end(); ++itr2) {
 				for (auto itr3 = blueBlockList.begin(); itr3 != blueBlockList.end(); ++itr3) {
-					if (((*itr)->GetPositionX() + 48) == (*itr2)->GetPositionX() && ((*itr2)->GetPositionX() + 48) == (*itr3)->GetPositionX() && (*itr)->GetPositionY() == (*itr2)->GetPositionY()) {
+					//‰¡
+					if (((*itr)->GetPositionX() + 48) == (*itr2)->GetPositionX() && ((*itr2)->GetPositionX() + 48) == (*itr3)->GetPositionX() && (*itr)->GetPositionY() == (*itr2)->GetPositionY() && (*itr2)->GetPositionY() == (*itr3)->GetPositionY()) {
+						if ((*itr)->isdelete == false && (*itr2)->isdelete == false && (*itr3)->isdelete == false) {
+							(*itr)->SetDelete(true);
+							(*itr2)->SetDelete(true);
+							(*itr3)->SetDelete(true);
+							blockfallupdatecount = 0;
+						}
+					}
+					//c
+					if ((*itr)->GetPositionX() == (*itr2)->GetPositionX() && (*itr2)->GetPositionX() == (*itr3)->GetPositionX() && ((*itr)->GetPositionY() + 48) == (*itr2)->GetPositionY() && ((*itr2)->GetPositionY() + 48) == (*itr3)->GetPositionY()) {
 						if ((*itr)->isdelete == false && (*itr2)->isdelete == false && (*itr3)->isdelete == false) {
 							(*itr)->SetDelete(true);
 							(*itr2)->SetDelete(true);
