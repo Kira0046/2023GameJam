@@ -60,6 +60,27 @@ public:
 	/// ブロック地面着地
 	/// </summary>
 	void PileBlockToLand();
+
+	void SetBlockonLand();
+
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void BlockFallProcess();
+
+	/// <summary>
+	/// ブロック落下化
+	/// </summary>
+	void BlockFallSetting();
+
+	/// <summary>
+	/// 
+	/// </summary>
+	void BlockToFall();
+
+	void BackToReset();
+
 private:
 	//接続状態チェック
 	void CheckConnect();
@@ -99,6 +120,9 @@ private:
 	int fallphase = 0;
 	//落下更新待機時間
 	int fallupdatetime = 5;
+	//ブロック落下更新待期時間
+	int blockfallupdatetime = 1;
+	int blockfallupdatecount = 0;
 	//更新時間
 	const int maxUpdateTime = 5;
 	//移動量
@@ -145,4 +169,11 @@ private:
 	bool countStart = false;;	//カウント開始変数
 	const int halfSize = 24;
 	int deleteConnectNum = 1;	//消えるのに必要な数
+
+	//削除ブロックカウント
+	int deleteBlockNum = 0;
+	int involvementBlockNum = 0;
+
+	//連鎖・スコア
+	int chain = 0;
 };

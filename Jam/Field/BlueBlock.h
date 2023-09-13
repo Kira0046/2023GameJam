@@ -62,10 +62,13 @@ public:
 		this->fall = fall;
 	}
 
+
 	//uが上、dが下、lが左、rが右の意	0が色で1が柄
 	void SetMatch(bool u, bool d, bool l, bool r, int num);
 
 	void SetDelete(bool deleteFlag, bool doubkeMuctchFlag, bool involvement);
+
+	void GoDeleete() { delete this; }
 
 	/// <summary>
 	/// ゲッター
@@ -76,6 +79,7 @@ public:
 	int GetPattern() { return pattern; }//柄
 	bool GetIsDelete() { return isDelete; }//削除フラグ
 	bool GetDoubleMutch() { return doubleMutch; }	//両一致フラグ
+	bool GetInvolvement() { return involvement; }	//巻き込みフラグ
 
 	const bool& GetIshitUp() const { return hitup; }
 

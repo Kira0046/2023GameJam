@@ -66,8 +66,6 @@ void GameScene::Update() {
 
 		PiledBlock();
 
-		CheckConnect();
-
 		PileBlockToLand();
 		/*if (centerY == 816) {
 
@@ -79,9 +77,18 @@ void GameScene::Update() {
 	}
 
 	if (fallphase == 3) {
-
+		BlockFallProcess();
 	}
 
+	if (fallphase == 4) {
+		CheckConnect();
+
+		DeleteBlock();
+	}
+
+	if (keys[KEY_INPUT_E] == 1 && oldkeys[KEY_INPUT_E] == 0) {
+		fallphase = 0;
+	}
 }
 
 void GameScene::Draw() {
@@ -103,7 +110,7 @@ void GameScene::Draw() {
 	}
 	//DrawBox(centerX - blockspawnsize, centerY - blockspawnsize, centerX + blockspawnsize, centerY + blockspawnsize, GetColor(255, 255, 0), true);
 
-	DrawFormatString(0, 0, GetColor(255, 255, 255), "LH:%d\n%d\nRH:%d\n%d\nRL:%d\n%d\nLL:%d\n%d\nred:%d\ngreen:%d\nblue:%d\n%d %d\nR%d %d\nG%d %d\nB%d %d",
+	DrawFormatString(0, 0, GetColor(255, 255, 255), "LH:%d\n%d\nRH:%d\n%d\nRL:%d\n%d\nLL:%d\n%d\nred:%d\ngreen:%d\nblue:%d\n%d %d\nR%d %d\nG%d %d\nB%d %d\nchain : %d\nfallphase : %d",
 		blocklayoutposition[0].blocklayoutcolor, blocklayoutposition[0].blocklayoutpattern,
 		blocklayoutposition[1].blocklayoutcolor, blocklayoutposition[1].blocklayoutpattern,
 		blocklayoutposition[2].blocklayoutcolor, blocklayoutposition[2].blocklayoutpattern,
@@ -118,7 +125,9 @@ void GameScene::Draw() {
 		greenblocklefthit,
 		greenblockrighthit,
 		blueblocklefthit,
-		blueblockrighthit);
+		blueblockrighthit,
+		chain,
+		fallphase);
 }
 
 void GameScene::BlockLayoutSetting() {
@@ -126,9 +135,9 @@ void GameScene::BlockLayoutSetting() {
 
 	//色決定 0:配置しない　1:赤　2:緑  3:青
 	blocklayoutposition[0].blocklayoutcolor = rand() % 3 + 1;
-	blocklayoutposition[1].blocklayoutcolor = 0;
+	blocklayoutposition[1].blocklayoutcolor = rand() % 3 + 1;
 	blocklayoutposition[2].blocklayoutcolor = 0;
-	blocklayoutposition[3].blocklayoutcolor = rand() % 3 + 1;
+	blocklayoutposition[3].blocklayoutcolor = 0;
 	for (int i = 0; i < 4; i++) {
 
 		//模様決定 1: 2:
@@ -1818,7 +1827,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (redBlockList.size() >= 3) {
@@ -1829,7 +1838,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (redBlockList.size() >= 2) {
@@ -1839,7 +1848,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (!redBlockList.empty()) {
@@ -1847,7 +1856,7 @@ void GameScene::PiledBlock() {
 					if (redBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 
 				}
@@ -1863,7 +1872,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (redBlockList.size() >= 2) {
@@ -1873,7 +1882,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (!redBlockList.empty()) {
@@ -1881,7 +1890,7 @@ void GameScene::PiledBlock() {
 					if (redBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 			}
@@ -1895,7 +1904,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (!redBlockList.empty()) {
@@ -1903,7 +1912,7 @@ void GameScene::PiledBlock() {
 					if (redBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 			}
@@ -1915,7 +1924,7 @@ void GameScene::PiledBlock() {
 					if (redBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 			}
@@ -1936,7 +1945,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (greenBlockList.size() >= 3) {
@@ -1947,7 +1956,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (greenBlockList.size() >= 2) {
@@ -1957,7 +1966,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (!greenBlockList.empty()) {
@@ -1965,7 +1974,7 @@ void GameScene::PiledBlock() {
 					if (greenBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 
 				}
@@ -1982,7 +1991,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (greenBlockList.size() >= 2) {
@@ -1992,7 +2001,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (!greenBlockList.empty()) {
@@ -2000,7 +2009,7 @@ void GameScene::PiledBlock() {
 					if (greenBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 
 				}
@@ -2016,7 +2025,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (!greenBlockList.empty()) {
@@ -2024,7 +2033,7 @@ void GameScene::PiledBlock() {
 					if (greenBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 			}
@@ -2037,7 +2046,7 @@ void GameScene::PiledBlock() {
 					if (greenBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 			}
@@ -2057,7 +2066,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (blueBlockList.size() >= 3) {
@@ -2069,7 +2078,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (blueBlockList.size() >= 2) {
@@ -2080,7 +2089,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (!blueBlockList.empty()) {
@@ -2104,7 +2113,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (blueBlockList.size() >= 2) {
@@ -2114,7 +2123,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (!blueBlockList.empty()) {
@@ -2122,7 +2131,7 @@ void GameScene::PiledBlock() {
 					if (blueBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 			}
@@ -2136,7 +2145,7 @@ void GameScene::PiledBlock() {
 					if ((*itr)->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 				if (!blueBlockList.empty()) {
@@ -2144,7 +2153,7 @@ void GameScene::PiledBlock() {
 					if (blueBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 				}
 			}
@@ -2156,7 +2165,7 @@ void GameScene::PiledBlock() {
 					if (blueBlockList.back()->hitdown == true) {
 						SetBlockToFallFalse();
 
-						fallphase = 0;
+						fallphase = 3;
 					}
 
 				}
@@ -2209,6 +2218,141 @@ void GameScene::PileBlockToLand() {
 			}
 		}
 	}
+}
+
+void GameScene::SetBlockonLand() {
+	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+		if ((*redblockitr)->GetPositionY() == 834 + 24) {
+			(*redblockitr)->SetHitDown(true);
+		}
+	}
+
+	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+		if ((*greenblockitr)->GetPositionY() == 834 + 24) {
+			(*greenblockitr)->SetHitDown(true);
+		}
+	}
+
+	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+		if ((*blueblockitr)->GetPositionY() == 834 + 24) {
+			(*blueblockitr)->SetHitDown(true);
+		}
+	}
+}
+
+void GameScene::BlockFallProcess() {
+	blockfallupdatetime--;
+	SetBlockonLand();
+	FallingCollision();
+	if (blockfallupdatetime == 0) {
+		BlockFallSetting();
+		BlockToFall();
+		//BackToReset();
+		for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+			(*redblockitr)->SetHitDown(false);
+		}
+		for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+			(*greenblockitr)->SetHitDown(false);
+		}
+
+		for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+			(*blueblockitr)->SetHitDown(false);
+		}
+
+		blockfallupdatecount += 2;
+		blockfallupdatetime = 1;
+	}
+	if (blockfallupdatecount > 20) {
+		BackToReset();
+	}
+}
+
+void GameScene::BlockFallSetting() {
+	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+		if ((*redblockitr)->GetIshitDown() == false) {
+			(*redblockitr)->SetFall(true);
+		}
+		if ((*redblockitr)->GetIshitDown() == true) {
+			(*redblockitr)->SetFall(false);
+		}
+	}
+
+	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+		if ((*greenblockitr)->GetIshitDown() == false) {
+			(*greenblockitr)->SetFall(true);
+		}
+		if ((*greenblockitr)->GetIshitDown() == true) {
+			(*greenblockitr)->SetFall(false);
+		}
+	}
+
+	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+		if ((*blueblockitr)->GetIshitDown() == false) {
+			(*blueblockitr)->SetFall(true);
+		}
+		if ((*blueblockitr)->GetIshitDown() == true) {
+			(*blueblockitr)->SetFall(false);
+		}
+	}
+}
+
+void GameScene::BlockToFall() {
+	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+		if ((*redblockitr)->GetIsFall() == true) {
+			(*redblockitr)->SetPosition(0, amountmovement);
+		}
+	}
+
+	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+		if ((*greenblockitr)->GetIsFall() == true) {
+			(*greenblockitr)->SetPosition(0, amountmovement);
+		}
+	}
+
+	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+		if ((*blueblockitr)->GetIsFall() == true) {
+			(*blueblockitr)->SetPosition(0, amountmovement);
+		}
+	}
+}
+
+void GameScene::BackToReset() {
+	int redcheck = 0;
+	int greencheck = 0;
+	int bluecheck = 0;
+
+
+	for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+		if ((*redblockitr)->GetIsFall() == false) {
+			redcheck = 1;
+		}
+		else {
+			redcheck = 0;
+		}
+	}
+
+	for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+		if ((*greenblockitr)->GetIsFall() == false) {
+			greencheck = 1;
+		}
+		else {
+			greencheck = 0;
+		}
+	}
+
+	for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+		if ((*blueblockitr)->GetIsFall() == false) {
+			bluecheck = 1;
+		}
+		else {
+			bluecheck = 0;
+		}
+	}
+
+	if (redcheck == 1 && greencheck == 1 && bluecheck == 1) {
+		//fallphase = 4;
+	}
+	fallphase = 4;
 }
 
 //接続チェック
@@ -2761,5 +2905,83 @@ void GameScene::CheckConnect() {
 				}
 			}
 		}
+	}
+
+	fallphase = 0;
+}
+
+void GameScene::DeleteBlock() {
+	//カウントスタートフラグがオンだったらタイマーを動かして一定時間後に消滅
+	if (countStart == true) {
+		deleteTimer--;
+		if (deleteTimer < 0) {
+			countStart = false;
+			deleteTimer = maxTimer;
+			//色ごとに通常と巻き込みで加算分け
+			for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+				if ((*redblockitr)->GetIsDelete()) {
+					deleteBlockNum++;
+				}
+				else if ((*redblockitr)->GetInvolvement()) {
+					involvementBlockNum++;
+				}
+				//カウントがズレそうなので一旦すべての加算をしてから全消し
+			}
+			for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+				if ((*blueblockitr)->GetIsDelete()) {
+					deleteBlockNum++;
+				}
+				else if ((*blueblockitr)->GetInvolvement()) {
+					involvementBlockNum++;
+				}
+				//カウントがズレそうなので一旦すべての加算をしてから全消し
+			}
+			for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+				if ((*greenblockitr)->GetIsDelete()) {
+					deleteBlockNum++;
+				}
+				else if ((*greenblockitr)->GetInvolvement()) {
+					involvementBlockNum++;
+				}
+				//カウントがズレそうなので一旦すべての加算をしてから全消し
+			}
+			for (auto redblockitr = redBlockList.begin(); redblockitr != redBlockList.end(); ++redblockitr) {
+				if ((*redblockitr)->GetIsDelete() || (*redblockitr)->GetInvolvement()) {
+					redblockitr = redBlockList.erase(redblockitr);
+				}
+				else {
+					//deleteがなければ落下判定付与で整理
+					(*redblockitr)->SetFall(true);
+					//++redblockitr;
+				}
+			}
+			for (auto blueblockitr = blueBlockList.begin(); blueblockitr != blueBlockList.end(); ++blueblockitr) {
+				if ((*blueblockitr)->GetIsDelete() || (*blueblockitr)->GetInvolvement()) {
+					blueblockitr = blueBlockList.erase(blueblockitr);
+				}
+				else {
+					//deleteがなければ落下判定付与で整理
+					(*blueblockitr)->SetFall(true);
+					//++blueblockitr;
+				}
+			}
+			for (auto greenblockitr = greenBlockList.begin(); greenblockitr != greenBlockList.end(); ++greenblockitr) {
+				if ((*greenblockitr)->GetIsDelete() || (*greenblockitr)->GetInvolvement()) {
+					greenblockitr = greenBlockList.erase(greenblockitr);
+				}
+				else {
+					//deleteがなければ落下判定付与で整理
+					(*greenblockitr)->SetFall(true);
+					//++greenblockitr;
+				}
+			}
+			//連鎖カウント加算
+			chain++;
+			fallphase = 3;
+		}
+	}
+	else {
+		fallphase = 0;
+		chain = 0;
 	}
 }

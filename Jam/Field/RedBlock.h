@@ -67,6 +67,8 @@ public:
 
 	void SetDelete(bool deleteFlag, bool doubkeMuctchFlag, bool involvement);
 
+	void GoDeleete() { delete this; }
+
 	/// <summary>
 	/// ゲッター
 	/// </summary>
@@ -76,6 +78,7 @@ public:
 	int GetPattern() { return pattern; }//柄
 	bool GetIsDelete() { return isDelete; }//削除フラグ
 	bool GetDoubleMutch() { return doubleMutch; }	//両一致フラグ
+	bool GetInvolvement() { return involvement; }	//巻き込みフラグ
 
 	const bool& GetIshitUp() const { return hitup; }
 
